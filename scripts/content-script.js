@@ -3,14 +3,10 @@
  * defined on the manifest.json file
  * -> "matches": ["https://www.npmjs.com/package/*"]
  *
- * Responsabilities:
+ * Responsibilities:
  *  - Create link to add or remove from faves.
  *  - Communicate to user about the action.
  *  - Listens to Popup actions to update options.
- * 
- * @todo Review if makes sense to inject button to page or just manage the 
- * adding through the extension when detection the package URL (add or remove 
- * based on the faves storage).
  */
 
 try {
@@ -21,7 +17,7 @@ try {
 
 /**
  * Adds a link to the page to "add to faves" or "remove from faves" based on
- * the content_scripts's matches on the manifest.json file.
+ * the content_script's matches on the manifest.json file.
  */
 async function addLinkToPage() {
   let packageName = getPackageNameFromUrl();
@@ -35,7 +31,6 @@ async function addLinkToPage() {
 
 /**
  * Creates the "add to faves" or "remove from faves" link on the webpage.
- * @todo Improve link UI :)
  * @param {boolean} toAddToFaves If set to true indicates that the action 
  * should be to add to faves, else should be to remove from faves.
  */
@@ -96,7 +91,6 @@ function getPackageNameFromUrl() {
 
 /**
  * Shows a message to the user about the action.
- * @todo Improve the basic visualization :)
  * @param {string} packageName The name of the package.
  * @param {boolean} added If set to true indicates that the package was added, 
  * else indicate that was removed.
@@ -112,9 +106,9 @@ function showNotification(packageName, added) {
 }
 
 /**
- * The following listners manage events to update the to fave or not to fave
+ * The following listeners manage events to update the to fave or not to fave
  * link based on the extension's pop up interactions (currently unfave).
- * The interaction with the pop up can happen wheater the tab is active or not.
+ * The interaction with the pop up can happen whether the tab is active or not.
  *  - If the tab is active the "onMessage" event is executed (popup.js sends
  *    the message).
  *  - If the tab is inactive the "visibilitychange" event is used when the tab

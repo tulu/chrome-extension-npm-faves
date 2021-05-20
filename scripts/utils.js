@@ -3,10 +3,6 @@
  * Taken from:
  * https://gist.github.com/sumitpore/47439fcd86696a71bf083ede8bbd5466
  * Thank you! :)
- * @todo There is an error when reloading the extension or reinstalling and 
- * the content script are already injected. It's a disconnection and throws an 
- * "Extension context invalidated error". The only way to solve this is by 
- * injecting the scripts into the tabs programatically.
  */
 
 /**

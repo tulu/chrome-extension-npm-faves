@@ -1,7 +1,7 @@
 /**
  * Script that adds functionality to the extension's popup.
  *
- * Responsabilities:
+ * Responsibilities:
  *  - Show the list of faved packages.
  *  - Access the package information.
  *  - Remove selected package from faves

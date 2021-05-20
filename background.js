@@ -1,7 +1,7 @@
 /**
  * Script to load all files needed for the background.js worker service
  *
- * Responsabilities:
+ * Responsibilities:
  *  - Import all the needed scripts
  */
 

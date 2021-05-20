@@ -1,7 +1,7 @@
 /**
  * Main script running in the background.
  *
- * Responsabilities:
+ * Responsibilities:
  *  - Show readme file:
  *    -  onInstalled event from the extension
  *  - Update the badge of the extension with the number of faves:
@@ -32,7 +32,6 @@ chrome.storage.onChanged.addListener(async function (changes, areaName) {
 
 /**
  * Shows the readme file in a new tab.
- * @todo Improve readme file.
  */
 function showReadme() {
   let url = chrome.runtime.getURL("readme.html");
