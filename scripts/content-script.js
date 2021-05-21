@@ -24,14 +24,14 @@ async function addLinkToPage() {
   // Check if fave already added
   let faves = await storageSyncGet("faves");
   let toAddToFaves =
-    faves && faves.find((fav) => fav == packageName) ? false : true;
+    faves && faves.find((fave) => fave.name == packageName) ? false : true;
   // Creates the link
   createFavesLink(toAddToFaves);
 }
 
 /**
  * Creates the "add to faves" or "remove from faves" link on the webpage.
- * @param {boolean} toAddToFaves If set to true indicates that the action 
+ * @param {boolean} toAddToFaves If set to true indicates that the action
  * should be to add to faves, else should be to remove from faves.
  */
 function createFavesLink(toAddToFaves) {
@@ -71,11 +71,12 @@ async function handleFaveLinkClick() {
     faves = [];
   }
   if (action == "addToFaves") {
-    faves.push(packageName);
+    let package = await getPackageInfoByName(packageName);
+    faves.push(package);
   } else {
-    faves = faves.filter((item) => item !== packageName);
+    faves = faves.filter((item) => item.name !== packageName);
   }
-  faves.sort();
+  faves.sort((a, b) => (a.name > b.name ? 1 : -1));
   await storageSyncSet({ faves: faves });
   addLinkToPage();
   showNotification(packageName, action == "addToFaves");
@@ -92,7 +93,7 @@ function getPackageNameFromUrl() {
 /**
  * Shows a message to the user about the action.
  * @param {string} packageName The name of the package.
- * @param {boolean} added If set to true indicates that the package was added, 
+ * @param {boolean} added If set to true indicates that the package was added,
  * else indicate that was removed.
  */
 function showNotification(packageName, added) {

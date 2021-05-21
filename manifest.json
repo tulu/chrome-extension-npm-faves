@@ -26,7 +26,11 @@
     {
       "matches": ["https://www.npmjs.com/package/*"],
       "all_frames": true,
-      "js": ["./scripts/utils.js", "./scripts/content-script.js"]
+      "js": [
+        "./scripts/utils.js",
+        "./scripts/npm-sync.js",
+        "./scripts/content-script.js"
+      ]
     }
   ],
   "options_page": "./views/options.html"

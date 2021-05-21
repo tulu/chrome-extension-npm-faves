@@ -42,21 +42,13 @@ async function showFavesList() {
   }
   if (faves && faves.length > 0) {
     let list = "";
-    faves.forEach((name) => {
-      let package = {
-        name: name,
-        description: "This is the description",
-        publisher: "npm_hero",
-        version: "1.0.0",
-        date: "Just now",
-      };
+    faves.forEach((package) => {
       list += getPackageHtml(package);
     });
     favesContainer.innerHTML = list;
     addEventsToRemoveLinks();
   } else {
-    favesContainer.innerHTML =
-      "<div class='empty-list'>No faves to show</div>";
+    favesContainer.innerHTML = "<div class='empty-list'>No faves to show</div>";
   }
 }
 
@@ -103,8 +95,8 @@ async function handleUnfaveLinkClick() {
   let packageName = this.getAttribute("pack-name");
   let faves = await storageSyncGet("faves");
   if (faves) {
-    faves = faves.filter((item) => item !== packageName);
-    faves.sort();
+    faves = faves.filter((item) => item.name !== packageName);
+    faves.sort((a, b) => (a.name > b.name ? 1 : -1));
     await storageSyncSet({ faves: faves });
   }
   await showFavesList();
