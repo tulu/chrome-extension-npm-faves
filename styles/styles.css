@@ -43,6 +43,25 @@ body {
   width: calc(100% - 10px);
 }
 
+.back-button {
+  height: 30px;
+  background-color: #efefef;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+}
+
+.back-button a {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.9);
+  font-size: 1rem;
+  padding-top: 10px;
+}
+
 /* ==[ Faves list ]== */
 
 #favesContainer {
@@ -122,4 +141,60 @@ body {
 
 .pack:hover .pack-nav a {
   display: block;
+}
+
+/* ==[ Package view ]== */
+
+#packageView {
+}
+
+.package-name {
+  font-size: 1.25rem;
+  color: rgba(0, 0, 0, 0.9);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 10px;
+}
+
+.package-description {
+  font-size: 1rem;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+  line-height: 1.5;
+  padding: 0 10px;
+}
+
+.package-properties {
+  border-color: rgba(0, 0, 0, 0.1);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  padding: 5px 10px;
+}
+
+.package-attribute {
+  color: #757575;
+  font-size: 1rem;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Source Sans Pro", "Lucida Grande", sans-serif;
+  margin-bottom: 5px;
+}
+
+.package-value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1rem;
+  color: rgba(0, 0, 0, 0.8);
+  -webkit-font-smoothing: antialiased;
+  font-family: "Source Sans Pro", "Lucida Grande", sans-serif;
+}
+
+a.package-value {
+  text-decoration: none;
 }

@@ -43,13 +43,34 @@ async function showFavesList() {
   if (faves && faves.length > 0) {
     let list = "";
     faves.forEach((package) => {
-      list += getPackageHtml(package);
+      list += getPackageListElement(package);
     });
     favesContainer.innerHTML = list;
+
     addEventsToRemoveLinks();
+    addEventsToListPackages();
   } else {
     favesContainer.innerHTML = "<div class='empty-list'>No faves to show</div>";
   }
+}
+
+/**
+ * Adds the click event to the list of packages to access the package view
+ * with more detailed information.
+ */
+function addEventsToListPackages() {
+  let packageListItems = document.querySelectorAll("div.pack");
+  packageListItems.forEach((link) => {
+    link.addEventListener("click", handleViewPackageClick);
+  });
+}
+
+/**
+ * Package list item click event handler to access the package details.
+ */
+async function handleViewPackageClick() {
+  let packageName = this.getAttribute("package-name");
+  location.href = `./popup-package.html?package-name=${packageName}`;
 }
 
 /**
@@ -58,20 +79,22 @@ async function showFavesList() {
  * @param {object} package The package to create the list item
  * @returns {string} The HTML markup of the package structure
  */
-function getPackageHtml(package) {
-  return `<div class="pack">
+function getPackageListElement(package) {
+  return `<div class="pack" package-name="${package.name}">
       <div class="pack-info">
         <div class="pack-name">${package.name}</div>
         <div class="pack-description">${package.description}</div>
         <div class="pack-version">
           <span class="pack-publisher">${package.publisher}</span>
-          <span class="pack-date-version">
-            published ${package.version} \n\u2022 ${package.date}
+          <span class="pack-date-version" datetime="${package.date}">
+            published ${package.version} \n\u2022 ${timeago.format(
+    package.date
+  )}
           </span>
         </div>
       </div>
       <div class="pack-nav">
-        <a pack-name="${package.name}" class="pack-unfave">Remove</a>
+        <a package-name="${package.name}" class="pack-unfave">Remove</a>
       </div>
     </div>`;
 }
@@ -92,7 +115,7 @@ function addEventsToRemoveLinks() {
  * active.
  */
 async function handleUnfaveLinkClick() {
-  let packageName = this.getAttribute("pack-name");
+  let packageName = this.getAttribute("package-name");
   let faves = await storageSyncGet("faves");
   if (faves) {
     faves = faves.filter((item) => item.name !== packageName);
@@ -108,3 +131,5 @@ function notifyEvent(message) {
     chrome.tabs.sendMessage(tabs[0].id, message);
   });
 }
+
+function getPackageView(package) {}
