@@ -33,5 +33,11 @@
       ]
     }
   ],
+  "web_accessible_resources": [
+    {
+      "matches": ["<all_urls>"],
+      "resources": ["/styles/buttons.css"]
+    }
+  ],
   "options_page": "./views/options.html"
 }

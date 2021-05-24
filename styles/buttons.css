@@ -1,0 +1,87 @@
+/*
+* The buttons styles are separated from the main styles file in order to
+* inject them also into the npmjs page avoiding to inject all styles and
+* making a mess :)    
+*/
+
+/* ==[ Buttons ]== */
+
+.npmf_button {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.npmf_button a {
+  letter-spacing: 0.25px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  text-decoration: none;
+  margin: 0.5rem;
+  padding: 0.5rem 0.25rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  display: flex;
+  font-weight: 600;
+}
+
+.npmf_cancel-button a {
+  background-image: linear-gradient(
+    -180deg,
+    rgba(255, 255, 255, 0.09) 0%,
+    rgba(255, 89, 89, 0.1) 97%
+  );
+  border: 1px solid rgba(222, 154, 82, 0.5);
+  color: #c4422b;
+}
+
+.npmf_cancel-button:hover a {
+  background-image: linear-gradient(
+    -180deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 89, 89, 0.2) 97%
+  );
+  border: 1px solid rgba(222, 154, 82, 0.6);
+  color: #aa2b2b;
+}
+
+.npmf_cancel-button a span.material-icons-outlined {
+  color: #c4422b;
+  font-size: 1.25rem;
+}
+
+.npmf_cancel-button:hover a span.material-icons-outlined {
+  color: #aa2b2b;
+}
+
+.npmf_confirm-button a {
+  background-image: linear-gradient(
+    -180deg,
+    rgba(255, 255, 255, 0.13) 0%,
+    rgba(0, 184, 15, 0.1) 100%
+  );
+  border: 1px solid rgba(75, 173, 58, 0.5);
+  color: #444;
+}
+
+.npmf_confirm-button:hover a {
+  background-image: linear-gradient(
+    -180deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(0, 184, 15, 0.14) 100%
+  );
+  border: 1px solid rgba(75, 173, 58, 0.6);
+  color: #111;
+}
+
+.npmf_confirm-button a span.material-icons-outlined {
+  color: #444;
+  font-size: 1.25rem;
+}
+
+.npmf_confirm-button:hover a span.material-icons-outlined {
+  color: #111;
+}
