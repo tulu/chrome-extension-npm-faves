@@ -90,7 +90,7 @@ body {
 }
 
 .pack-info {
-  width: 90%;
+  width: 100%;
 }
 
 .pack-name {
@@ -125,25 +125,6 @@ body {
 }
 .pack-date-version {
   color: rgba(0, 0, 0, 0.5);
-}
-
-.pack-nav {
-  width: 10%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  font-size: 13px;
-}
-
-.pack-nav a {
-  text-decoration: none;
-  color: #333333;
-  display: none;
-  text-decoration: underline;
-}
-
-.pack:hover .pack-nav a {
-  display: block;
 }
 
 /* ==[ Package view ]== */

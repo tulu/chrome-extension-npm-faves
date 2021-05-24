@@ -47,7 +47,6 @@ async function showFavesList() {
     });
     favesContainer.innerHTML = list;
 
-    addEventsToRemoveLinks();
     addEventsToListPackages();
   } else {
     favesContainer.innerHTML = "<div class='empty-list'>No faves to show</div>";
@@ -93,45 +92,5 @@ function getPackageListElement(package) {
           </span>
         </div>
       </div>
-      <div class="pack-nav">
-        <a package-name="${package.name}" class="pack-unfave">Remove</a>
-      </div>
     </div>`;
-}
-
-/**
- * Adds the click event listeners to the unfave links for each package.
- */
-function addEventsToRemoveLinks() {
-  let unfaveLinks = document.querySelectorAll("a.pack-unfave");
-  unfaveLinks.forEach((link) => {
-    link.addEventListener("click", handleUnfaveLinkClick);
-  });
-}
-
-/**
- * Unfave link click event handler to remove package from faves, update the
- * list and notify the content script to update the link on the webpage if
- * active.
- */
-async function handleUnfaveLinkClick() {
-  let packageName = this.getAttribute("package-name");
-  let faves = await storageSyncGet("faves");
-  if (faves) {
-    faves = faves.filter((item) => item.name !== packageName);
-    faves.sort((a, b) => (a.name > b.name ? 1 : -1));
-    await storageSyncSet({ faves: faves });
-  }
-  await showFavesList();
-  notifyEvent({ action: "remove", packageName: packageName });
-}
-
-/**
- * Notifies the unfave event
- * @param {object} message 
- */
-function notifyEvent(message) {
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, message);
-  });
 }
