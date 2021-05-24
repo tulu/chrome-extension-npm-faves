@@ -8,11 +8,23 @@
  *  - Communicate to user about the action.
  *  - Listens to Popup actions to update options.
  */
-
 try {
-  addLinkToPage();
+  if (validatePageContent()) {
+    addLinkToPage();
+  } else {
+    console.log("The url is not valid for the content script: " + document.URL);
+  }
 } catch (error) {
   console.log(error);
+}
+
+/**
+ * Validate if the current page is valid for the link injection.
+ * It could happen that the page loads with a captcha and the script does not 
+ * find the needed elements to inject the faves link.
+ */
+function validatePageContent() {
+  return document.querySelector("ul[role=tablist]") ? true : false;
 }
 
 /**

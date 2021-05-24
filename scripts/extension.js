@@ -18,6 +18,7 @@ chrome.runtime.onInstalled.addListener(async function (reason) {
   if (reason === chrome.runtime.OnInstalledReason.INSTALL) {
     showReadme();
   }
+  await reloadNpmTabs();
   await updateFavesBadgeWithQuantity();
 });
 
@@ -48,4 +49,20 @@ async function updateFavesBadgeWithQuantity() {
     text: favesCount,
   });
   chrome.action.setBadgeBackgroundColor({ color: "#C90813" }, () => {});
+}
+
+/**
+ * Reloads the tabs that match the npmjs site.
+ * This fixes the "Extension context invalidated error" when updating the 
+ * extension. 😎
+ */
+async function reloadNpmTabs() {
+  const tabs = await chrome.tabs.query({
+    currentWindow: true,
+    url: "*://www.npmjs.com/*",
+  });
+
+  tabs.forEach((tab) => {
+    chrome.tabs.reload(tab.id);
+  });
 }

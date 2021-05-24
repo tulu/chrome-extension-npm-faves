@@ -126,10 +126,12 @@ async function handleUnfaveLinkClick() {
   notifyEvent({ action: "remove", packageName: packageName });
 }
 
+/**
+ * Notifies the unfave event
+ * @param {object} message 
+ */
 function notifyEvent(message) {
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     chrome.tabs.sendMessage(tabs[0].id, message);
   });
 }
-
-function getPackageView(package) {}

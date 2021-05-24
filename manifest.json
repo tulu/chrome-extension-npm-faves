@@ -6,7 +6,7 @@
   "background": {
     "service_worker": "./background.js"
   },
-  "permissions": ["storage", "activeTab", "scripting"],
+  "permissions": ["storage", "activeTab", "scripting", "tabs"],
   "action": {
     "default_popup": "./views/popup-main.html",
     "default_icon": {
@@ -24,7 +24,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://www.npmjs.com/package/*"],
+      "matches": ["*://www.npmjs.com/package/*"],
       "all_frames": true,
       "js": [
         "./scripts/utils.js",

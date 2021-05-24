@@ -37,12 +37,10 @@ async function getPackageInfoByNameFromNpms(packageName) {
     quality: "N/A",
     popularity: "N/A",
     maintenance: "N/A",
-    data_update: Date.now(),
-    dateAgo: "N/A"
   };
   try {
     const response = await fetch(`${syncBaseUrl}/${packageName}`);
-    if (response.ok) {
+    if (response.ok && response.status == 200) {
       const json = await response.json();
       package.name = json.collected.metadata.name;
       package.description = json.collected.metadata.description;
@@ -104,7 +102,6 @@ async function getPackageInfoByNameFromNpmjs(packageName) {
     quality: "N/A",
     popularity: "N/A",
     maintenance: "N/A",
-    data_update: Date.now(),
   };
   try {
     const response = await fetch(`${baseUrl}/${packageName}`, {
