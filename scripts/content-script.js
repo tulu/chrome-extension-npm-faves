@@ -166,7 +166,7 @@ function showNotification(packageName, added) {
   } else {
     message = `${packageName} removed from faves`;
   }
-  alert(message);
+  // alert(message);
 }
 
 /**

@@ -62,7 +62,6 @@ async function getPackageInfoByNameFromNpms(packageName) {
   } catch (error) {
     console.log(error);
   }
-  console.log(package);
   return package;
 }
 
