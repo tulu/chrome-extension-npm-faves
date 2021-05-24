@@ -65,8 +65,8 @@ function getPackageView(package) {
   <div class="package-attribute">Collaborators</div>
   <div class="package-value">${package.maintainers}</div>
 </div>
-<div class="package-options">
-    <a package-name="${package.name}" class="button cancel-button pack-unfave">
+<div class="button cancel-button">
+    <a package-name="${package.name}" class="pack-unfave">
         <span class="material-icons-outlined"> delete </span>
         Remove from faves
     </a>
