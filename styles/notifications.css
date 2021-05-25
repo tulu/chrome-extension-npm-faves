@@ -3,7 +3,7 @@
 .npmf_notification {
   padding: 10px;
   color: white;
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 600;
   position: absolute;
   width: 90.4%;
@@ -11,6 +11,7 @@
   top: 0;
   box-shadow: 0 1px 1px 0 rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 19%);
   border-radius: 0.3rem;
+  text-align: center;
 }
 
 .npmf_notification-success {
@@ -33,6 +34,9 @@
   float: right;
   cursor: pointer;
   transition: 0.3s;
+  position: relative;
+  right: -4px;
+  top: -11px;
 }
 
 .npmf_notification-close:hover {
@@ -47,4 +51,5 @@
   width: 200px;
   border-radius: 0.3rem;
   box-shadow: 0 1px 1px 0 rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 19%);
+  text-align: center;
 }

@@ -26,6 +26,8 @@
   cursor: pointer;
   display: flex;
   font-weight: 600;
+  width: 200px;
+  justify-content: center;
 }
 
 .npmf_cancel-button a {
