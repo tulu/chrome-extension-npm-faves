@@ -36,6 +36,16 @@ async function showPackageInformation(packageName) {
  * @returns {string} The html representing the view.
  */
 function getPackageView(package) {
+  const baseUrl = "https://www.npmjs.com/";
+  let maintainersHtml = "";
+  package.maintainers.split(",").forEach((maintainer) => {
+    maintainersHtml += 
+    `<a target="_blank" href="${baseUrl}~${maintainer.trim()}">
+      <img src="http://tinygraphs.com/labs/isogrids/hexa16/${maintainer.trim()}?theme=berrypie&numcolors=2&size=42&fmt=svg" 
+      title="${maintainer.trim()}">
+    </a>`;
+  });
+
   return `<div class="package-name">${package.name}</div>
 <div class="package-description">${package.description}</div>
 <div class="package-properties" style="display: flex">
@@ -72,7 +82,7 @@ function getPackageView(package) {
 </div>
 <div class="package-properties">
   <div class="package-attribute">Collaborators</div>
-  <div class="package-value">${package.maintainers}</div>
+  <div class="package-collaborators">${maintainersHtml}</div>
 </div>
 <div class="npmf_button npmf_cancel-button">
     <a package-name="${package.name}" class="pack-unfave">

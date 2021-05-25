@@ -49,6 +49,7 @@ body {
   vertical-align: middle;
   display: flex;
   align-items: center;
+  border-bottom: 1px solid #cacaca;
 }
 
 .back-button:hover {
@@ -178,4 +179,10 @@ body {
 
 a.package-value {
   text-decoration: none;
+}
+
+.package-collaborators img {
+  width: 42px;
+  height: 42px;
+  padding: 0.26rem;
 }
