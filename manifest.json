@@ -36,7 +36,7 @@
   "web_accessible_resources": [
     {
       "matches": ["<all_urls>"],
-      "resources": ["/styles/buttons.css"]
+      "resources": ["/styles/buttons.css", "/styles/notifications.css"]
     }
   ],
   "options_page": "./views/options.html"

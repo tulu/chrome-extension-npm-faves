@@ -12,6 +12,7 @@
     />
     <link rel="stylesheet" href="../styles/styles.css" />
     <link rel="stylesheet" href="../styles/buttons.css" />
+    <link rel="stylesheet" href="../styles/notifications.css" />
   </head>
   <body>
     <div class="search-bar-container">
@@ -27,11 +28,11 @@
         />
       </div>
     </div>
-    <div class="notification notification-success" style="display: none">
-      <span id="notificationCloseButton" class="notification-close"
+    <div id="npmfNotification" style="display: none">
+      <span id="npmfNotificationCloseButton" class="npmf_notification-close"
         >&times;</span
       >
-      <span id="notificationMessage">This is an alert box.</span>
+      <span id="npmfNotificationMessage"></span>
     </div>
     <div id="favesContainer"></div>
     <script src="../scripts/lib/timeago.min.js"></script>

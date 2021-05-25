@@ -1,0 +1,47 @@
+/* ==[ Notification ]== */
+
+.npmf_notification {
+  padding: 10px;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  position: absolute;
+  width: 91%;
+  margin: 10px;
+  top: 0;
+}
+
+.npmf_notification-success {
+  background-color: #89d67c;
+}
+
+.npmf_notification-error {
+  background-color: #f44336;
+}
+
+.npmf_notification-warning {
+  background-color: #ff9800;
+}
+
+.npmf_notification-info {
+  background-color: #2196f3;
+}
+
+.npmf_notification-close {
+  float: right;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.npmf_notification-close:hover {
+  color: black;
+}
+
+.npmf_notification_site {
+  padding: 0.7rem;
+  color: #fff;
+  font-size: 0.9rem;
+  background-color: #76c2ff;
+  width: 200px;
+  border-radius: 0.3rem;
+}

@@ -37,6 +37,7 @@ function validatePageContent() {
 function injectStyles() {
   const styles = [
     chrome.runtime.getURL("./styles/buttons.css"),
+    chrome.runtime.getURL("./styles/notifications.css"),
     "https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined",
   ];
   styles.forEach((href) => {
@@ -51,7 +52,7 @@ function injectStyles() {
  * Adds a link to the page to "add to faves" or "remove from faves" based on
  * the content_script's matches on the manifest.json file.
  */
-async function addButtonToPage() {
+async function addButtonToPage(message) {
   let packageName = getPackageNameFromUrl();
   if (packageName) {
     // Check if fave already added
@@ -59,7 +60,7 @@ async function addButtonToPage() {
     let toAddToFaves =
       faves && faves.find((fave) => fave.name == packageName) ? false : true;
     // Creates the button
-    createFavesButton(toAddToFaves);
+    createFavesButton(toAddToFaves, message);
   }
 }
 
@@ -68,7 +69,7 @@ async function addButtonToPage() {
  * @param {boolean} toAddToFaves If set to true indicates that the action
  * should be to add to faves, else should be to remove from faves.
  */
-function createFavesButton(toAddToFaves) {
+function createFavesButton(toAddToFaves, message) {
   // Check to see if button already exists
   let faveButton = document.querySelector("#npmFavesLink");
 
@@ -78,11 +79,17 @@ function createFavesButton(toAddToFaves) {
   }
 
   // Create the button
-  faveButton = getFaveButtonElement(toAddToFaves);
+  faveButton = getFaveButtonElement(toAddToFaves, message);
   faveLink = faveButton.querySelector("a");
+  let notificationCloseButton = faveButton.querySelector(
+    "#npmfNotificationCloseButton"
+  );
 
   // Add click event to link
   faveLink.addEventListener("click", handleFaveLinkClick);
+  notificationCloseButton.addEventListener("click", function () {
+    this.parentElement.style.display = "none";
+  });
 
   // Add button to the page
   // This could break if the npmjs page changes
@@ -98,7 +105,7 @@ function createFavesButton(toAddToFaves) {
  * should be to add to faves, else should be to remove from faves.
  * @returns {object} The button element.
  */
-function getFaveButtonElement(toAddToFaves) {
+function getFaveButtonElement(toAddToFaves, message) {
   let faveButtonAction = "addToFaves",
     faveButtonText = "Add to faves",
     faveButtonIcon = "add",
@@ -111,11 +118,19 @@ function getFaveButtonElement(toAddToFaves) {
     faveButtonClass = "npmf_cancel-button";
   }
 
+  let notificationDisplay = message ? "display:block" : "display:none";
+
   let buttonHtml = `<div id="npmFavesLink" class="npmf_button ${faveButtonClass}">
     <a class="pack-unfave" fave-action="${faveButtonAction}">
       <span class="material-icons-outlined">${faveButtonIcon}</span>
       ${faveButtonText}
     </a>
+    <div id="npmfNotification" class="npmf_notification_site" style="${notificationDisplay}">
+      <span id="npmfNotificationCloseButton" class="npmf_notification-close"
+        >&times;</span
+      >
+      <span id="npmfNotificationMessage">${message}</span>
+    </div>
   </div>`;
 
   let tempDiv = document.createElement("div");
@@ -144,8 +159,11 @@ async function handleFaveLinkClick() {
     }
     faves.sort((a, b) => (a.name > b.name ? 1 : -1));
     await storageSyncSet({ faves: faves });
-    addButtonToPage();
-    showNotification(packageName, action == "addToFaves");
+    let message = "Package added to faves :)";
+    if (action != "addToFaves") {
+      message = "Package removed from faves :(";
+    }
+    addButtonToPage(message);
   }
 }
 
@@ -159,22 +177,6 @@ function getPackageNameFromUrl() {
     return splitted[1];
   }
   return null;
-}
-
-/**
- * Shows a message to the user about the action.
- * @param {string} packageName The name of the package.
- * @param {boolean} added If set to true indicates that the package was added,
- * else indicate that was removed.
- */
-function showNotification(packageName, added) {
-  let message;
-  if (added) {
-    message = `${packageName} added to faves`;
-  } else {
-    message = `${packageName} removed from faves`;
-  }
-  // alert(message);
 }
 
 /**
@@ -194,7 +196,7 @@ function showNotification(packageName, added) {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action == "remove") {
     if (message.packageName == getPackageNameFromUrl()) {
-      addButtonToPage();
+      addButtonToPage("Package removed from faves :(");
     }
   }
 });

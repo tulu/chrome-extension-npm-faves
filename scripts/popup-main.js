@@ -37,7 +37,7 @@ function addSearchBarEvent() {
  */
 function addNotificationEvent() {
   const notificationCloseButton = document.getElementById(
-    "notificationCloseButton"
+    "npmfNotificationCloseButton"
   );
   if (notificationCloseButton) {
     notificationCloseButton.addEventListener("click", function () {
@@ -53,8 +53,8 @@ function addNotificationEvent() {
 function checkNotification() {
   const notificationMessage = getParameterByName("noti-message");
   const notificationType = getParameterByName("noti-type");
-  const spanMessage = document.getElementById("notificationMessage");
-  const divNotification = document.querySelector("div.notification");
+  const spanMessage = document.getElementById("npmfNotificationMessage");
+  const divNotification = document.getElementById("npmfNotification");
   if (
     notificationMessage &&
     notificationType &&
@@ -62,7 +62,7 @@ function checkNotification() {
     divNotification
   ) {
     spanMessage.innerHTML = notificationMessage;
-    divNotification.className = `notification ${notificationType}`;
+    divNotification.className = `npmf_notification npmf_${notificationType}`;
     divNotification.style.display = "block";
   }
 }
