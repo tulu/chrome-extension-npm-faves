@@ -10,6 +10,45 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* ==[ Notification ]== */
+
+.notification {
+  padding: 10px;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  position: absolute;
+  width: 91%;
+  margin: 10px;
+  top: 0;
+}
+
+.notification-success {
+  background-color: #04aa6d;
+}
+
+.notification-error {
+  background-color: #f44336;
+}
+
+.notification-warning {
+  background-color: #ff9800;
+}
+
+.notification-info {
+  background-color: #2196f3;
+}
+
+.notification-close {
+  float: right;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.notification-close:hover {
+  color: black;
+}
+
 /* ==[ Search bar ]== */
 
 .search-bar-container {

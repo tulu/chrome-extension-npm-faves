@@ -9,6 +9,8 @@
 
 (async () => {
   addSearchBarEvent();
+  addNotificationEvent();
+  checkNotification();
   await showFavesList();
 })();
 
@@ -19,13 +21,65 @@
  */
 function addSearchBarEvent() {
   const searchBar = document.getElementById("searchInput");
-  searchBar.addEventListener("keyup", function (event) {
-    if (event.keyCode === 13 && searchBar.value.trim().length > 0) {
-      event.preventDefault();
-      let url = "https://www.npmjs.com/search?q=" + searchBar.value;
-      chrome.tabs.create({ url: url });
-    }
-  });
+  if (searchBar) {
+    searchBar.addEventListener("keyup", function (event) {
+      if (event.keyCode === 13 && searchBar.value.trim().length > 0) {
+        event.preventDefault();
+        let url = "https://www.npmjs.com/search?q=" + searchBar.value;
+        chrome.tabs.create({ url: url });
+      }
+    });
+  }
+}
+
+/**
+ * Adds the close event to the notification.
+ */
+function addNotificationEvent() {
+  const notificationCloseButton = document.getElementById(
+    "notificationCloseButton"
+  );
+  if (notificationCloseButton) {
+    notificationCloseButton.addEventListener("click", function () {
+      this.parentElement.style.display = "none";
+    });
+  }
+}
+
+/**
+ * Checks if the notification should be visible and if so then it sets 
+ * the message and type and displays it.
+ */
+function checkNotification() {
+  const notificationMessage = getParameterByName("noti-message");
+  const notificationType = getParameterByName("noti-type");
+  const spanMessage = document.getElementById("notificationMessage");
+  const divNotification = document.querySelector("div.notification");
+  if (
+    notificationMessage &&
+    notificationType &&
+    spanMessage &&
+    divNotification
+  ) {
+    spanMessage.innerHTML = notificationMessage;
+    divNotification.className = `notification ${notificationType}`;
+    divNotification.style.display = "block";
+  }
+}
+
+/**
+ * Returns the value of the parameter from the query string.
+ * @param {string} name The name of the package.
+ * @param {string} url The url of the page.
+ * @returns {string} The value of the parameter.
+ */
+function getParameterByName(name, url = window.location.href) {
+  name = name.replace(/[\[\]]/g, "\\$&");
+  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return "";
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
 /**

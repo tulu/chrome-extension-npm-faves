@@ -154,7 +154,10 @@ async function handleUnfaveLinkClick() {
     await storageSyncSet({ faves: faves });
   }
   notifyEvent({ action: "remove", packageName: packageName });
-  location.href = `./popup-main.html`;
+  // Returns to main view with a message to show
+  const message = `${packageName} removed from faves :(`;
+  const messageType = "notification-success";
+  location.href = `./popup-main.html?noti-message=${message}&noti-type=${messageType}`;
 }
 
 /**
