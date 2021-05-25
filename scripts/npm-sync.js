@@ -46,9 +46,13 @@ async function getPackageInfoByNameFromNpms(packageName) {
       package.version = json.collected.metadata.version;
       package.date = json.collected.metadata.date;
       package.publisher = json.collected.metadata.publisher.username;
-      package.homepageLink = json.collected.metadata.links.homepage;
-      package.repositoryLink = json.collected.metadata.links.repository;
-      package.npmLink = json.collected.metadata.links.npm;
+      package.homepageLink = json.collected.metadata.links.homepage
+        ? decodeURIComponent(json.collected.metadata.links.homepage)
+        : null;
+      package.repositoryLink = json.collected.metadata.links.repository
+        ? decodeURIComponent(json.collected.metadata.links.repository)
+        : null;
+      package.npmLink = decodeURIComponent(json.collected.metadata.links.npm);
       package.license = json.collected.metadata.license;
       package.maintainers = json.collected.metadata.maintainers
         .map((maintainer) => maintainer.username)
