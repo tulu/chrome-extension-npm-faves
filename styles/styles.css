@@ -10,6 +10,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.no-border {
+  border: none !important;
+}
+
 /* ==[ Search bar ]== */
 
 .search-bar-container {
@@ -185,4 +189,43 @@ a.package-value {
   width: 42px;
   height: 42px;
   padding: 0.26rem;
+}
+
+.package-installation {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: rgba(0, 0, 0, 0.8);
+  border-radius: 5px;
+  padding: 10px;
+  border: 1px #cccccc solid;
+  font-family: "Fira Mono", "Andale Mono", "Consolas", monospace;
+  font-size: 0.8rem;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  align-items: center;
+}
+
+.package-installation:hover {
+  cursor: pointer;
+  background: hsl(120, 100%, 93%);
+  border-color: #00c642;
+}
+
+#installSnippet {
+  padding-bottom: 2px;
+}
+
+.package-installation .material-icons-outlined {
+  font-size: 1.1rem;
+  color: rgb(0 0 0 / 46%);
+}
+
+.package-installation .copy-icon {
+  margin-left: auto;
+  display: none;
+}
+
+.package-installation:hover .copy-icon {
+  display: block;
 }

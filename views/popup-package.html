@@ -12,12 +12,19 @@
     />
     <link rel="stylesheet" href="../styles/styles.css" />
     <link rel="stylesheet" href="../styles/buttons.css" />
+    <link rel="stylesheet" href="../styles/notifications.css" />
   </head>
   <body>
     <div class="back-button">
       <a href="./popup-main.html"
         ><span class="material-icons"> arrow_left </span>Back</a
       >
+    </div>
+    <div id="npmfNotification" style="display: none">
+      <span id="npmfNotificationCloseButton" class="npmf_notification-close"
+        >&times;</span
+      >
+      <span id="npmfNotificationMessage"></span>
     </div>
     <div id="packageView"></div>
     <script src="../scripts/utils.js"></script>

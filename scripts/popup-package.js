@@ -9,7 +9,9 @@
 (async () => {
   const packageName = getParameterByName("package-name");
   await showPackageInformation(packageName);
+  addEventToCopyInstallation();
   addEventsToRemoveLinks();
+  addNotificationEvent();
 })();
 
 /**
@@ -27,6 +29,20 @@ async function showPackageInformation(packageName) {
     packageView.innerHTML = getPackageView(package[0]);
   } else {
     console.log(`Package ${packageName} not found!`);
+  }
+}
+
+/**
+ * Adds the close event to the notification.
+ */
+function addNotificationEvent() {
+  const notificationCloseButton = document.getElementById(
+    "npmfNotificationCloseButton"
+  );
+  if (notificationCloseButton) {
+    notificationCloseButton.addEventListener("click", function () {
+      this.parentElement.style.display = "none";
+    });
   }
 }
 
@@ -77,6 +93,14 @@ function getPackageView(package) {
   // Return the full html view
   return `<div class="package-name">${package.name}</div>
 <div class="package-description">${package.description}</div>
+<div class="package-properties no-border">
+  <div class="package-attribute">Install</div>
+  <div class="package-installation">
+  <span class="material-icons-outlined"> chevron_right </span> 
+  <span id="installSnippet">npm i ${package.name}</span>
+  <span class="material-icons-outlined copy-icon">content_copy</span>
+  </div>
+</div>
 <div class="package-properties" style="display: flex">
   <div style="width: 50%">
     <div class="package-attribute">Version</div>
@@ -128,6 +152,42 @@ function getParameterByName(name, url = window.location.href) {
   if (!results) return null;
   if (!results[2]) return "";
   return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+/**
+ * Adds the click event listeners in order to copy the install snippet.
+ */
+function addEventToCopyInstallation() {
+  const divSnippet = document.querySelector("div.package-installation");
+  if (divSnippet) {
+    divSnippet.addEventListener("click", handleCopySnippetClick);
+  }
+}
+
+/**
+ * Snippet event handler to copy the text to the clipboard
+ */
+function handleCopySnippetClick() {
+  var r = document.createRange();
+  r.selectNode(document.getElementById("installSnippet"));
+  window.getSelection().removeAllRanges();
+  window.getSelection().addRange(r);
+  document.execCommand("copy");
+  window.getSelection().removeAllRanges();
+  showNotification("Install snippet copied!", "notification-success");
+}
+
+/**
+ * Shows a message with the defined text and type
+ * @param {string} notificationMessage The message to show
+ * @param {string} notificationType The ype of message to show
+ */
+function showNotification(notificationMessage, notificationType) {
+  const divNotification = document.getElementById("npmfNotification");
+  const spanMessage = document.getElementById("npmfNotificationMessage");
+  spanMessage.innerHTML = notificationMessage;
+  divNotification.className = `npmf_notification npmf_${notificationType}`;
+  divNotification.style.display = "block";
 }
 
 /**

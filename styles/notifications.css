@@ -6,9 +6,11 @@
   font-size: 0.8rem;
   font-weight: 600;
   position: absolute;
-  width: 91%;
+  width: 90.4%;
   margin: 10px;
   top: 0;
+  box-shadow: 0 1px 1px 0 rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 19%);
+  border-radius: 0.3rem;
 }
 
 .npmf_notification-success {
@@ -44,4 +46,5 @@
   background-color: #76c2ff;
   width: 200px;
   border-radius: 0.3rem;
+  box-shadow: 0 1px 1px 0 rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 19%);
 }
