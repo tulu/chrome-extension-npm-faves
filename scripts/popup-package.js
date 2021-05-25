@@ -32,20 +32,49 @@ async function showPackageInformation(packageName) {
 
 /**
  * Generates the html of the view to display the package's information.
+ * The avatars for the maintainers are generated with
+ * https://www.tinygraphs.com/.
  * @param {object} package The package to show.
  * @returns {string} The html representing the view.
  */
 function getPackageView(package) {
-  const baseUrl = "https://www.npmjs.com/";
-  let maintainersHtml = "";
-  package.maintainers.split(",").forEach((maintainer) => {
-    maintainersHtml += 
-    `<a target="_blank" href="${baseUrl}~${maintainer.trim()}">
-      <img src="http://tinygraphs.com/labs/isogrids/hexa16/${maintainer.trim()}?theme=berrypie&numcolors=2&size=42&fmt=svg" 
-      title="${maintainer.trim()}">
-    </a>`;
-  });
+  //npm link
+  let npmLinkHtml = `<a class="package-value">Not available</a>`;
+  if (package.npmLink) {
+    npmLinkHtml = `<a class="package-value" target="_blank" 
+    href="${package.npmLink}">${package.npmLink}</a>`;
+  }
+  //Homepage link
+  let homepageLinkHtml = `<a class="package-value">Not available</a>`;
+  if (package.homepageLink) {
+    homepageLinkHtml = `<a class="package-value" target="_blank" 
+    href="${package.homepageLink}">${package.homepageLink}</a>`;
+  }
+  //Repository link
+  let repositoryLinkHtml = `<a class="package-value">Not available</a>`;
+  if (package.repositoryLink) {
+    repositoryLinkHtml = `<a class="package-value" target="_blank" 
+    href="${package.repositoryLink}">${package.repositoryLink}</a>`;
+  }
+  // Date
+  let lastPublish = "Not available";
+  if (package.date) {
+    lastPublish = timeago.format(package.date);
+  }
+  // Maintainers
+  let maintainersHtml = "Not available";
+  if (package.maintainers) {
+    maintainersHtml = "";
+    const baseUrl = "https://www.npmjs.com/";
+    package.maintainers.split(",").forEach((maintainer) => {
+      maintainersHtml += `<a target="_blank" href="${baseUrl}~${maintainer.trim()}">
+        <img src="http://tinygraphs.com/labs/isogrids/hexa16/${maintainer.trim()}?theme=berrypie&numcolors=2&size=42&fmt=svg" 
+        title="${maintainer.trim()}">
+      </a>`;
+    });
+  }
 
+  // Return the full html view
   return `<div class="package-name">${package.name}</div>
 <div class="package-description">${package.description}</div>
 <div class="package-properties" style="display: flex">
@@ -60,25 +89,19 @@ function getPackageView(package) {
 </div>
 <div class="package-properties">
   <div class="package-attribute">npm Site</div>
-  <a class="package-value" target="_blank"href="${package.npmLink}">
-    ${package.npmLink}
-  </a>
+  ${npmLinkHtml}
 </div>
 <div class="package-properties">
   <div class="package-attribute">Homepage</div>
-  <a class="package-value" target="_blank" href="${package.homepageLink}">
-  ${package.homepageLink}
-  </a>
+  ${homepageLinkHtml}
 </div>
 <div class="package-properties">
   <div class="package-attribute">Repository</div>
-  <a class="package-value" target="_blank" href="${package.repositoryLink}">
-  ${package.repositoryLink}
-  </a>
+  ${repositoryLinkHtml}
 </div>
 <div class="package-properties">
   <div class="package-attribute">Last publish</div>
-  <div class="package-value">${timeago.format(package.date)}</div>
+  <div class="package-value">${lastPublish}</div>
 </div>
 <div class="package-properties">
   <div class="package-attribute">Collaborators</div>

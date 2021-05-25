@@ -53,12 +53,14 @@ function injectStyles() {
  */
 async function addButtonToPage() {
   let packageName = getPackageNameFromUrl();
-  // Check if fave already added
-  let faves = await storageSyncGet("faves");
-  let toAddToFaves =
-    faves && faves.find((fave) => fave.name == packageName) ? false : true;
-  // Creates the button
-  createFavesButton(toAddToFaves);
+  if (packageName) {
+    // Check if fave already added
+    let faves = await storageSyncGet("faves");
+    let toAddToFaves =
+      faves && faves.find((fave) => fave.name == packageName) ? false : true;
+    // Creates the button
+    createFavesButton(toAddToFaves);
+  }
 }
 
 /**
@@ -90,7 +92,7 @@ function createFavesButton(toAddToFaves) {
 }
 
 /**
- * Generates the faves button from a html template using a boolean parameter 
+ * Generates the faves button from a html template using a boolean parameter
  * for its configuration.
  * @param {boolean} toAddToFaves If set to true indicates that the action
  * should be to add to faves, else should be to remove from faves.
@@ -128,21 +130,23 @@ function getFaveButtonElement(toAddToFaves) {
 async function handleFaveLinkClick() {
   // Get the action to perform
   let packageName = getPackageNameFromUrl();
-  let action = this.getAttribute("fave-action");
-  let faves = await storageSyncGet("faves");
-  if (!faves) {
-    faves = [];
+  if (packageName) {
+    let action = this.getAttribute("fave-action");
+    let faves = await storageSyncGet("faves");
+    if (!faves) {
+      faves = [];
+    }
+    if (action == "addToFaves") {
+      let package = await getPackageInfoByName(packageName);
+      faves.push(package);
+    } else {
+      faves = faves.filter((item) => item.name !== packageName);
+    }
+    faves.sort((a, b) => (a.name > b.name ? 1 : -1));
+    await storageSyncSet({ faves: faves });
+    addButtonToPage();
+    showNotification(packageName, action == "addToFaves");
   }
-  if (action == "addToFaves") {
-    let package = await getPackageInfoByName(packageName);
-    faves.push(package);
-  } else {
-    faves = faves.filter((item) => item.name !== packageName);
-  }
-  faves.sort((a, b) => (a.name > b.name ? 1 : -1));
-  await storageSyncSet({ faves: faves });
-  addButtonToPage();
-  showNotification(packageName, action == "addToFaves");
 }
 
 /**
@@ -150,7 +154,11 @@ async function handleFaveLinkClick() {
  * @returns {string} The name of the package.
  */
 function getPackageNameFromUrl() {
-  return document.URL.split("/")[document.URL.split("/").length - 1];
+  let splitted = document.location.href.split("package/");
+  if (splitted.length == 2) {
+    return splitted[1];
+  }
+  return null;
 }
 
 /**
@@ -197,6 +205,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
  */
 document.addEventListener("visibilitychange", function (e) {
   if (!document.hidden) {
-    addButtonToPage();
+    var pattern = /https:\/\/www.npmjs.com\/package\//;
+    if (pattern.test(window.location.href)) {
+      addButtonToPage();
+    }
   }
 });

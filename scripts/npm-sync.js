@@ -25,21 +25,20 @@ async function getPackageInfoByNameFromNpms(packageName) {
 
   const package = {
     name: packageName,
-    description: "N/A",
-    version: "N/A",
-    date: "N/A",
-    publisher: "N/A",
-    homepageLink: "N/A",
-    repositoryLink: "N/A",
-    npmLink: "N/A",
-    license: "N/A",
-    maintainers:"N/A",
-    quality: "N/A",
-    popularity: "N/A",
-    maintenance: "N/A",
+    description: "Description not available",
+    version: "0.0",
+    date: null,
+    publisher: "somebody",
+    homepageLink: null,
+    repositoryLink: null,
+    npmLink: null,
+    license: "Not available",
+    maintainers: null,
   };
   try {
-    const response = await fetch(`${syncBaseUrl}/${packageName}`);
+    const response = await fetch(
+      `${syncBaseUrl}/${encodeURIComponent(packageName)}`
+    );
     if (response.ok && response.status == 200) {
       const json = await response.json();
       package.name = json.collected.metadata.name;
@@ -54,80 +53,6 @@ async function getPackageInfoByNameFromNpms(packageName) {
       package.maintainers = json.collected.metadata.maintainers
         .map((maintainer) => maintainer.username)
         .join(", ");
-
-      package.quality = json.score.detail.quality;
-      package.popularity = json.score.detail.popularity;
-      package.maintenance = json.score.detail.maintenance;
-    }
-  } catch (error) {
-    console.log(error);
-  }
-  return package;
-}
-
-/**
- * Fetches the package information from npmjs.org.
- *
- * DOESN'T WORK! :(
- *
- * Access to fetch at 'https://registry.npmjs.org/express' from origin
- * 'https://www.npmjs.com' has been blocked by CORS policy: No
- * 'Access-Control-Allow-Origin' header is present on the requested resource.
- * If an opaque response serves your needs, set the request's mode to 'no-cors'
- * to fetch the resource with CORS disabled.
- *
- * With no-cors an opaque response is received.
- *
- * If called from popup.js happens the same but the origin is
- * chrome://"extension" instead of https://www.npmjs.co
- *
- * @param {string} packageName The name of the package
- * @returns {object} The package with the fetched information
- */
-async function getPackageInfoByNameFromNpmjs(packageName) {
-  const baseUrl = "https://registry.npmjs.org";
-
-  const package = {
-    name: packageName,
-    description: "N/A",
-    version: "N/A",
-    date: "N/A",
-    publisher: "N/A",
-    homepageLink: "N/A",
-    repositoryLink: "N/A",
-    npmLink: "N/A",
-    license: "N/A",
-    maintainers:"N/A",
-    quality: "N/A",
-    popularity: "N/A",
-    maintenance: "N/A",
-  };
-  try {
-    const response = await fetch(`${baseUrl}/${packageName}`, {
-      mode: "no-cors",
-    });
-
-    if (response.ok) {
-      const json = await response.json();
-
-      // Get latest version
-      const version = json["dist-tags"].latest;
-      const versionObj = json.versions[version];
-
-      package.name = versionObj.name;
-      package.description = versionObj.description;
-      package.version = versionObj.version;
-      package.date = json.time[version];
-      package.publisher = versionObj._npmUser.name;
-      package.homepageLink = versionObj.homepage;
-      package.repositoryLink = versionObj.repository.url;
-      package.license = versionObj.license;
-
-      package.fileCount = versionObj.dist.fileCount;
-      package.unpackedSize = versionObj.dist.unpackedSize;
-      package.maintainers = versionObj.maintainers
-        .map((maintainer) => maintainer.name)
-        .join(",");
     }
   } catch (error) {
     console.log(error);

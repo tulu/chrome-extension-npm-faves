@@ -79,6 +79,12 @@ async function handleViewPackageClick() {
  * @returns {string} The HTML markup of the package structure
  */
 function getPackageListElement(package) {
+  let publishInformation = "";
+  if (package.date) {
+    publishInformation = `published ${
+      package.version
+    } \n\u2022 ${timeago.format(package.date)}`;
+  }
   return `<div class="pack" package-name="${package.name}">
       <div class="pack-info">
         <div class="pack-name">${package.name}</div>
@@ -86,9 +92,7 @@ function getPackageListElement(package) {
         <div class="pack-version">
           <span class="pack-publisher">${package.publisher}</span>
           <span class="pack-date-version" datetime="${package.date}">
-            published ${package.version} \n\u2022 ${timeago.format(
-    package.date
-  )}
+            ${publishInformation}
           </span>
         </div>
       </div>
