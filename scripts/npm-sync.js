@@ -6,6 +6,11 @@
  */
 
 /**
+ * Base url for retrieving packages information
+ */
+const syncBaseUrl = "https://api.npms.io/v2/package";
+
+/**
  * Just a facade to decide temporarily which service to use.
  * @param {string} packageName The name of the package
  * @returns {object} The package with the fetched information
@@ -20,9 +25,6 @@ async function getPackageInfoByName(packageName) {
  * @returns {object} The package with the fetched information
  */
 async function getPackageInfoByNameFromNpms(packageName) {
-  // Base repository url
-  const syncBaseUrl = "https://api.npms.io/v2/package";
-
   const package = {
     name: packageName,
     description: "Description not available",
@@ -62,4 +64,21 @@ async function getPackageInfoByNameFromNpms(packageName) {
     console.log(error);
   }
   return package;
+}
+
+/**
+ * Fetches the package current version
+ * @param {string} packageName The package name
+ * @returns {string} The package version
+ */
+async function getPackageVersion(packageName) {
+  let version = null;
+  const response = await fetch(
+    `${syncBaseUrl}/${encodeURIComponent(packageName)}`
+  );
+  if (response.ok && response.status == 200) {
+    const json = await response.json();
+    version = json.collected.metadata.version;
+  }
+  return version;
 }

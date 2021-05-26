@@ -8,6 +8,7 @@
 
 (async () => {
   const packageName = getParameterByName("package-name");
+  await checkNewVersion(packageName);
   await showPackageInformation(packageName);
   addEventToCopyInstallation();
   addEventsToRemoveLinks();
@@ -228,4 +229,49 @@ function notifyEvent(message) {
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     chrome.tabs.sendMessage(tabs[0].id, message);
   });
+}
+
+/**
+ * Checks if there is a new version of the package and if there is then the 
+ * information is updated.
+ * @param {string} packageName The name of the package to update
+ */
+async function checkNewVersion(packageName) {
+  let faves = await storageSyncGet("faves");
+  let package = null;
+  if (faves) {
+    package = faves.filter((item) => item.name == packageName);
+  }
+  if (package.length == 1) {
+    const newVersion = await getPackageVersion(package[0].name);
+    if (newVersion && newVersion != package[0].version) {
+      await updatePackageInformation(package[0].name);
+    }
+  } else {
+    console.log(`Package ${packageName} not found to check for new version`);
+  }
+}
+
+/**
+ * Updates the package information and stores it.
+ * @param {string} packageName The name of the package
+ */
+async function updatePackageInformation(packageName) {
+  // Gets the package with the updated information
+  const package = await getPackageInfoByName(packageName);
+  // Retrieves the faves from the storage
+  let faves = await storageSyncGet("faves");
+  let packagePosition = -1;
+  if (faves) {
+    packagePosition = faves
+      .map(function (e) {
+        return e.name;
+      })
+      .indexOf(packageName);
+    if (packagePosition > -1) {
+      faves[packagePosition] = package;
+      faves.sort((a, b) => (a.name > b.name ? 1 : -1));
+      await storageSyncSet({ faves: faves });
+    }
+  }
 }
