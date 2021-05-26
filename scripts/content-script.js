@@ -36,8 +36,6 @@ function validatePageContent() {
  */
 function injectStyles() {
   const styles = [
-    chrome.runtime.getURL("./styles/buttons.css"),
-    chrome.runtime.getURL("./styles/notifications.css"),
     "https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined",
   ];
   styles.forEach((href) => {
