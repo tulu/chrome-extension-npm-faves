@@ -6,7 +6,7 @@
   "background": {
     "service_worker": "./background.js"
   },
-  "permissions": ["storage", "activeTab", "scripting", "tabs", "notifications"],
+  "permissions": ["storage", "activeTab", "tabs", "clipboardWrite"],
   "action": {
     "default_popup": "./views/popup-main.html",
     "default_title": "npm faves",
