@@ -232,7 +232,7 @@ function notifyEvent(message) {
 }
 
 /**
- * Checks if there is a new version of the package and if there is then the 
+ * Checks if there is a new version of the package and if there is then the
  * information is updated.
  * @param {string} packageName The name of the package to update
  */
@@ -269,6 +269,10 @@ async function updatePackageInformation(packageName) {
       })
       .indexOf(packageName);
     if (packagePosition > -1) {
+      // Update the dates before overriding
+      package.createdAt = faves[packagePosition].createdAt;
+      package.updatedAt = Date.now();
+      
       faves[packagePosition] = package;
       faves.sort((a, b) => (a.name > b.name ? 1 : -1));
       await storageSyncSet({ faves: faves });

@@ -39,5 +39,5 @@
       "resources": ["/styles/buttons.css", "/styles/notifications.css"]
     }
   ],
-  "options_page": "./views/options.html"
+  "options_page": "./views/npm-faves.html"
 }
