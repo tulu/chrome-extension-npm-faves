@@ -29,11 +29,11 @@
       "all_frames": true,
       "js": [
         "./scripts/utils.js",
-        "./scripts/npm-sync.js",
         "./scripts/content-script.js"
       ],
       "css": ["./styles/buttons.css", "./styles/notifications.css"]
     }
   ],
-  "options_page": "./views/npm-faves.html"
+  "options_page": "./views/npm-faves.html",
+  "host_permissions": ["https://registry.npmjs.org/*"]
 }
