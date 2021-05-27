@@ -243,8 +243,7 @@ async function checkNewVersion(packageName) {
     package = faves.filter((item) => item.name == packageName);
   }
   if (package.length == 1) {
-    // const newVersion = await getPackageVersion(package[0].name);
-    const newVersion = await npmjsProxy.getPackageVersion(package[0].name);
+    const newVersion = await npmFaves.registry.getPackageVersion(package[0].name);
     if (newVersion && newVersion != package[0].version) {
       await updatePackageInformation(package[0].name);
     }
@@ -260,7 +259,7 @@ async function checkNewVersion(packageName) {
 async function updatePackageInformation(packageName) {
   // Gets the package with the updated information
   // const package = await getPackageInfoByName(packageName);
-  const package = await npmjsProxy.getPackageInformation(packageName);
+  const package = await npmFaves.registry.getPackageInformation(packageName);
   // Retrieves the faves from the storage
   let faves = await storageSyncGet("faves");
   let packagePosition = -1;

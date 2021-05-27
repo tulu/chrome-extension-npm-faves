@@ -96,8 +96,8 @@ async function showFavesList() {
   }
   if (faves && faves.length > 0) {
     let list = "";
-    faves.forEach((package) => {
-      list += getPackageListElement(package);
+    faves.forEach((favePackage) => {
+      list += getPackageListElement(favePackage);
     });
     favesContainer.innerHTML = list;
 
@@ -129,23 +129,23 @@ async function handleViewPackageClick() {
 /**
  * Generates and returns the HTML markup for the list item based on the
  * package information.
- * @param {object} package The package to create the list item
+ * @param {object} favePackage The package to create the list item
  * @returns {string} The HTML markup of the package structure
  */
-function getPackageListElement(package) {
+function getPackageListElement(favePackage) {
   let publishInformation = "";
-  if (package.date) {
+  if (favePackage.date) {
     publishInformation = `published ${
-      package.version
-    } \n\u2022 ${timeago.format(package.date)}`;
+      favePackage.version
+    } \n\u2022 ${timeago.format(favePackage.date)}`;
   }
-  return `<div class="pack" package-name="${package.name}">
+  return `<div class="pack" package-name="${favePackage.name}">
       <div class="pack-info">
-        <div class="pack-name">${package.name}</div>
-        <div class="pack-description">${package.description}</div>
+        <div class="pack-name">${favePackage.name}</div>
+        <div class="pack-description">${favePackage.description}</div>
         <div class="pack-version">
-          <span class="pack-publisher">${package.publisher}</span>
-          <span class="pack-date-version" datetime="${package.date}">
+          <span class="pack-publisher">${favePackage.publisher}</span>
+          <span class="pack-date-version" datetime="${favePackage.date}">
             ${publishInformation}
           </span>
         </div>

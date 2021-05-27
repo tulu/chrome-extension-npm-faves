@@ -6,7 +6,7 @@
  */
 
 try {
-  importScripts("/scripts/utils.js", "/scripts/extension.js");
+  importScripts("/scripts/services/npmFaves-storage-service.js", "/scripts/extension.js");
 } catch (e) {
   console.error(e);
 }

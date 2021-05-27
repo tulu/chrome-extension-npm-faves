@@ -150,7 +150,7 @@ async function handleFaveLinkClick() {
       faves = [];
     }
     if (action == "addToFaves") {
-      let package = await getPackageInfoByName(packageName);
+      let package = await npmFaves.registry.getPackageInformation(packageName);
       // Only place for adding packages for now.
       // Adds a new attribute for the date it was added.
       package.createdAt = Date.now();

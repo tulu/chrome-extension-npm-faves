@@ -3,11 +3,15 @@
  *
  * Responsibilities:
  *  - Show readme file:
- *    -  onInstalled event from the extension
+ *    -  onInstalled event from the extension.
  *  - Update the badge of the extension with the number of faves:
- *    -  onInstalled event from the extension
- *    -  onChanged event from the storage
+ *    -  onInstalled event from the extension.
+ *    -  onChanged event from the storage.
+ *  - Reload npmjs.com tabs:
+ *    -  onInstalled event from the extension.
  */
+
+// Event listeners <<<=========================================================
 
 /**
  * Listens for onInstalled events of the extension to show the readme file and
@@ -31,24 +35,15 @@ chrome.storage.onChanged.addListener(async function (changes, areaName) {
   }
 });
 
+
+// Functions <<<==============================================================
+ 
 /**
  * Shows the readme file in a new tab.
  */
-function showReadme() {
+ function showReadme() {
   let url = chrome.runtime.getURL("readme.html");
   chrome.tabs.create({ url });
-}
-
-/**
- * Updates the number of faved packages in the badge of the extension.
- */
-async function updateFavesBadgeWithQuantity() {
-  let faves = await storageSyncGet("faves");
-  let favesCount = faves && faves.length > 0 ? faves.length.toString() : "";
-  chrome.action.setBadgeText({
-    text: favesCount,
-  });
-  chrome.action.setBadgeBackgroundColor({ color: "#C90813" }, () => {});
 }
 
 /**
@@ -65,4 +60,16 @@ async function reloadNpmTabs() {
   tabs.forEach((tab) => {
     chrome.tabs.reload(tab.id);
   });
+}
+
+/**
+ * Updates the number of faved packages in the badge of the extension.
+ */
+ async function updateFavesBadgeWithQuantity() {
+  let faves = await storageSyncGet("faves");
+  let favesCount = faves && faves.length > 0 ? faves.length.toString() : "";
+  chrome.action.setBadgeText({
+    text: favesCount,
+  });
+  chrome.action.setBadgeBackgroundColor({ color: "#C90813" }, () => {});
 }

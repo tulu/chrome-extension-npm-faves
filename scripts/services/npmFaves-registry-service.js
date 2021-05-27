@@ -24,7 +24,7 @@ const npmjsProxy = (function () {
    */
   const getPackageInformation = async function (packageName) {
     // Response object definition
-    const package = {
+    const regPackage = {
       name: packageName,
       description: null,
       version: null,
@@ -50,16 +50,16 @@ const npmjsProxy = (function () {
         const latest = json["dist-tags"].latest;
         const versionObj = json.versions[latest];
 
-        package.name = versionObj.name ? versionObj.name : packageName;
-        package.description = versionObj.description
+        regPackage.name = versionObj.name ? versionObj.name : packageName;
+        regPackage.description = versionObj.description
           ? versionObj.description
           : null;
-        package.version = versionObj.version ? versionObj.version : null;
-        package.date = json.time[latest] ? json.time[latest] : null;
-        package.publisher = versionObj._npmUser
+        regPackage.version = versionObj.version ? versionObj.version : null;
+        regPackage.date = json.time[latest] ? json.time[latest] : null;
+        regPackage.publisher = versionObj._npmUser
           ? versionObj._npmUser.name
           : null;
-        package.homepageLink = versionObj.homepage
+        regPackage.homepageLink = versionObj.homepage
           ? decodeURIComponent(versionObj.homepage)
           : null;
 
@@ -67,24 +67,26 @@ const npmjsProxy = (function () {
           // The url has the protocol in the beginning like "git+{url}"
           let url = versionObj.repository.url;
           url = url.slice(url.indexOf("http"));
-          package.repositoryLink = url;
+          regPackage.repositoryLink = url;
         }
-        package.license = versionObj.license ? versionObj.license : null;
-        package.maintainers = versionObj.maintainers
+        regPackage.license = versionObj.license ? versionObj.license : null;
+        regPackage.maintainers = versionObj.maintainers
           ? versionObj.maintainers
               .map((maintainer) => maintainer.name)
               .join(", ")
           : null;
         // Only available in https://registry.npmjs.org
-        package.fileCount = versionObj.dist ? versionObj.dist.fileCount : null;
-        package.unpackedSize = versionObj.dist
+        regPackage.fileCount = versionObj.dist
+          ? versionObj.dist.fileCount
+          : null;
+        regPackage.unpackedSize = versionObj.dist
           ? versionObj.dist.unpackedSize
           : null;
       }
     } catch (error) {
       console.log(error);
     }
-    return package;
+    return regPackage;
   };
 
   /**
@@ -132,7 +134,7 @@ const npmsioProxy = (function () {
    */
   const getPackageInformation = async function (packageName) {
     // Response object definition
-    const package = {
+    const regPackage = {
       name: packageName,
       description: null,
       version: null,
@@ -158,39 +160,39 @@ const npmsioProxy = (function () {
           // Shortcut
           const metadata = json.collected.metadata;
 
-          package.name = metadata.name ? metadata.name : packageName;
-          package.description = metadata.description
+          regPackage.name = metadata.name ? metadata.name : packageName;
+          regPackage.description = metadata.description
             ? metadata.description
             : null;
-          package.version = metadata.version ? metadata.version : null;
-          package.date = metadata.date ? metadata.date : null;
-          package.publisher =
+          regPackage.version = metadata.version ? metadata.version : null;
+          regPackage.date = metadata.date ? metadata.date : null;
+          regPackage.publisher =
             metadata.publisher && metadata.publisher.username
               ? metadata.publisher.username
               : null;
           if (metadata.links) {
-            package.homepageLink = metadata.links.homepage
+            regPackage.homepageLink = metadata.links.homepage
               ? decodeURIComponent(metadata.links.homepage)
               : null;
-            package.repositoryLink = metadata.links.repository
+            regPackage.repositoryLink = metadata.links.repository
               ? decodeURIComponent(metadata.links.repository)
               : null;
           }
-          package.license = metadata.license ? metadata.license : null;
-          package.maintainers = metadata.maintainers
+          regPackage.license = metadata.license ? metadata.license : null;
+          regPackage.maintainers = metadata.maintainers
             ? metadata.maintainers
                 .map((maintainer) => maintainer.username)
                 .join(", ")
             : null;
           // Only available in https://registry.npmjs.org
-          package.fileCount = null;
-          package.unpackedSize = null;
+          regPackage.fileCount = null;
+          regPackage.unpackedSize = null;
         }
       }
     } catch (error) {
       console.log(error);
     }
-    return package;
+    return regPackage;
   };
 
   /**
@@ -225,3 +227,11 @@ const npmsioProxy = (function () {
     getPackageVersion,
   };
 })();
+
+/**
+ * "Exposed functions to respect namespacing"
+ */
+var npmFaves = npmFaves || {};
+npmFaves.registry = npmFaves.registry || {};
+npmFaves.registry.getPackageInformation = npmjsProxy.getPackageInformation;
+npmFaves.registry.getPackageVersion = npmjsProxy.getPackageVersion;
