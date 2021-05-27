@@ -55,23 +55,40 @@ function addNotificationEvent() {
  * @returns {string} The html representing the view.
  */
 function getPackageView(package) {
+  // Description
+  let descriptionHtml = "";
+  if (package.description) {
+    descriptionHtml = `<div class="package-description">${package.description}</div>`;
+  }
   //npm link
-  let npmLinkHtml = `<a class="package-value">Not available</a>`;
+  let npmLinkHtml = "";
   if (package.npmLink) {
-    npmLinkHtml = `<a class="package-value" target="_blank" 
-    href="${package.npmLink}">${package.npmLink}</a>`;
+    npmLinkHtml = `<div class="package-properties">
+      <div class="package-attribute">npm Site</div>
+      <a class="package-value" target="_blank" href="${package.npmLink}">
+        ${package.npmLink}
+      </a>
+    </div>`;
   }
   //Homepage link
-  let homepageLinkHtml = `<a class="package-value">Not available</a>`;
+  let homepageLinkHtml = "";
   if (package.homepageLink) {
-    homepageLinkHtml = `<a class="package-value" target="_blank" 
-    href="${package.homepageLink}">${package.homepageLink}</a>`;
+    homepageLinkHtml = `<div class="package-properties">
+      <div class="package-attribute">Homepage</div>
+      <a class="package-value" target="_blank" href="${package.homepageLink}">
+        ${package.homepageLink}
+      </a>
+    </div>`;
   }
   //Repository link
-  let repositoryLinkHtml = `<a class="package-value">Not available</a>`;
+  let repositoryLinkHtml = "";
   if (package.repositoryLink) {
-    repositoryLinkHtml = `<a class="package-value" target="_blank" 
-    href="${package.repositoryLink}">${package.repositoryLink}</a>`;
+    repositoryLinkHtml = `<div class="package-properties">
+      <div class="package-attribute">Repository</div>
+      <a class="package-value" target="_blank" href="${package.repositoryLink}">
+        ${package.repositoryLink}
+      </a>
+    </div>`;
   }
   // Date
   let lastPublish = "Not available";
@@ -93,7 +110,7 @@ function getPackageView(package) {
 
   // Return the full html view
   return `<div class="package-name">${package.name}</div>
-<div class="package-description">${package.description}</div>
+${descriptionHtml}
 <div class="package-properties no-border">
   <div class="package-attribute">Install</div>
   <div class="package-installation">
@@ -112,18 +129,21 @@ function getPackageView(package) {
     <div class="package-value">${package.license}</div>
   </div>
 </div>
-<div class="package-properties">
-  <div class="package-attribute">npm Site</div>
-  ${npmLinkHtml}
+<div class="package-properties" style="display: flex">
+  <div style="width: 50%">
+    <div class="package-attribute">Unpacked Size</div>
+    <div class="package-value">
+      ${prettyBytes.convert(package.unpackedSize)}
+    </div>
+  </div>
+  <div style="width: 50%">
+    <div class="package-attribute">Total Files</div>
+    <div class="package-value">${package.fileCount}</div>
+  </div>
 </div>
-<div class="package-properties">
-  <div class="package-attribute">Homepage</div>
-  ${homepageLinkHtml}
-</div>
-<div class="package-properties">
-  <div class="package-attribute">Repository</div>
-  ${repositoryLinkHtml}
-</div>
+${npmLinkHtml}
+${homepageLinkHtml}
+${repositoryLinkHtml}
 <div class="package-properties">
   <div class="package-attribute">Last publish</div>
   <div class="package-value">${lastPublish}</div>
@@ -243,7 +263,9 @@ async function checkNewVersion(packageName) {
     package = faves.filter((item) => item.name == packageName);
   }
   if (package.length == 1) {
-    const newVersion = await npmFaves.registry.getPackageVersion(package[0].name);
+    const newVersion = await npmFaves.registry.getPackageVersion(
+      package[0].name
+    );
     if (newVersion && newVersion != package[0].version) {
       await updatePackageInformation(package[0].name);
     }

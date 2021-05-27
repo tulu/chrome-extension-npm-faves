@@ -105,6 +105,8 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 2px;
+  line-height: 1;
 }
 
 .pack-description {
@@ -113,8 +115,8 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: 2px;
-  line-height: 1.5;
+  margin-bottom: 10px;
+  height: 18px;
 }
 
 .pack-version {
@@ -151,7 +153,6 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   margin-bottom: 2px;
-  line-height: 1.5;
   padding: 0 10px;
 }
 

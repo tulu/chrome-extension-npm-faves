@@ -47,7 +47,7 @@ function addNotificationEvent() {
 }
 
 /**
- * Checks if the notification should be visible and if so then it sets 
+ * Checks if the notification should be visible and if so then it sets
  * the message and type and displays it.
  */
 function checkNotification() {
@@ -139,10 +139,13 @@ function getPackageListElement(favePackage) {
       favePackage.version
     } \n\u2022 ${timeago.format(favePackage.date)}`;
   }
+
+  let description = favePackage.description ? favePackage.description : "";
+
   return `<div class="pack" package-name="${favePackage.name}">
       <div class="pack-info">
         <div class="pack-name">${favePackage.name}</div>
-        <div class="pack-description">${favePackage.description}</div>
+        <div class="pack-description">${description}</div>
         <div class="pack-version">
           <span class="pack-publisher">${favePackage.publisher}</span>
           <span class="pack-date-version" datetime="${favePackage.date}">
