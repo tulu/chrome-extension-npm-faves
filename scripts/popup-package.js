@@ -7,9 +7,7 @@
  */
 
 (async () => {
-  const packageName = getParameterByName("package-name");
-  await checkNewVersion(packageName);
-  await showPackageInformation(packageName);
+  await showPackageInformation();
   addEventToCopyInstallation();
   addEventsToRemoveLinks();
   addNotificationEvent();
@@ -18,18 +16,20 @@
 /**
  * Gets the package information from the storage and shows it in the view.
  * @param {string} packageName
+ * @todo Show not found message in UI
  */
-async function showPackageInformation(packageName) {
-  const packageView = document.getElementById("packageView");
-  let faves = await storageSyncGet("faves");
-  let package = null;
-  if (faves) {
-    package = faves.filter((item) => item.name == packageName);
-  }
-  if (package.length == 1) {
-    packageView.innerHTML = getPackageView(package[0]);
-  } else {
-    console.log(`Package ${packageName} not found!`);
+async function showPackageInformation() {
+  try {
+    const packageName = getParameterByName("package-name");
+    let fave = await npmFaves.storage.getFave(packageName);
+    if (fave) {
+      const packageView = document.getElementById("packageView");
+      packageView.innerHTML = getPackageView(fave);
+    } else {
+      console.log(`Package ${packageName} not found!`);
+    }
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -51,56 +51,56 @@ function addNotificationEvent() {
  * Generates the html of the view to display the package's information.
  * The avatars for the maintainers are generated with
  * https://www.tinygraphs.com/.
- * @param {object} package The package to show.
+ * @param {object} fave The package to show.
  * @returns {string} The html representing the view.
  */
-function getPackageView(package) {
+function getPackageView(fave) {
   // Description
   let descriptionHtml = "";
-  if (package.description) {
-    descriptionHtml = `<div class="package-description">${package.description}</div>`;
+  if (fave.description) {
+    descriptionHtml = `<div class="package-description">${fave.description}</div>`;
   }
   //npm link
   let npmLinkHtml = "";
-  if (package.npmLink) {
+  if (fave.npmLink) {
     npmLinkHtml = `<div class="package-properties">
       <div class="package-attribute">npm Site</div>
-      <a class="package-value" target="_blank" href="${package.npmLink}">
-        ${package.npmLink}
+      <a class="package-value" target="_blank" href="${fave.npmLink}">
+        ${fave.npmLink}
       </a>
     </div>`;
   }
   //Homepage link
   let homepageLinkHtml = "";
-  if (package.homepageLink) {
+  if (fave.homepageLink) {
     homepageLinkHtml = `<div class="package-properties">
       <div class="package-attribute">Homepage</div>
-      <a class="package-value" target="_blank" href="${package.homepageLink}">
-        ${package.homepageLink}
+      <a class="package-value" target="_blank" href="${fave.homepageLink}">
+        ${fave.homepageLink}
       </a>
     </div>`;
   }
   //Repository link
   let repositoryLinkHtml = "";
-  if (package.repositoryLink) {
+  if (fave.repositoryLink) {
     repositoryLinkHtml = `<div class="package-properties">
       <div class="package-attribute">Repository</div>
-      <a class="package-value" target="_blank" href="${package.repositoryLink}">
-        ${package.repositoryLink}
+      <a class="package-value" target="_blank" href="${fave.repositoryLink}">
+        ${fave.repositoryLink}
       </a>
     </div>`;
   }
   // Date
   let lastPublish = "Not available";
-  if (package.date) {
-    lastPublish = timeago.format(package.date);
+  if (fave.date) {
+    lastPublish = timeago.format(fave.date);
   }
   // Maintainers
   let maintainersHtml = "Not available";
-  if (package.maintainers) {
+  if (fave.maintainers) {
     maintainersHtml = "";
     const baseUrl = "https://www.npmjs.com/";
-    package.maintainers.split(",").forEach((maintainer) => {
+    fave.maintainers.split(",").forEach((maintainer) => {
       maintainersHtml += `<a target="_blank" href="${baseUrl}~${maintainer.trim()}">
         <img src="http://tinygraphs.com/labs/isogrids/hexa16/${maintainer.trim()}?theme=berrypie&numcolors=2&size=42&fmt=svg" 
         title="${maintainer.trim()}">
@@ -109,36 +109,36 @@ function getPackageView(package) {
   }
 
   // Return the full html view
-  return `<div class="package-name">${package.name}</div>
+  return `<div class="package-name">${fave.name}</div>
 ${descriptionHtml}
 <div class="package-properties no-border">
   <div class="package-attribute">Install</div>
   <div class="package-installation">
   <span class="material-icons-outlined"> chevron_right </span> 
-  <span id="installSnippet">npm i ${package.name}</span>
+  <span id="installSnippet">npm i ${fave.name}</span>
   <span class="material-icons-outlined copy-icon">content_copy</span>
   </div>
 </div>
 <div class="package-properties" style="display: flex">
   <div style="width: 50%">
     <div class="package-attribute">Version</div>
-    <div class="package-value">${package.version}</div>
+    <div class="package-value">${fave.version}</div>
   </div>
   <div style="width: 50%">
     <div class="package-attribute">License</div>
-    <div class="package-value">${package.license}</div>
+    <div class="package-value">${fave.license}</div>
   </div>
 </div>
 <div class="package-properties" style="display: flex">
   <div style="width: 50%">
     <div class="package-attribute">Unpacked Size</div>
     <div class="package-value">
-      ${prettyBytes.convert(package.unpackedSize)}
+      ${prettyBytes.convert(fave.unpackedSize)}
     </div>
   </div>
   <div style="width: 50%">
     <div class="package-attribute">Total Files</div>
-    <div class="package-value">${package.fileCount}</div>
+    <div class="package-value">${fave.fileCount}</div>
   </div>
 </div>
 ${npmLinkHtml}
@@ -153,7 +153,7 @@ ${repositoryLinkHtml}
   <div class="package-collaborators">${maintainersHtml}</div>
 </div>
 <div class="npmf_button npmf_cancel-button">
-    <a package-name="${package.name}" class="pack-unfave">
+    <a package-name="${fave.name}" class="pack-unfave">
         <span class="material-icons-outlined"> delete </span>
         Remove from faves
     </a>
@@ -227,18 +227,20 @@ function addEventsToRemoveLinks() {
  * active.
  */
 async function handleUnfaveLinkClick() {
-  let packageName = this.getAttribute("package-name");
-  let faves = await storageSyncGet("faves");
-  if (faves) {
-    faves = faves.filter((item) => item.name !== packageName);
-    faves.sort((a, b) => (a.name > b.name ? 1 : -1));
-    await storageSyncSet({ faves: faves });
+  try {
+    // Get the package name from link
+    let packageName = this.getAttribute("package-name");
+    // Remove the fave from storage
+    await npmFaves.storage.removeFave(packageName);
+    // Notify to the content script
+    notifyEvent({ action: "remove", packageName: packageName });
+    // Returns to main view with a message to show
+    const message = `${packageName} removed from faves :(`;
+    const messageType = "notification-success";
+    location.href = `./popup-main.html?noti-message=${message}&noti-type=${messageType}`;
+  } catch (error) {
+    console.log(error);
   }
-  notifyEvent({ action: "remove", packageName: packageName });
-  // Returns to main view with a message to show
-  const message = `${packageName} removed from faves :(`;
-  const messageType = "notification-success";
-  location.href = `./popup-main.html?noti-message=${message}&noti-type=${messageType}`;
 }
 
 /**
@@ -249,56 +251,4 @@ function notifyEvent(message) {
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     chrome.tabs.sendMessage(tabs[0].id, message);
   });
-}
-
-/**
- * Checks if there is a new version of the package and if there is then the
- * information is updated.
- * @param {string} packageName The name of the package to update
- */
-async function checkNewVersion(packageName) {
-  let faves = await storageSyncGet("faves");
-  let package = null;
-  if (faves) {
-    package = faves.filter((item) => item.name == packageName);
-  }
-  if (package.length == 1) {
-    const newVersion = await npmFaves.registry.getPackageVersion(
-      package[0].name
-    );
-    if (newVersion && newVersion != package[0].version) {
-      await updatePackageInformation(package[0].name);
-    }
-  } else {
-    console.log(`Package ${packageName} not found to check for new version`);
-  }
-}
-
-/**
- * Updates the package information and stores it.
- * @param {string} packageName The name of the package
- */
-async function updatePackageInformation(packageName) {
-  // Gets the package with the updated information
-  // const package = await getPackageInfoByName(packageName);
-  const package = await npmFaves.registry.getPackageInformation(packageName);
-  // Retrieves the faves from the storage
-  let faves = await storageSyncGet("faves");
-  let packagePosition = -1;
-  if (faves) {
-    packagePosition = faves
-      .map(function (e) {
-        return e.name;
-      })
-      .indexOf(packageName);
-    if (packagePosition > -1) {
-      // Update the dates before overriding
-      package.createdAt = faves[packagePosition].createdAt;
-      package.updatedAt = Date.now();
-
-      faves[packagePosition] = package;
-      faves.sort((a, b) => (a.name > b.name ? 1 : -1));
-      await storageSyncSet({ faves: faves });
-    }
-  }
 }

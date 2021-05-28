@@ -106,7 +106,7 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   margin-bottom: 2px;
-  line-height: 1;
+  line-height: 1.2;
 }
 
 .pack-description {

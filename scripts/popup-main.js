@@ -90,20 +90,21 @@ async function showFavesList() {
   const favesContainer = document.getElementById("favesContainer");
   let faves = [];
   try {
-    faves = await storageSyncGet("faves");
+    faves = await npmFaves.storage.getFaves();
+    if (faves.length > 0) {
+      let list = "";
+      faves.forEach((favePackage) => {
+        list += getPackageListElement(favePackage);
+      });
+      favesContainer.innerHTML = list;
+      // Add navigation links
+      addEventsToListPackages();
+    } else {
+      favesContainer.innerHTML =
+        "<div class='empty-list'>No faves to show</div>";
+    }
   } catch (error) {
     console.log(error);
-  }
-  if (faves && faves.length > 0) {
-    let list = "";
-    faves.forEach((favePackage) => {
-      list += getPackageListElement(favePackage);
-    });
-    favesContainer.innerHTML = list;
-
-    addEventsToListPackages();
-  } else {
-    favesContainer.innerHTML = "<div class='empty-list'>No faves to show</div>";
   }
 }
 
@@ -129,26 +130,26 @@ async function handleViewPackageClick() {
 /**
  * Generates and returns the HTML markup for the list item based on the
  * package information.
- * @param {object} favePackage The package to create the list item
+ * @param {object} fave The package to create the list item
  * @returns {string} The HTML markup of the package structure
  */
-function getPackageListElement(favePackage) {
+function getPackageListElement(fave) {
   let publishInformation = "";
-  if (favePackage.date) {
+  if (fave.date) {
     publishInformation = `published ${
-      favePackage.version
-    } \n\u2022 ${timeago.format(favePackage.date)}`;
+      fave.version
+    } \n\u2022 ${timeago.format(fave.date)}`;
   }
 
-  let description = favePackage.description ? favePackage.description : "";
+  let description = fave.description ? fave.description : "";
 
-  return `<div class="pack" package-name="${favePackage.name}">
+  return `<div class="pack" package-name="${fave.name}">
       <div class="pack-info">
-        <div class="pack-name">${favePackage.name}</div>
+        <div class="pack-name">${fave.name}</div>
         <div class="pack-description">${description}</div>
         <div class="pack-version">
-          <span class="pack-publisher">${favePackage.publisher}</span>
-          <span class="pack-date-version" datetime="${favePackage.date}">
+          <span class="pack-publisher">${fave.publisher}</span>
+          <span class="pack-date-version" datetime="${fave.date}">
             ${publishInformation}
           </span>
         </div>

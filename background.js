@@ -6,7 +6,11 @@
  */
 
 try {
-  importScripts("/scripts/services/npmFaves-storage-service.js", "/scripts/extension.js");
+  importScripts(
+    "/scripts/services/npmFaves-registry-service.js",
+    "/scripts/services/npmFaves-storage-service.js",
+    "/scripts/extension.js"
+  );
 } catch (e) {
   console.error(e);
 }
