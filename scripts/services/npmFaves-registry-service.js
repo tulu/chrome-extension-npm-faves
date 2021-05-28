@@ -70,7 +70,7 @@ var npmFaves = npmFaves || {};
         if (versionObj.repository && versionObj.repository.url) {
           // The url has the protocol in the beginning like "git+{url}"
           let url = versionObj.repository.url;
-          if (npmFaves.helpers.isValidUrl(url)) {
+          if (npmFaves.helpers.isValidUrl(url.slice(url.indexOf("http")))) {
             url = url.slice(url.indexOf("http"));
           }
           regPackage.repositoryLink = url;
