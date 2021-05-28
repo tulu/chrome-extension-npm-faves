@@ -198,7 +198,10 @@ async function handleFaveLinkClick() {
  */
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action == "remove") {
-    if (message.packageName == getPackageNameFromUrl()) {
+    if (
+      message.packageName ==
+      npmFaves.helpers.getUrlPartAfterToken(document.location.href, "package/")
+    ) {
       addButtonToPage("Package removed from faves :(");
     }
   }
