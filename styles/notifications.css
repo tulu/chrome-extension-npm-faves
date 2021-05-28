@@ -1,3 +1,9 @@
+/*
+* The notifications styles are separated from the main styles file in order to
+* inject them also into the npmjs page avoiding to inject all styles and
+* making a mess :)    
+*/
+
 /* ==[ Notification ]== */
 
 .npmf_notification {
@@ -65,5 +71,6 @@
   }
   to {
     opacity: 0;
+    visibility: hidden;
   }
 }

@@ -10,7 +10,6 @@
   await showPackageInformation();
   addEventToCopyInstallation();
   addEventsToRemoveLinks();
-  addNotificationEvent();
 })();
 
 /**
@@ -20,7 +19,10 @@
  */
 async function showPackageInformation() {
   try {
-    const packageName = getParameterByName("package-name");
+    const packageName = npmFaves.helpers.getQueryStringValue(
+      window.location.href,
+      "package-name"
+    );
     let fave = await npmFaves.storage.getFave(packageName);
     if (fave) {
       const packageView = document.getElementById("packageView");
@@ -30,20 +32,6 @@ async function showPackageInformation() {
     }
   } catch (error) {
     console.log(error);
-  }
-}
-
-/**
- * Adds the close event to the notification.
- */
-function addNotificationEvent() {
-  const notificationCloseButton = document.getElementById(
-    "npmfNotificationCloseButton"
-  );
-  if (notificationCloseButton) {
-    notificationCloseButton.addEventListener("click", function () {
-      this.parentElement.style.display = "none";
-    });
   }
 }
 
@@ -73,9 +61,13 @@ function getPackageView(fave) {
   //Homepage link
   let homepageLinkHtml = "";
   if (fave.homepageLink) {
+    let link = "";
+    if (npmFaves.helpers.isValidUrl(fave.homepageLink)) {
+      link = `href="${fave.homepageLink}"`;
+    }
     homepageLinkHtml = `<div class="package-properties">
       <div class="package-attribute">Homepage</div>
-      <a class="package-value" target="_blank" href="${fave.homepageLink}">
+      <a class="package-value" target="_blank" ${link}>
         ${fave.homepageLink}
       </a>
     </div>`;
@@ -83,9 +75,13 @@ function getPackageView(fave) {
   //Repository link
   let repositoryLinkHtml = "";
   if (fave.repositoryLink) {
+    let link = "";
+    if (npmFaves.helpers.isValidUrl(fave.repositoryLink)) {
+      link = `href="${fave.repositoryLink}"`;
+    }
     repositoryLinkHtml = `<div class="package-properties">
       <div class="package-attribute">Repository</div>
-      <a class="package-value" target="_blank" href="${fave.repositoryLink}">
+      <a class="package-value" target="_blank" ${link}>
         ${fave.repositoryLink}
       </a>
     </div>`;
@@ -161,21 +157,6 @@ ${repositoryLinkHtml}
 }
 
 /**
- * Returns the value of the parameter from the query string.
- * @param {string} name The name of the package.
- * @param {string} url The url of the page.
- * @returns {string} The value of the parameter.
- */
-function getParameterByName(name, url = window.location.href) {
-  name = name.replace(/[\[\]]/g, "\\$&");
-  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-    results = regex.exec(url);
-  if (!results) return null;
-  if (!results[2]) return "";
-  return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
-
-/**
  * Adds the click event listeners in order to copy the install snippet.
  */
 function addEventToCopyInstallation() {
@@ -195,20 +176,11 @@ function handleCopySnippetClick() {
   window.getSelection().addRange(r);
   document.execCommand("copy");
   window.getSelection().removeAllRanges();
-  showNotification("Install snippet copied!", "notification-success");
-}
-
-/**
- * Shows a message with the defined text and type.
- * @param {string} notificationMessage The message to show.
- * @param {string} notificationType The ype of message to show.
- */
-function showNotification(notificationMessage, notificationType) {
-  const divNotification = document.getElementById("npmfNotification");
-  const spanMessage = document.getElementById("npmfNotificationMessage");
-  spanMessage.innerHTML = notificationMessage;
-  divNotification.className = `npmf_notification npmf_${notificationType}`;
-  divNotification.style.display = "block";
+  npmFaves.ui.createNotification(
+    npmFaves.ui.notificationTypes.SUCCESS,
+    "Install snippet copied!",
+    true
+  );
 }
 
 /**
@@ -236,7 +208,7 @@ async function handleUnfaveLinkClick() {
     notifyEvent({ action: "remove", packageName: packageName });
     // Returns to main view with a message to show
     const message = `${packageName} removed from faves :(`;
-    const messageType = "notification-success";
+    const messageType = "SUCCESS";
     location.href = `./popup-main.html?noti-message=${message}&noti-type=${messageType}`;
   } catch (error) {
     console.log(error);
