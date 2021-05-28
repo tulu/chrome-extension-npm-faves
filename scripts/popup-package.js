@@ -126,7 +126,7 @@ ${descriptionHtml}
   </div>
   <div style="width: 50%">
     <div class="package-attribute">License</div>
-    <div class="package-value">${fave.license}</div>
+    <div class="package-value">${fave.license ? fave.license : "None"}</div>
   </div>
 </div>
 <div class="package-properties" style="display: flex">

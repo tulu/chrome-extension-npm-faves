@@ -87,3 +87,14 @@
 .npmf_confirm-button:hover a span.material-icons-outlined {
   color: #111;
 }
+
+.npmf_disabled-button a {
+  background-image: linear-gradient(
+    -180deg,
+    rgba(255, 255, 255, 0.09) 0%,
+    rgba(247, 205, 205, 0.1) 97%
+  );
+  border: 1px solid rgba(189, 168, 147, 0.5);
+  color: #999898;
+  pointer-events: none;
+}

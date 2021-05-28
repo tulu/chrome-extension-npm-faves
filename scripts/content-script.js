@@ -150,6 +150,12 @@ function getFaveButtonElement(toAddToFaves, message) {
  * package information from the registry service from the content script.
  */
 async function handleFaveLinkClick() {
+  // Disable button as it will be created again
+  let faveButton = document.querySelector("#npmFavesLink");
+  if (faveButton) {
+    faveButton.className = "npmf_button npmf_disabled-button";
+  }
+
   let displayMessage = "";
   let actionToSend = "";
   // Get the package name from the url
