@@ -35,20 +35,35 @@ chrome.storage.onChanged.addListener(async function (changes, areaName) {
   }
 });
 
+/**
+ * Listens for messages from the content script to add or remove a package.
+ */
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  (async () => {
+    try {
+      await handlePackage(message.action, message.packageName);
+      sendResponse({ result: true });
+    } catch (error) {
+      console.log(error);
+      sendResponse({ result: false });
+    }
+  })();
+  return true;
+});
 
 // Functions <<<==============================================================
- 
+
 /**
  * Shows the readme file in a new tab.
  */
- function showReadme() {
+function showReadme() {
   let url = chrome.runtime.getURL("readme.html");
   chrome.tabs.create({ url });
 }
 
 /**
  * Reloads the tabs that match the npmjs site.
- * This fixes the "Extension context invalidated error" when updating the 
+ * This fixes the "Extension context invalidated error" when updating the
  * extension. 😎
  */
 async function reloadNpmTabs() {
@@ -65,11 +80,30 @@ async function reloadNpmTabs() {
 /**
  * Updates the number of faved packages in the badge of the extension.
  */
- async function updateFavesBadgeWithQuantity() {
-  let faves = await storageSyncGet("faves");
-  let favesCount = faves && faves.length > 0 ? faves.length.toString() : "";
+async function updateFavesBadgeWithQuantity() {
+  let faves = await npmFaves.storage.getFaves();
+  let favesCount = faves.length > 0 ? faves.length.toString() : "";
   chrome.action.setBadgeText({
     text: favesCount,
   });
   chrome.action.setBadgeBackgroundColor({ color: "#C90813" }, () => {});
+}
+
+/**
+ * Adds or removes a fave according to the action
+ * @param {string} action The action to perform (add | remove)
+ * @param {string} packageName The name of the package
+ */
+async function handlePackage(action, packageName) {
+  try {
+    if (action == "add") {
+      // Add the package to faves
+      await npmFaves.storage.addFave(packageName);
+    } else if (action == "remove") {
+      // Remove the package from faves
+      await npmFaves.storage.removeFave(packageName);
+    }
+  } catch (error) {
+    console.log(error);
+  }
 }

@@ -51,14 +51,17 @@ function injectStyles() {
  * the content_script's matches on the manifest.json file.
  */
 async function addButtonToPage(message) {
-  let packageName = getPackageNameFromUrl();
-  if (packageName) {
-    // Check if fave already added
-    let faves = await storageSyncGet("faves");
-    let toAddToFaves =
-      faves && faves.find((fave) => fave.name == packageName) ? false : true;
+  try {
+    // Get the name of the package
+    let packageName = getPackageNameFromUrl();
+    // Get the package from the storage with false as second parameter
+    // to not retrieve the updated information from the registry.
+    const fave = await npmFaves.storage.getFave(packageName, false);
+    let toAddToFaves = fave ? false : true;
     // Creates the button
     createFavesButton(toAddToFaves, message);
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -139,33 +142,35 @@ function getFaveButtonElement(toAddToFaves, message) {
 
 /**
  * Add to faves / Remove from faves click event handler.
+ * Sends a message to the service worker as its not possible to get the
+ * package information from the registry service from the content script.
  */
 async function handleFaveLinkClick() {
-  // Get the action to perform
-  let packageName = getPackageNameFromUrl();
-  if (packageName) {
-    let action = this.getAttribute("fave-action");
-    let faves = await storageSyncGet("faves");
-    if (!faves) {
-      faves = [];
-    }
-    if (action == "addToFaves") {
-      let package = await npmFaves.registry.getPackageInformation(packageName);
-      // Only place for adding packages for now.
-      // Adds a new attribute for the date it was added.
-      package.createdAt = Date.now();
-      faves.push(package);
-    } else {
-      faves = faves.filter((item) => item.name !== packageName);
-    }
-    faves.sort((a, b) => (a.name > b.name ? 1 : -1));
-    await storageSyncSet({ faves: faves });
-    let message = "Package added to faves :)";
-    if (action != "addToFaves") {
-      message = "Package removed from faves :(";
-    }
-    addButtonToPage(message);
+  let displayMessage = "";
+  let actionToSend = "";
+  // Get the package name from the url
+  const packageName = getPackageNameFromUrl();
+  // Get the action to perform from the link
+  let action = this.getAttribute("fave-action");
+  if (action == "addToFaves") {
+    actionToSend = "add";
+    displayMessage = "Package added to faves :)";
+  } else {
+    actionToSend = "remove";
+    displayMessage = "Package removed from faves :(";
   }
+  const message = {
+    action: actionToSend,
+    packageName: packageName,
+  };
+  // Send message to the service worker
+  chrome.runtime.sendMessage(message, function (response) {
+    if (!response.result) {
+      displayMessage = "An error ocurred :(";
+    }
+    // Adds again the new button
+    addButtonToPage(displayMessage);
+  });
 }
 
 /**
@@ -175,7 +180,7 @@ async function handleFaveLinkClick() {
 function getPackageNameFromUrl() {
   let splitted = document.location.href.split("package/");
   if (splitted.length == 2) {
-    return splitted[1];
+    return splitted[1].split("?")[0];
   }
   return null;
 }
