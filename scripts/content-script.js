@@ -61,7 +61,15 @@ async function addButtonToPage(message) {
     const fave = await npmFaves.storage.getFave(packageName, false);
     let toAddToFaves = fave ? false : true;
     // Creates the button
-    createFavesButton(toAddToFaves, message);
+    createFavesButton(toAddToFaves);
+    // Show message if exists
+    if (message) {
+      npmFaves.ui.createNotification(
+        npmFaves.ui.notificationTypes.INFO,
+        message,
+        false
+      );
+    }
   } catch (error) {
     console.log(error);
   }
@@ -71,9 +79,8 @@ async function addButtonToPage(message) {
  * Creates the "add to faves" or "remove from faves" button on the webpage.
  * @param {boolean} toAddToFaves If set to true indicates that the action
  * should be to add to faves, else should be to remove from faves.
- * @param {string} message The message to show to the user.
  */
-function createFavesButton(toAddToFaves, message) {
+function createFavesButton(toAddToFaves) {
   // Check to see if button already exists
   let faveButton = document.querySelector("#npmFavesLink");
 
@@ -83,17 +90,11 @@ function createFavesButton(toAddToFaves, message) {
   }
 
   // Create the button
-  faveButton = getFaveButtonElement(toAddToFaves, message);
+  faveButton = getFaveButtonElement(toAddToFaves);
   faveLink = faveButton.querySelector("a");
-  let notificationCloseButton = faveButton.querySelector(
-    "#npmfNotificationCloseButton"
-  );
 
   // Add click event to link
   faveLink.addEventListener("click", handleFaveLinkClick);
-  notificationCloseButton.addEventListener("click", function () {
-    this.parentElement.style.display = "none";
-  });
 
   // Add button to the page
   // This could break if the npmjs page changes
@@ -107,10 +108,9 @@ function createFavesButton(toAddToFaves, message) {
  * for its configuration.
  * @param {boolean} toAddToFaves If set to true indicates that the action
  * should be to add to faves, else should be to remove from faves.
- * @param {string} message The message to show to the user.
  * @returns {object} The button element.
  */
-function getFaveButtonElement(toAddToFaves, message) {
+function getFaveButtonElement(toAddToFaves) {
   let faveButtonAction = "addToFaves",
     faveButtonText = "Add to faves",
     faveButtonIcon = "add",
@@ -123,19 +123,12 @@ function getFaveButtonElement(toAddToFaves, message) {
     faveButtonClass = "npmf_cancel-button";
   }
 
-  let notificationDisplay = message ? "display:block" : "display:none";
-
   let buttonHtml = `<div id="npmFavesLink" class="npmf_button ${faveButtonClass}">
     <a class="pack-unfave" fave-action="${faveButtonAction}">
       <span class="material-icons-outlined">${faveButtonIcon}</span>
       ${faveButtonText}
     </a>
-    <div id="npmfNotification" class="npmf_notification_site" style="${notificationDisplay}">
-      <span id="npmfNotificationCloseButton" class="npmf_notification-close"
-        >&times;</span
-      >
-      <span id="npmfNotificationMessage">${message}</span>
-    </div>
+    <div id="npmfNotification"></div>
   </div>`;
 
   let tempDiv = document.createElement("div");

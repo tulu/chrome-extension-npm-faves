@@ -10,7 +10,6 @@
   await showPackageInformation();
   addEventToCopyInstallation();
   addEventsToRemoveLinks();
-  addNotificationEvent();
 })();
 
 /**
@@ -30,20 +29,6 @@ async function showPackageInformation() {
     }
   } catch (error) {
     console.log(error);
-  }
-}
-
-/**
- * Adds the close event to the notification.
- */
-function addNotificationEvent() {
-  const notificationCloseButton = document.getElementById(
-    "npmfNotificationCloseButton"
-  );
-  if (notificationCloseButton) {
-    notificationCloseButton.addEventListener("click", function () {
-      this.parentElement.style.display = "none";
-    });
   }
 }
 
@@ -195,20 +180,11 @@ function handleCopySnippetClick() {
   window.getSelection().addRange(r);
   document.execCommand("copy");
   window.getSelection().removeAllRanges();
-  showNotification("Install snippet copied!", "notification-success");
-}
-
-/**
- * Shows a message with the defined text and type.
- * @param {string} notificationMessage The message to show.
- * @param {string} notificationType The ype of message to show.
- */
-function showNotification(notificationMessage, notificationType) {
-  const divNotification = document.getElementById("npmfNotification");
-  const spanMessage = document.getElementById("npmfNotificationMessage");
-  spanMessage.innerHTML = notificationMessage;
-  divNotification.className = `npmf_notification npmf_${notificationType}`;
-  divNotification.style.display = "block";
+  npmFaves.ui.createNotification(
+    npmFaves.ui.notificationTypes.SUCCESS,
+    "Install snippet copied!",
+    true
+  );
 }
 
 /**
@@ -236,7 +212,7 @@ async function handleUnfaveLinkClick() {
     notifyEvent({ action: "remove", packageName: packageName });
     // Returns to main view with a message to show
     const message = `${packageName} removed from faves :(`;
-    const messageType = "notification-success";
+    const messageType = "SUCCESS";
     location.href = `./popup-main.html?noti-message=${message}&noti-type=${messageType}`;
   } catch (error) {
     console.log(error);

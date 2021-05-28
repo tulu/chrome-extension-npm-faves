@@ -8,7 +8,6 @@
 
 (async () => {
   addSearchBarEvent();
-  addNotificationEvent();
   checkNotification();
   await showFavesList();
 })();
@@ -32,37 +31,19 @@ function addSearchBarEvent() {
 }
 
 /**
- * Adds the close event to the notification.
- */
-function addNotificationEvent() {
-  const notificationCloseButton = document.getElementById(
-    "npmfNotificationCloseButton"
-  );
-  if (notificationCloseButton) {
-    notificationCloseButton.addEventListener("click", function () {
-      this.parentElement.style.display = "none";
-    });
-  }
-}
-
-/**
  * Checks if the notification should be visible and if so then it sets
  * the message and type and displays it.
  */
 function checkNotification() {
   const notificationMessage = getParameterByName("noti-message");
   const notificationType = getParameterByName("noti-type");
-  const spanMessage = document.getElementById("npmfNotificationMessage");
-  const divNotification = document.getElementById("npmfNotification");
-  if (
-    notificationMessage &&
-    notificationType &&
-    spanMessage &&
-    divNotification
-  ) {
-    spanMessage.innerHTML = notificationMessage;
-    divNotification.className = `npmf_notification npmf_${notificationType}`;
-    divNotification.style.display = "block";
+  // Checks the query string to create a message
+  if (notificationMessage && notificationType) {
+    npmFaves.ui.createNotification(
+      npmFaves.ui.notificationTypes[notificationType],
+      notificationMessage,
+      true
+    );
   }
 }
 
@@ -135,9 +116,9 @@ async function handleViewPackageClick() {
 function getPackageListElement(fave) {
   let publishInformation = "";
   if (fave.date) {
-    publishInformation = `published ${
-      fave.version
-    } \n\u2022 ${timeago.format(fave.date)}`;
+    publishInformation = `published ${fave.version} \n\u2022 ${timeago.format(
+      fave.date
+    )}`;
   }
 
   let description = fave.description ? fave.description : "";
