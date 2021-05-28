@@ -30,6 +30,7 @@
       "js": [
         "./scripts/services/npmFaves-storage-service.js",
         "./scripts/utils/npmFaves-ui-notification.js",
+        "./scripts/utils/npmFaves-helpers.js",
         "./scripts/content-script.js"
       ],
       "css": ["./styles/buttons.css", "./styles/notifications.css"]

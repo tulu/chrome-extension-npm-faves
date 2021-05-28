@@ -35,8 +35,14 @@ function addSearchBarEvent() {
  * the message and type and displays it.
  */
 function checkNotification() {
-  const notificationMessage = getParameterByName("noti-message");
-  const notificationType = getParameterByName("noti-type");
+  const notificationMessage = npmFaves.helpers.getQueryStringValue(
+    window.location.href,
+    "noti-message"
+  );
+  const notificationType = npmFaves.helpers.getQueryStringValue(
+    window.location.href,
+    "noti-type"
+  );
   // Checks the query string to create a message
   if (notificationMessage && notificationType) {
     npmFaves.ui.createNotification(
@@ -45,21 +51,6 @@ function checkNotification() {
       true
     );
   }
-}
-
-/**
- * Returns the value of the parameter from the query string.
- * @param {string} name The name of the package.
- * @param {string} url The url of the page.
- * @returns {string} The value of the parameter.
- */
-function getParameterByName(name, url = window.location.href) {
-  name = name.replace(/[\[\]]/g, "\\$&");
-  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-    results = regex.exec(url);
-  if (!results) return null;
-  if (!results[2]) return "";
-  return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
 /**

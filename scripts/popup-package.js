@@ -19,7 +19,10 @@
  */
 async function showPackageInformation() {
   try {
-    const packageName = getParameterByName("package-name");
+    const packageName = npmFaves.helpers.getQueryStringValue(
+      window.location.href,
+      "package-name"
+    );
     let fave = await npmFaves.storage.getFave(packageName);
     if (fave) {
       const packageView = document.getElementById("packageView");
@@ -58,9 +61,13 @@ function getPackageView(fave) {
   //Homepage link
   let homepageLinkHtml = "";
   if (fave.homepageLink) {
+    let link = "";
+    if (npmFaves.helpers.isValidUrl(fave.homepageLink)) {
+      link = `href="${fave.homepageLink}"`;
+    }
     homepageLinkHtml = `<div class="package-properties">
       <div class="package-attribute">Homepage</div>
-      <a class="package-value" target="_blank" href="${fave.homepageLink}">
+      <a class="package-value" target="_blank" ${link}>
         ${fave.homepageLink}
       </a>
     </div>`;
@@ -68,9 +75,13 @@ function getPackageView(fave) {
   //Repository link
   let repositoryLinkHtml = "";
   if (fave.repositoryLink) {
+    let link = "";
+    if (npmFaves.helpers.isValidUrl(fave.repositoryLink)) {
+      link = `href="${fave.repositoryLink}"`;
+    }
     repositoryLinkHtml = `<div class="package-properties">
       <div class="package-attribute">Repository</div>
-      <a class="package-value" target="_blank" href="${fave.repositoryLink}">
+      <a class="package-value" target="_blank" ${link}>
         ${fave.repositoryLink}
       </a>
     </div>`;
@@ -143,21 +154,6 @@ ${repositoryLinkHtml}
         Remove from faves
     </a>
 </div>`;
-}
-
-/**
- * Returns the value of the parameter from the query string.
- * @param {string} name The name of the package.
- * @param {string} url The url of the page.
- * @returns {string} The value of the parameter.
- */
-function getParameterByName(name, url = window.location.href) {
-  name = name.replace(/[\[\]]/g, "\\$&");
-  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-    results = regex.exec(url);
-  if (!results) return null;
-  if (!results[2]) return "";
-  return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
 /**

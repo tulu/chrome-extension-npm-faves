@@ -55,7 +55,10 @@ function injectStyles() {
 async function addButtonToPage(message) {
   try {
     // Get the name of the package
-    let packageName = getPackageNameFromUrl();
+    let packageName = npmFaves.helpers.getUrlPartAfterToken(
+      document.location.href,
+      "package/"
+    );
     // Get the package from the storage with false as second parameter
     // to not retrieve the updated information from the registry.
     const fave = await npmFaves.storage.getFave(packageName, false);
@@ -152,7 +155,10 @@ async function handleFaveLinkClick() {
   let displayMessage = "";
   let actionToSend = "";
   // Get the package name from the url
-  const packageName = getPackageNameFromUrl();
+  const packageName = npmFaves.helpers.getUrlPartAfterToken(
+    document.location.href,
+    "package/"
+  );
   // Get the action to perform from the link
   let action = this.getAttribute("fave-action");
   if (action == "addToFaves") {
@@ -174,18 +180,6 @@ async function handleFaveLinkClick() {
     // Adds again the new button
     addButtonToPage(displayMessage);
   });
-}
-
-/**
- * Gets the name of the package from the URL.
- * @returns {string} The name of the package.
- */
-function getPackageNameFromUrl() {
-  let splitted = document.location.href.split("package/");
-  if (splitted.length == 2) {
-    return splitted[1].split("?")[0];
-  }
-  return null;
 }
 
 /**

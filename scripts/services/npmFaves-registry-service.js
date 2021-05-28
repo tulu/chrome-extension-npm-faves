@@ -70,7 +70,9 @@ var npmFaves = npmFaves || {};
         if (versionObj.repository && versionObj.repository.url) {
           // The url has the protocol in the beginning like "git+{url}"
           let url = versionObj.repository.url;
-          url = url.slice(url.indexOf("http"));
+          if (npmFaves.helpers.isValidUrl(url)) {
+            url = url.slice(url.indexOf("http"));
+          }
           regPackage.repositoryLink = url;
         }
         regPackage.license = versionObj.license ? versionObj.license : null;
@@ -114,5 +116,4 @@ var npmFaves = npmFaves || {};
     }
     return version;
   };
-  
 }.apply(npmFaves));
