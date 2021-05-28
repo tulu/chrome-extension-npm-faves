@@ -1,12 +1,13 @@
 /**
  * Script to manage the behaviour on the https://www.npmjs.com/ website
- * defined on the manifest.json file
+ * defined on the manifest.json file.
  * -> "matches": ["https://www.npmjs.com/package/*"]
  *
  * Responsibilities:
  *  - Create link to add or remove from faves.
  *  - Communicate to user about the action.
  *  - Listens to Popup actions to update options.
+ *  - Sends Add / Remove message to service worker
  */
 try {
   if (validatePageContent()) {
@@ -49,6 +50,7 @@ function injectStyles() {
 /**
  * Adds a link to the page to "add to faves" or "remove from faves" based on
  * the content_script's matches on the manifest.json file.
+ * @param {string} message The message to show to the user.
  */
 async function addButtonToPage(message) {
   try {
@@ -69,6 +71,7 @@ async function addButtonToPage(message) {
  * Creates the "add to faves" or "remove from faves" button on the webpage.
  * @param {boolean} toAddToFaves If set to true indicates that the action
  * should be to add to faves, else should be to remove from faves.
+ * @param {string} message The message to show to the user.
  */
 function createFavesButton(toAddToFaves, message) {
   // Check to see if button already exists
@@ -104,6 +107,7 @@ function createFavesButton(toAddToFaves, message) {
  * for its configuration.
  * @param {boolean} toAddToFaves If set to true indicates that the action
  * should be to add to faves, else should be to remove from faves.
+ * @param {string} message The message to show to the user.
  * @returns {object} The button element.
  */
 function getFaveButtonElement(toAddToFaves, message) {
@@ -186,7 +190,7 @@ function getPackageNameFromUrl() {
 }
 
 /**
- * The following listeners manage events to update the to fave or not to fave
+ * The following listeners manage events to update the "to fave or not to fave"
  * link based on the extension's pop up interactions (currently unfave).
  * The interaction with the pop up can happen whether the tab is active or not.
  *  - If the tab is active the "onMessage" event is executed (popup.js sends

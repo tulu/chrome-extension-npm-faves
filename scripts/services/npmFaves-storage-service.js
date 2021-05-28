@@ -1,16 +1,16 @@
 /**
- * Functions to manage the persistence of the information
+ * Functions to manage the persistence of the information.
  *
  * * Responsibilities:
- *  - Get all packages
- *  - Add package to faves
- *  - Remove package from faves
- *  - Get package information
- *  - Update package information from registry: Dependency on registry-service
+ *  - Get all packages.
+ *  - Add package to faves.
+ *  - Remove package from faves.
+ *  - Get package information.
+ *  - Update package information from registry: Dependency on registry-service.
  */
 
 /**
- * Global namespace definition
+ * Global namespace definition.
  */
 var npmFaves = npmFaves || {};
 
@@ -28,9 +28,9 @@ var npmFaves = npmFaves || {};
   //#region Promise Wrapper
 
   /**
-   * Promise wrapper for chrome.storage.sync.get
-   * @param {string} key The key to look up
-   * @returns {object} The value corresponding to the key
+   * Promise wrapper for chrome.storage.sync.get.
+   * @param {string} key The key to look up.
+   * @returns {object} The value corresponding to the key.
    */
   const asyncGetFromSyncStorage = async function (key) {
     return new Promise((resolve, reject) => {
@@ -45,8 +45,8 @@ var npmFaves = npmFaves || {};
   };
 
   /**
-   * Promise wrapper for chrome.storage.sync.set
-   * @param {object} obj Object to store {key:value}
+   * Promise wrapper for chrome.storage.sync.set.
+   * @param {object} obj Object to store {key:value}.
    */
   const asyncSetToSyncStorage = async function (obj) {
     return new Promise((resolve, reject) => {
@@ -107,7 +107,7 @@ var npmFaves = npmFaves || {};
 
   /**
    * Returns a list with all the stored faved packages.
-   * @returns {object[]} The list with the faved packages
+   * @returns {object[]} The list with the faved packages.
    */
   this.storage.getFaves = async function () {
     let faves = [];
@@ -123,7 +123,7 @@ var npmFaves = npmFaves || {};
    * Adds a fave package to the list and returns it.
    * Retrieves the information from the registry before storing.
    * @param {string} packageName The name of the package.
-   * @returns {object} The package
+   * @returns {object} The package.
    */
   this.storage.addFave = async function (packageName) {
     let fave = null;
@@ -173,10 +173,10 @@ var npmFaves = npmFaves || {};
 
   /**
    * Returns a faved package.
-   * Syncs information if there is a new version in the registry
+   * Syncs information if there is a new version in the registry.
    * @param {string} packageName The name of the package.
    * @param {boolean} [update = true] Indicates of package should be updated.
-   * @returns {object} The package
+   * @returns {object} The package.
    */
   this.storage.getFave = async function (packageName, update = true) {
     let fave = null;

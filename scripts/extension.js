@@ -9,6 +9,8 @@
  *    -  onChanged event from the storage.
  *  - Reload npmjs.com tabs:
  *    -  onInstalled event from the extension.
+ *  - Add / Remove fave
+ *    -  onMessage event sent from the content script.
  */
 
 // Event listeners <<<=========================================================
@@ -48,7 +50,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       sendResponse({ result: false });
     }
   })();
-  return true;
+  return true; // <-- Keeps the connection open.
 });
 
 // Functions <<<==============================================================
@@ -90,9 +92,9 @@ async function updateFavesBadgeWithQuantity() {
 }
 
 /**
- * Adds or removes a fave according to the action
- * @param {string} action The action to perform (add | remove)
- * @param {string} packageName The name of the package
+ * Adds or removes a fave according to the action.
+ * @param {string} action The action to perform (add | remove).
+ * @param {string} packageName The name of the package.
  */
 async function handlePackage(action, packageName) {
   try {

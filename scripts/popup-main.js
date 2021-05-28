@@ -4,7 +4,6 @@
  * Responsibilities:
  *  - Show the list of faved packages.
  *  - Access the package information.
- *  - Remove selected package from faves
  */
 
 (async () => {
@@ -130,8 +129,8 @@ async function handleViewPackageClick() {
 /**
  * Generates and returns the HTML markup for the list item based on the
  * package information.
- * @param {object} fave The package to create the list item
- * @returns {string} The HTML markup of the package structure
+ * @param {object} fave The package to create the list item.
+ * @returns {string} The HTML markup of the package structure.
  */
 function getPackageListElement(fave) {
   let publishInformation = "";

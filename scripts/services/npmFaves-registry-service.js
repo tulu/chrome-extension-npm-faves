@@ -8,7 +8,7 @@
  */
 
 /**
- * Global namespace definition
+ * Global namespace definition.
  */
 var npmFaves = npmFaves || {};
 

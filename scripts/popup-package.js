@@ -15,8 +15,8 @@
 
 /**
  * Gets the package information from the storage and shows it in the view.
- * @param {string} packageName
- * @todo Show not found message in UI
+ * @param {string} packageName The name of the package.
+ * @todo Show not found message in UI.
  */
 async function showPackageInformation() {
   try {
@@ -186,7 +186,7 @@ function addEventToCopyInstallation() {
 }
 
 /**
- * Snippet event handler to copy the text to the clipboard
+ * Snippet event handler to copy the text to the clipboard.
  */
 function handleCopySnippetClick() {
   var r = document.createRange();
@@ -199,9 +199,9 @@ function handleCopySnippetClick() {
 }
 
 /**
- * Shows a message with the defined text and type
- * @param {string} notificationMessage The message to show
- * @param {string} notificationType The ype of message to show
+ * Shows a message with the defined text and type.
+ * @param {string} notificationMessage The message to show.
+ * @param {string} notificationType The ype of message to show.
  */
 function showNotification(notificationMessage, notificationType) {
   const divNotification = document.getElementById("npmfNotification");
@@ -245,7 +245,9 @@ async function handleUnfaveLinkClick() {
 
 /**
  * Notifies the unfave event.
- * @param {object} message
+ * @param {object} message The message to send with the action to perform.
+ * @param {string} message.action The action to perform (add | remove).
+ * @param {string} message.packageName The name of the package.
  */
 function notifyEvent(message) {
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
