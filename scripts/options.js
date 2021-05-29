@@ -46,6 +46,11 @@ async function showFavesList() {
   }
 }
 
+/**
+ * Returns an html row with the package information
+ * @param {object} fave A faved package
+ * @returns {string} The html row for the package
+ */
 function getFavePackageRow(fave) {
   let updatedAt = "-";
   if (fave.updatedAt) {

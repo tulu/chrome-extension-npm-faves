@@ -10,7 +10,21 @@
   addSearchBarEvent();
   checkNotification();
   await showFavesList();
+  addMenuEvents();
 })();
+
+/**
+ * Adds click events to the different menu options
+ */
+function addMenuEvents() {
+  // Options link
+  let optionsLink = document.getElementById("linkOptions");
+  if (optionsLink) {
+    optionsLink.addEventListener("click", function () {
+      chrome.runtime.openOptionsPage();
+    });
+  }
+}
 
 /**
  * Adds the keyup event to the search bar to open a new tab with the packages
