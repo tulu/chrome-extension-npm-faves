@@ -1,0 +1,112 @@
+/*
+* Styles for the options page
+*/
+
+/* ==[ Global Settings ]== */
+
+body {
+  font-family: "Source Sans Pro", "Lucida Grande", sans-serif;
+  color: #333333;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  font-size: 1rem;
+}
+
+header {
+  font-family: "Fira Mono", "Andale Mono", "Consolas", monospace;
+  border-bottom: 1px solid #cacaca;
+  box-shadow: 0px -15px 25px #888888;
+  z-index: 2;
+}
+
+.header-content {
+  width: 960px;
+  margin: 0 auto;
+  display: flex;
+}
+
+.header-content img {
+  width: 50px;
+  height: 50px;
+  margin-top: 15px;
+  margin-right: 20px;
+}
+
+.page-content {
+  width: 960px;
+}
+
+.nav-bar {
+  background-color: #f9f9f9;
+  border-color: rgba(0, 0, 0, 0.1);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  margin-top: -9px;
+}
+
+.nav-bar-content {
+  width: 960px;
+  margin: 0 auto;
+}
+
+h2 {
+  font-size: 1.25rem;
+  padding-top: 0.5rem;
+  color: #000;
+}
+
+.fave-list {
+  width: 960px;
+  margin: 0 auto;
+}
+
+h3 {
+  border-bottom: 1px dotted #ccc;
+  color: #111;
+  font-size: 1.25rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 1rem;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.fave-table {
+  font-family: "Fira Mono", "Andale Mono", "Consolas", monospace;
+  width: 100%;
+  text-align: right;
+}
+
+.fave-table th {
+  font-weight: normal;
+  border-bottom: 1px dotted rgba(0, 0, 0, 0.2);
+}
+
+.fave-table td:first-child,
+.fave-table th:first-child {
+  text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.fave-table tr,
+.fave-table thead {
+  margin-bottom: 12px;
+}
+
+.fave-table td {
+  padding-top: 10px;
+}
+
+.fave-table td a {
+  color: #cb3837;
+  text-decoration: none;
+}
+
+.empty-list {
+  text-align: center;
+  font-size: 1.3rem;
+  margin-top: 50px;
+}

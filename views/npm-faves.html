@@ -1,1 +1,30 @@
-Blank
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>npm faves :: Manage your favorite npm packages</title>
+    <link rel="icon" type="image/png" href="../images/npm-faves-logo-16.png" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&family=Source+Sans+Pro:wght@200;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/options.css" />
+  </head>
+  <body>
+    <header>
+      <div class="header-content">
+        <img src="../images/npm-faves-logo-128.png" />
+        <h1>npm faves</h1>
+      </div>
+    </header>
+    <div class="nav-bar">
+      <div class="nav-bar-content">
+        <h2 id="foundTitle"></h2>
+      </div>
+    </div>
+    <div id="favesContainer" class="fave-list"></div>
+    <script src="../scripts/lib/timeago.min.js"></script>
+    <script src="../scripts/services/npmFaves-storage-service.js"></script>
+    <script src="../scripts/options.js"></script>
+  </body>
+</html>
