@@ -53,4 +53,15 @@ var npmFaves = npmFaves || {};
       /^(https?:\/\/)?([\da-z\.-]+\.[a-z\.]{2,6}|[\d\.]+)([\/:?=&#]{1}[\da-z\.-]+)*[\/\?]?$/gim;
     return url.match(regex);
   };
+
+  /**
+   * Checks if a text has tags inside
+   * @param {string} text The text to evaluate
+   * @returns {boolean} True if the text has tags
+   */
+  this.helpers.hasTags = function(text){
+    const regex = /<(.*)>.*?|<(.*) \/>/g;
+    return text.match(regex);
+  }
+
 }.apply(npmFaves));

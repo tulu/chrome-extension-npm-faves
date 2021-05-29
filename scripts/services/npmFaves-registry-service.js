@@ -55,9 +55,14 @@ var npmFaves = npmFaves || {};
         const versionObj = json.versions[latest];
 
         regPackage.name = versionObj.name ? versionObj.name : packageName;
-        regPackage.description = versionObj.description
-          ? versionObj.description
-          : null;
+        // Description with HTML tags not allowed
+        if (
+          versionObj.description &&
+          !npmFaves.helpers.hasTags(versionObj.description)
+        ) {
+          regPackage.description = versionObj.description;
+        }
+
         regPackage.version = versionObj.version ? versionObj.version : null;
         regPackage.date = json.time[latest] ? json.time[latest] : null;
         regPackage.publisher = versionObj._npmUser

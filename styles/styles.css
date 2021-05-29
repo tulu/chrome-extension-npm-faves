@@ -2,7 +2,7 @@
 
 body {
   width: 440px;
-  height: 470px;
+  max-height: 470px;
   font-family: "Source Sans Pro", "Lucida Grande", sans-serif;
   color: #333333;
   margin: 0;
@@ -73,14 +73,13 @@ body {
 /* ==[ Faves list ]== */
 
 #favesContainer {
-  height: 420px;
   overflow: auto;
 }
 
 .empty-list {
   font-size: 16px;
   text-align: center;
-  margin-top: 30px;
+  margin: 30px 0;
 }
 
 .pack {
