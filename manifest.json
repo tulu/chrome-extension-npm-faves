@@ -11,17 +11,17 @@
     "default_popup": "./views/popup-main.html",
     "default_title": "npm faves",
     "default_icon": {
-      "16": "/images/npm-faves-16.png",
-      "32": "/images/npm-faves-32.png",
-      "48": "/images/npm-faves-48.png",
-      "128": "/images/npm-faves-128.png"
+      "16": "/images/npm-faves-logo-16.png",
+      "32": "/images/npm-faves-logo-32.png",
+      "48": "/images/npm-faves-logo-48.png",
+      "128": "/images/npm-faves-logo-128.png"
     }
   },
   "icons": {
-    "16": "/images/npm-faves-16.png",
-    "32": "/images/npm-faves-32.png",
-    "48": "/images/npm-faves-48.png",
-    "128": "/images/npm-faves-128.png"
+    "16": "/images/npm-faves-logo-16.png",
+    "32": "/images/npm-faves-logo-32.png",
+    "48": "/images/npm-faves-logo-48.png",
+    "128": "/images/npm-faves-logo-128.png"
   },
   "content_scripts": [
     {

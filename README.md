@@ -23,3 +23,7 @@ https://blog.bitsrc.io/namespace-in-javascript-the-basics-452e6e8adc48
 /* Taken from: https://loading.io/css/ */
 * The avatars for the maintainers are generated with
  * https://www.tinygraphs.com/.
+
+Logo:
+ https://commons.wikimedia.org/wiki/File:Heart_font_awesome.svg
+ https://commons.wikimedia.org/wiki/File:Npm-logo.svg

@@ -88,7 +88,7 @@ async function updateFavesBadgeWithQuantity() {
   chrome.action.setBadgeText({
     text: favesCount,
   });
-  chrome.action.setBadgeBackgroundColor({ color: "#C90813" }, () => {});
+  chrome.action.setBadgeBackgroundColor({ color: "#cb3837ff" }, () => {});
 }
 
 /**
