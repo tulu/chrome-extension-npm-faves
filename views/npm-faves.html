@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>npm faves :: Manage your favorite npm packages</title>
+    <title>npm faves :: Options</title>
     <link rel="icon" type="image/png" href="../images/npm-faves-logo-16.png" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
@@ -9,6 +9,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../styles/options.css" />
+    <script src="../scripts/lib/analytics.js"></script>
   </head>
   <body>
     <header>
@@ -24,7 +25,9 @@
     </div>
     <div id="favesContainer" class="fave-list"></div>
     <script src="../scripts/lib/timeago.min.js"></script>
+    <script src="../scripts/services/npmFaves-tracking-service.js"></script>
     <script src="../scripts/services/npmFaves-storage-service.js"></script>
-    <script src="../scripts/options.js"></script>
+    <script src="../scripts/utils/npmFaves-helpers.js"></script>
+    <script src="../scripts/npm-faves.js"></script>
   </body>
 </html>

@@ -59,9 +59,21 @@ var npmFaves = npmFaves || {};
    * @param {string} text The text to evaluate
    * @returns {boolean} True if the text has tags
    */
-  this.helpers.hasTags = function(text){
+  this.helpers.hasTags = function (text) {
     const regex = /<(.*)>.*?|<(.*) \/>/g;
     return text.match(regex);
-  }
+  };
 
+  /**
+   * Removes the initial part of the url
+   * Example url: chrome-extension://fdbicpedbfjbcjfmbbaoikcmeamahnoe/views/popup-main.html
+   * @param {string} url The url to clean up
+   * @returns {string} The clean url
+   */
+  this.helpers.excludeExtensionFromUrl = function (url) {
+    // Split into parts and we have:
+    // ["chrome-extension:","",ID,"views","popup-main.html"]
+    // We want everything but the chrome-extension: and ID
+    return url.split("/").slice(3).join("/");
+  };
 }.apply(npmFaves));

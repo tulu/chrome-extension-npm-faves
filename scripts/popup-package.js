@@ -7,10 +7,20 @@
  */
 
 (async () => {
+  sendView();
   await showPackageInformation();
   addEventToCopyInstallation();
   addEventsToRemoveLinks();
 })();
+
+/**
+ * Sends the pageview event
+ */
+ function sendView() {
+  npmFaves.tracking.a.sendView(
+    npmFaves.helpers.excludeExtensionFromUrl(window.location.href)
+  );
+}
 
 /**
  * Gets the package information from the storage and shows it in the view.

@@ -6,8 +6,18 @@
  */
 
 (async () => {
+  sendView();
   await showFavesList();
 })();
+
+/**
+ * Sends the pageview event
+ */
+function sendView() {
+  npmFaves.tracking.a.sendView(
+    npmFaves.helpers.excludeExtensionFromUrl(window.location.href)
+  );
+}
 
 /**
  * Loads faved packages from the storage and shows the list.
