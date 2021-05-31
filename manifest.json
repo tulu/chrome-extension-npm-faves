@@ -4,7 +4,7 @@
   "version": "0.1",
   "manifest_version": 3,
   "background": {
-    "service_worker": "./background.js"
+    "service_worker": "./service-worker.js"
   },
   "permissions": ["storage", "activeTab", "tabs", "clipboardWrite"],
   "action": {
@@ -28,7 +28,9 @@
       "matches": ["*://www.npmjs.com/package/*"],
       "all_frames": true,
       "js": [
+        "./scripts/lib/analytics.js",
         "./scripts/services/npmFaves-storage-service.js",
+        "./scripts/services/npmFaves-tracking-service.js",
         "./scripts/utils/npmFaves-ui-notification.js",
         "./scripts/utils/npmFaves-helpers.js",
         "./scripts/content-script.js"
@@ -37,5 +39,7 @@
     }
   ],
   "options_page": "./views/npm-faves.html",
-  "host_permissions": ["https://registry.npmjs.org/*"]
+  "host_permissions": [
+    "https://registry.npmjs.org/*"
+  ]
 }

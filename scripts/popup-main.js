@@ -7,11 +7,21 @@
  */
 
 (async () => {
+  sendView();
   addSearchBarEvent();
   checkNotification();
   await showFavesList();
   addMenuEvents();
 })();
+
+/**
+ * Sends the pageview event
+ */
+function sendView() {
+  npmFaves.tracking.a.sendView(
+    npmFaves.helpers.excludeExtensionFromUrl(window.location.href, false)
+  );
+}
 
 /**
  * Adds click events to the different menu options

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>npm faves :: Popup Main</title>
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&family=Source+Sans+Pro:wght@200;600&display=swap"
@@ -13,6 +14,9 @@
     <link rel="stylesheet" href="../styles/styles.css" />
     <link rel="stylesheet" href="../styles/buttons.css" />
     <link rel="stylesheet" href="../styles/notifications.css" />
+
+    <!-- <script src="../scripts/lib/ga.js"></script> -->
+    <script src="../scripts/lib/analytics.js"></script>
   </head>
   <body>
     <div class="search-bar-container">
@@ -37,6 +41,7 @@
     </a>
 
     <script src="../scripts/lib/timeago.min.js"></script>
+    <script src="../scripts/services/npmFaves-tracking-service.js"></script>
     <script src="../scripts/services/npmFaves-storage-service.js"></script>
     <script src="../scripts/utils/npmFaves-ui-notification.js"></script>
     <script src="../scripts/utils/npmFaves-helpers.js"></script>
