@@ -44,9 +44,9 @@ var npmFaves = npmFaves || {};
   };
 
   /**
-   * Validates a url based on a pattern
-   * @param {string} url The url to validate
-   * @returns {boolean} True if the url is valid
+   * Validates a url based on a pattern.
+   * @param {string} url The url to validate.
+   * @returns {boolean} True if the url is valid.
    */
   this.helpers.isValidUrl = function (url) {
     const regex =
@@ -55,9 +55,9 @@ var npmFaves = npmFaves || {};
   };
 
   /**
-   * Checks if a text has tags inside
-   * @param {string} text The text to evaluate
-   * @returns {boolean} True if the text has tags
+   * Checks if a text has tags inside.
+   * @param {string} text The text to evaluate.
+   * @returns {boolean} True if the text has tags.
    */
   this.helpers.hasTags = function (text) {
     const regex = /<(.*)>.*?|<(.*) \/>/g;
@@ -65,15 +65,24 @@ var npmFaves = npmFaves || {};
   };
 
   /**
-   * Removes the initial part of the url
-   * Example url: chrome-extension://fdbicpedbfjbcjfmbbaoikcmeamahnoe/views/popup-main.html
+   * Removes the initial part of the url. Example url: 
+   * chrome-extension://fdbicpedbfjbcjfmbbaoikcmeamahnoe/views/popup-main.html
    * @param {string} url The url to clean up
+   * @param {boolean} includeQueryString Indicates if the returned url must 
+   * include the query string
    * @returns {string} The clean url
    */
-  this.helpers.excludeExtensionFromUrl = function (url) {
+  this.helpers.excludeExtensionFromUrl = function (
+    url,
+    includeQueryString = true
+  ) {
     // Split into parts and we have:
     // ["chrome-extension:","",ID,"views","popup-main.html"]
     // We want everything but the chrome-extension: and ID
-    return url.split("/").slice(3).join("/");
+    let cleanUrl = url.split("/").slice(3).join("/").split("?")[0];
+    if (includeQueryString) {
+      cleanUrl = url.split("/").slice(3).join("/");
+    }
+    return cleanUrl;
   };
 }.apply(npmFaves));

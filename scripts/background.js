@@ -44,7 +44,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   (async () => {
     try {
       await handlePackage(message.action, message.packageName);
-      sendResponse({ result: true });
+      sendResponse({ result: true, action: message.action });
     } catch (error) {
       console.log(error);
       sendResponse({ result: false });

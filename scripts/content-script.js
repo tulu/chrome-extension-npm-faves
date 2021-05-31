@@ -176,7 +176,18 @@ async function handleFaveLinkClick() {
   chrome.runtime.sendMessage(message, function (response) {
     if (!response.result) {
       displayMessage = "An error ocurred :(";
+    } else {
+      // Send event to Google Analytics.
+      // Can't centralize this call in the storage service because the add
+      // function is called from the service worker and there is no window
+      // in that context to execute the Google Analytics script
+      if (response.action == "add") {
+        npmFaves.tracking.a.sendFaveAdded(packageName);
+      } else if (response.action == "remove") {
+        npmFaves.tracking.a.sendFaveRemoved(packageName);
+      }
     }
+
     // Adds again the new button
     addButtonToPage(displayMessage);
   });

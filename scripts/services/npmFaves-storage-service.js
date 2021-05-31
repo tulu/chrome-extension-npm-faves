@@ -143,6 +143,11 @@ var npmFaves = npmFaves || {};
         faves.sort((a, b) => (a.name > b.name ? 1 : -1));
         // Save the faves again
         await asyncSetToSyncStorage({ faves: faves });
+        // Send add event to Google Analytics
+        // Ideally would be here but if the function is called from the
+        // service worker there is no window object to execute the
+        // Google Analytics script
+        // npmFaves.tracking.a.sendFaveAdded(packageName);
       }
     } catch (error) {
       console.log(error);
@@ -166,6 +171,11 @@ var npmFaves = npmFaves || {};
       faves.sort((a, b) => (a.name > b.name ? 1 : -1));
       // Save the faves again
       await asyncSetToSyncStorage({ faves: faves });
+      // Send remove event to Google Analytics
+      // Ideally would be here but if the function is called from the
+      // service worker there is no window object to execute the
+      // Google Analytics script
+      // npmFaves.tracking.a.sendFaveRemoved(packageName);
     } catch (error) {
       console.log(error);
     }

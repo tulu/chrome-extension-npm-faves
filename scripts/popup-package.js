@@ -16,7 +16,7 @@
 /**
  * Sends the pageview event
  */
- function sendView() {
+function sendView() {
   npmFaves.tracking.a.sendView(
     npmFaves.helpers.excludeExtensionFromUrl(window.location.href)
   );
@@ -191,6 +191,12 @@ function handleCopySnippetClick() {
     "Install snippet copied!",
     true
   );
+  // Send copy to clipboard event to Google Analytics
+  const packageName = npmFaves.helpers.getQueryStringValue(
+    window.location.href,
+    "package-name"
+  );
+  npmFaves.tracking.a.sendFaveSnippetCopied(packageName);
 }
 
 /**
@@ -214,6 +220,8 @@ async function handleUnfaveLinkClick() {
     let packageName = this.getAttribute("package-name");
     // Remove the fave from storage
     await npmFaves.storage.removeFave(packageName);
+    // Send remove event to Google Analytics
+    npmFaves.tracking.a.sendFaveRemoved(packageName);
     // Notify to the content script
     notifyEvent({ action: "remove", packageName: packageName });
     // Returns to main view with a message to show

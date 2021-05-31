@@ -23,15 +23,15 @@ var npmFaves = npmFaves || {};
   const analyticsAccount = "UA-198174258-1";
 
   /**
-   * Functions to use the old Google Analytics
-   * The script to add must be: "/scripts/lib/ga.js"
+   * Functions to use the old Google Analytics.
+   * The script to add must be: "/scripts/lib/ga.js".
    */
 
   // Namespace for old Google Analytics
   this.tracking.ga = this.tracking.ga || {};
 
   /**
-   * Sets the account Id
+   * Sets the account Id.
    */
   const initGa = function () {
     window._gaq = window._gaq || [];
@@ -39,8 +39,8 @@ var npmFaves = npmFaves || {};
   };
 
   /**
-   * Sends a page view to Google Analytics
-   * @param {string} page Name of the page to track
+   * Sends a page view to Google Analytics.
+   * @param {string} page Name of the page to track.
    */
   this.tracking.ga.sendView = function (page) {
     initGa();
@@ -48,8 +48,8 @@ var npmFaves = npmFaves || {};
   };
 
   /**
-   * Sends an event when a package is added
-   * @param {string} packageName The name of the package
+   * Sends an event when a package is added.
+   * @param {string} packageName The name of the package.
    */
   this.tracking.ga.sendFaveAdded = function (packageName) {
     initGa();
@@ -57,8 +57,8 @@ var npmFaves = npmFaves || {};
   };
 
   /**
-   * Sends an event when a package is removed
-   * @param {string} packageName The name of the package
+   * Sends an event when a package is removed.
+   * @param {string} packageName The name of the package.
    */
   this.tracking.ga.sendFaveRemoved = function (packageName) {
     initGa();
@@ -66,15 +66,25 @@ var npmFaves = npmFaves || {};
   };
 
   /**
-   * Functions to use the "new" Google Analytics
-   * The script to add must be: "/scripts/lib/analytics.js"
+   * Sends an event when a package installation snippet is copied to
+   * the clipboard.
+   * @param {string} packageName The name of the package.
+   */
+  this.tracking.ga.sendFaveSnippetCopied = function (packageName) {
+    initGa();
+    _gaq.push(["_trackEvent", "fave_manage", "copy_to_clipboard", packageName]);
+  };
+
+  /**
+   * Functions to use the "new" Google Analytics.
+   * The script to add must be: "/scripts/lib/analytics.js".
    */
 
   // Namespace for "new" Google Analytics
   this.tracking.a = this.tracking.a || {};
 
   /**
-   * Initializes the script and sets the account Id
+   * Initializes the script and sets the account Id.
    */
   const initA = function () {
     window["GoogleAnalyticsObject"] = "ga";
@@ -89,8 +99,8 @@ var npmFaves = npmFaves || {};
   };
 
   /**
-   * Sends a page view to Google Analytics
-   * @param {string} page Name of the page to track
+   * Sends a page view to Google Analytics.
+   * @param {string} page Name of the page to track.
    */
   this.tracking.a.sendView = function (page) {
     initA();
@@ -99,8 +109,8 @@ var npmFaves = npmFaves || {};
   };
 
   /**
-   * Sends an event when a package is added
-   * @param {string} packageName The name of the package
+   * Sends an event when a package is added.
+   * @param {string} packageName The name of the package.
    */
   this.tracking.a.sendFaveAdded = function (packageName) {
     initA();
@@ -108,11 +118,21 @@ var npmFaves = npmFaves || {};
   };
 
   /**
-   * Sends an event when a package is removed
-   * @param {string} packageName The name of the package
+   * Sends an event when a package is removed.
+   * @param {string} packageName The name of the package.
    */
   this.tracking.a.sendFaveRemoved = function (packageName) {
     initA();
     ga("send", "event", "fave_manage", "remove", packageName);
+  };
+
+  /**
+   * Sends an event when a package installation snippet is copied to
+   * the clipboard.
+   * @param {string} packageName The name of the package.
+   */
+  this.tracking.a.sendFaveSnippetCopied = function (packageName) {
+    initA();
+    ga("send", "event", "fave_manage", "copy_to_clipboard", packageName);
   };
 }.apply(npmFaves));
