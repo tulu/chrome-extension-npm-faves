@@ -39,3 +39,6 @@ Use analytics debug to review
 Unallowed document protocol. Aborting hit.
 
  https://stackoverflow.com/questions/22761200/using-google-analytics-without-a-server-or-localhost
+
+
+ ARREGLAR COMO SE VE EL CORZACON CUANDO HAY POCOS FAVES, CENTRARLO
