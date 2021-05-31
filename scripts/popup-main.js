@@ -7,6 +7,7 @@
  */
 
 (async () => {
+  npmFaves.tracking.a.sendView("popup-main");
   addSearchBarEvent();
   checkNotification();
   await showFavesList();

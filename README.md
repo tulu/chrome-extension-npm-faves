@@ -27,3 +27,15 @@ https://blog.bitsrc.io/namespace-in-javascript-the-basics-452e6e8adc48
 Logo:
  https://commons.wikimedia.org/wiki/File:Heart_font_awesome.svg
  https://commons.wikimedia.org/wiki/File:Npm-logo.svg
+
+
+
+ https://developer.chrome.com/docs/extensions/mv3/tut_analytics/
+
+
+Use analytics debug to review
+ https://stackoverflow.com/questions/15744042/events-not-being-tracked-in-new-google-analytics-analytics-js-setup
+
+Unallowed document protocol. Aborting hit.
+
+ https://stackoverflow.com/questions/22761200/using-google-analytics-without-a-server-or-localhost
