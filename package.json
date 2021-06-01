@@ -1,0 +1,25 @@
+{
+  "name": "chrome-extension-npm-faves",
+  "version": "1.0.0",
+  "description": "Manage your favorite node packages directly from Google Chrome",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tulu/chrome-extension-npm-faves.git"
+  },
+  "keywords": [
+    "node",
+    "npm",
+    "chrome extension",
+    "manifest v3"
+  ],
+  "author": "Ruben Sosenke",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tulu/chrome-extension-npm-faves/issues"
+  },
+  "homepage": "https://github.com/tulu/chrome-extension-npm-faves#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2"
+  }
+}
