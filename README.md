@@ -1,7 +1,5 @@
 <div align="center">
-    <a href="https://www.npm-faves.com" target="_blank">
-        <img width="100" alt="npm faves logo" src="./images/npm-faves-logo-128.png?raw=true">
-    </a>
+    <img width="100" alt="npm faves logo" src="./images/npm-faves-logo-128.png?raw=true">
 </div>
 <h2 align="center">npm faves</h2>
 
