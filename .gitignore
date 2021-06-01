@@ -105,3 +105,6 @@ dist
 
 # VS config
 .vscode/
+
+# To remove later
+BACKSTAGE.md
