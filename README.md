@@ -4,7 +4,7 @@
     </a>
 </div>
 <h2 align="center">npm faves</h2>
-<hr>
+
 <p align="center">Manage your favorite npm packages directly from Google Chrome</p>
 
 <p align="center">
@@ -31,13 +31,13 @@
 - Sync package information with [https://registry.npmjs.org](https://registry.npmjs.org)
 - Remove package from faves from the package information view in the pop up
 - Copy to clipboard install snippet from the package information view in the pop up
-- View all faved packages with more detailed information (like when it was added to faves) in the options page
+- View all faved packages with more detailed information (like the date when it was added to faves) in the options page
 
 ## How To Use
 
 The easiest way is to install it directly from the chrome web store.
 
-Alternatively you can clone the repository or download the latest release and install the extension in Chrome by following this steps:
+Alternatively you can clone the repository or download the latest release and install the extension in Chrome by following the steps:
 
 1. Go to `Chrome Settings`
 2. Select `Extensions`
@@ -47,9 +47,9 @@ Alternatively you can clone the repository or download the latest release and in
 
 ## Why?
 
-As developers we start new projects every now and then and probably we use the same npm packages over and over. These are great pieces of code that by using them allow us to focus on our main problems to solve.
+As developers we start new projects every now and then and probably we use the same node packages over and over. These are great pieces of code that by using them allow us to focus on our main problems to solve.
 
-The issue is that once we start the project we need to take the packages from somewhere. We may copy them from another package.json file, clone a template repo or maybe we already have the `npm insall` snippet stored in a file.
+The issue is that once we start the project we need to take the packages from somewhere. We may copy them from another `package.json` file, clone a template repo or maybe we already have the `npm install` snippet stored in a file.
 
 Another common issue is when you find a great package that you want to try but then you forget about it. This happens to me a lot.
 
@@ -62,11 +62,11 @@ Sure you can! And for those who don't know how to do it yet here is a small tuto
 In order to star and unstar packages you need to login first!
 
 ### Login
-**Add a registry user account:** Create or verify a user named <username> in the specified registry, and save the credentials to the .npmrc file. If no registry is specified, the default registry will be used.
+**Add a registry user account:** Create or verify a user named `<username>` in the specified registry, and save the credentials to the `.npmrc` file. If no registry is specified, the default registry will be used.
 
 The username, password, and email are read in from prompts.
 
-```
+```bash
 npm login
 ```
 
@@ -74,7 +74,7 @@ npm login
 **Mark your favorite packages:** "Starring" a package means that you have some interest in it. It's a vaguely positive way to show that you care.
 It's a boolean thing. Starring repeatedly has no additional effect.
 
-```
+```sh
 npm star [<pkg>...]
 ```
 
@@ -97,13 +97,13 @@ That's it! Now you know how to do it through npm CLI!
 
 ## Roadmap
 
-This is the first version to release but the idea is to take more advantage of the faved packages. The next releases will include:
+The first release is pretty basic but the idea is to take more advantage of the faved packages. The next releases will include:
 
 - **Create collections** of faved packages for different proposes. For example:
     - "Web": Packages you use when creating web projects
     - "CLI": Packages you use when creating CLI projects
     - "To try": Packages you would like to try someday
-- **Download package.json file** after you created a collection
+- **Download `package.json` file** after you created a collection
 
 ## Known issues and limitations
 
@@ -117,7 +117,7 @@ This is the first version to release but the idea is to take more advantage of t
 npm faves uses a few third party javascript libraries although the main goal is to keep it simple. As the context of the extensions with manifest v3 is somehow limited the libraries are imported into the scripts folder and some were modified in order to work with the extension. The libraries are included in `/scripts/lib`
 
 * [timeago.js](https://www.npmjs.com/package/timeago.js) - Format the dates in the form of `X time ago` for the package publications.
-* [Pretty bytes](https://www.npmjs.com/package/pretty-bytes) - Format the package size from bytes to a human readable string. The library was modified to work easily client side.
+* [Pretty bytes](https://www.npmjs.com/package/pretty-bytes) - Format the package size from bytes to a human readable string. The library was modified to work on the client side.
 * [Google Analytics - analytics.js](https://developers.google.com/analytics/devguides/collection/analyticsjs) - Track the extension usage.
 * [Google Analytics - ga.js (Legacy)](https://developers.google.com/analytics/devguides/collection/gajs) - Track the extension usage with the older analytics version. (The usage of this library is implemented but not used)
 
