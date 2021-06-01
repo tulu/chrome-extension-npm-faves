@@ -66,7 +66,7 @@ In order to star and unstar packages you need to login first!
 
 The username, password, and email are read in from prompts.
 
-```bash
+```sh
 npm login
 ```
 
@@ -81,14 +81,14 @@ npm star [<pkg>...]
 ### Unstar a package
 **Remove an item from your favorite packages:** "Unstarring" a package is the opposite of `npm star`, it removes an item from your list of favorite packages.
 
-```
+```sh
 npm unstar [<pkg>...]
 ```
 
 ### View stars
 **View packages marked as favorites**: If you have starred a lot of neat things and want to find them again quickly this command lets you do just that. You may also want to see your friend's favorite packages, in this case you will most certainly enjoy this command.
 
-```
+```sh
 npm stars [<user>]
 ```
 
