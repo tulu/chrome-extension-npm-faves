@@ -2,15 +2,25 @@
 <html lang="en">
   <head>
     <title>npm faves :: Readme</title>
+    <link rel="icon" type="image/png" href="../images/npm-faves-logo-16.png" />
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- build:js ../scripts/analytics.min.js -->
     <script src="../scripts/lib/analytics.js"></script>
+    <!-- endbuild -->
   </head>
   <body>
     <h1>Thank you for using npm faves</h1>
+    <!-- build:js ../scripts/npm-faves.core.min.js -->
     <script src="../scripts/services/npmFaves-tracking-service.js"></script>
+    <script src="../scripts/services/npmFaves-storage-service.js"></script>
+    <script src="../scripts/services/npmFaves-registry-service.js"></script>
+    <script src="../scripts/utils/npmFaves-ui-notification.js"></script>
     <script src="../scripts/utils/npmFaves-helpers.js"></script>
+    <!-- endbuild -->
+    <!-- build:js ../scripts/readme.min.js -->
     <script src="../scripts/readme.js"></script>
+    <!-- endbuild -->
   </body>
 </html>

@@ -108,3 +108,7 @@ dist
 
 # To remove later
 BACKSTAGE.md
+
+release
+
+.DS_Store
