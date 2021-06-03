@@ -1,7 +1,5 @@
 <div align="center">
-    <a href="https://www.npm-faves.com" target="_blank">
-        <img width="100" alt="npm faves logo" src="./images/npm-faves-logo-128.png?raw=true">
-    </a>
+    <img width="100" alt="npm faves logo" src="./src/images/npm-faves-logo-128.png?raw=true">
 </div>
 <h2 align="center">npm faves</h2>
 
@@ -36,15 +34,43 @@
 
 ## How To Use
 
-The easiest way is to install it directly from the chrome web store.
+### Chrome Web Store
 
-Alternatively you can clone the repository or download the latest release and install the extension in Chrome by following the steps:
+Install the extension from the Chrome web store.
 
-1. Go to `Chrome Settings`
-2. Select `Extensions`
-3. Enable `Developer mode`
-4. Click `Load unpacked`
-5. Select the folder where the uncompressed project is. The `manifest.json` file must be on the root of the folder you select.
+### Release
+
+Download the latest [release](https://github.com/tulu/chrome-extension-npm-faves/releases) and install the extension in Chrome by following the steps:
+
+1. Unzip the release.
+2. Go to `Chrome Settings`.
+3. Select `Extensions`.
+4. Enable `Developer mode`.
+5. Click `Load unpacked`.
+6. Select the folder where project is. The `manifest.json` file must be on the root of the folder you select.
+
+### Clone, Run, Install
+
+```sh
+# clone it
+$ git clone https://github.com/tulu/chrome-extension-npm-faves.git
+
+# MOVE!
+$ cd chrome-extension-npm-faves
+
+# Install dependencies
+$ npm install
+
+# Build it (2 options)
+
+# Builds into the dist folder and watches src files for modifications
+$ npm run build-dev
+
+# Builds into the dist folder and creates zip release in release folder
+$ npm run build-prod
+```
+
+Install the extension following the `Release` option steps. The folder to select is `dist`.
 
 ## Why?
 
@@ -69,7 +95,7 @@ In order to star and unstar packages you need to login first!
 The username, password, and email are read in from prompts.
 
 ```sh
-npm login
+$ npm login
 ```
 
 ### Star a package
@@ -78,7 +104,7 @@ npm login
 It's a boolean thing. Starring repeatedly has no additional effect.
 
 ```sh
-npm star [<pkg>...]
+$ npm star [<pkg>...]
 ```
 
 ### Unstar a package
@@ -86,7 +112,7 @@ npm star [<pkg>...]
 **Remove an item from your favorite packages:** "Unstarring" a package is the opposite of `npm star`, it removes an item from your list of favorite packages.
 
 ```sh
-npm unstar [<pkg>...]
+$ npm unstar [<pkg>...]
 ```
 
 ### View stars
@@ -94,7 +120,7 @@ npm unstar [<pkg>...]
 **View packages marked as favorites**: If you have starred a lot of neat things and want to find them again quickly this command lets you do just that. You may also want to see your friend's favorite packages, in this case you will most certainly enjoy this command.
 
 ```sh
-npm stars [<user>]
+$ npm stars [<user>]
 ```
 
 That's it! Now you know how to do it through npm CLI!
