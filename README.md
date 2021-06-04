@@ -44,7 +44,7 @@
 
 ### Chrome Web Store
 
-Install the extension from the Chrome web store.
+Install the extension from the Chrome web store. (Not yet available)
 
 ### Release
 
