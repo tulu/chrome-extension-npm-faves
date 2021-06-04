@@ -3,7 +3,7 @@
 Changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
-## [v1.0.0] - YYYY-MM-DD (Not yet released)
+## [v1.0.0] - 2021-06-04
 
 ### Added
 
@@ -17,4 +17,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - View all faved packages with more detailed information (like when it was added to faves) in the options page
 - Tracking of page views and events with Google Analytics
 
-[v0.1]: https://github.com/tulu/chrome-extension-npm-faves/releases/tag/v0.1
+[v1.0.0]: https://github.com/tulu/chrome-extension-npm-faves/releases/tag/v1.0.0
