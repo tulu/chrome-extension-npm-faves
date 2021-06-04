@@ -21,7 +21,7 @@
   <a href="#license">License</a>
 </p>
 
-<table>
+<table border="0">
 <tr>
 <td><img src="./docs/demo/01 - content-script.gif" /></td>
 <td><img src="./docs/demo/02 - navigation.gif" /></td>
