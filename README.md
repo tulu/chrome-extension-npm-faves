@@ -1,5 +1,5 @@
 <div align="center">
-    <img width="100" alt="npm faves logo" src="./src/images/npm-faves-logo-128.png?raw=true">
+    <img width="100" alt="npm faves logo" src="./docs/images/npm-faves-logo.png">
 </div>
 <h2 align="center">npm faves</h2>
 
@@ -20,6 +20,14 @@
   <a href="#credits">Credits</a> •
   <a href="#license">License</a>
 </p>
+
+<table>
+<tr>
+<td><img src="./docs/demo/01 - content-script.gif" /></td>
+<td><img src="./docs/demo/02 - navigation.gif" /></td>
+<td><img src="./docs/demo/03 - copy-clipboard.gif" /></td>
+</tr>
+</table>
 
 ## Key features
 
