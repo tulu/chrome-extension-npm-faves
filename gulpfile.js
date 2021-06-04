@@ -78,7 +78,7 @@ function manifestTask() {
  * Optimize images and copy to the output folder.
  */
 function imagesTask() {
-  return src("src/images/*.png")
+  return src("src/images/**/*.png")
     .pipe(cache(imagemin()))
     .pipe(dest("dist/images"));
 }

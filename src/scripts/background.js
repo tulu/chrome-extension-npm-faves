@@ -59,7 +59,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
  * Shows the readme file in a new tab.
  */
 function showReadme() {
-  let url = chrome.runtime.getURL("readme.html");
+  let url = chrome.runtime.getURL("views/readme.html");
   chrome.tabs.create({ url });
 }
 

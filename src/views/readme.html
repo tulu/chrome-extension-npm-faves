@@ -6,12 +6,109 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&family=Source+Sans+Pro:wght@200;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- build:css ../styles/options.min.css -->
+    <link rel="stylesheet" href="../styles/options.css" />
+    <!-- endbuild -->
     <!-- build:js ../scripts/analytics.min.js -->
     <script src="../scripts/lib/analytics.js"></script>
     <!-- endbuild -->
   </head>
   <body>
-    <h1>Thank you for using npm faves</h1>
+    <header>
+      <div class="header-content">
+        <img src="../images/npm-faves-logo-128.png" />
+        <h1>npm faves</h1>
+      </div>
+    </header>
+    <div class="page-content">
+      <div class="thanks">
+        <h2>Thank you for using npm faves!</h2>
+        Follow the steps to get started.
+      </div>
+
+      <div>
+        <h3>Add packages</h3>
+        <div class="help-content">
+          <div class="w50">
+            <p>Start your amazing experience by adding some packages.</p>
+            <p>
+              Navigate to
+              <a href="https://www.npmjs.com/" target="_blank"
+                >https://www.npmjs.com/</a
+              >, search the package and press the "Add to faves" button next to
+              the package name.
+            </p>
+            <p>
+              The package will be added to your faves list in the extension.
+            </p>
+          </div>
+          <div class="w50 center">
+            <img src="../images/help/help-add-package.png" alt="Add package" />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3>View packages</h3>
+        <div class="help-content">
+          <div class="w50">
+            <p>
+              After adding some packages you can find them in the extension pop
+              up
+            </p>
+            <p>
+              Open the extension from the toolbar and the list of faves will be
+              available to navigate.
+            </p>
+            <p>If the extension is not visible pin it to the toolbar.</p>
+          </div>
+          <div class="w50 center">
+            <img
+              src="../images/help/help-view-packages.png"
+              alt="View packages"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3>Copy install snippet</h3>
+        <div class="help-content">
+          <div class="w50">
+            <p>
+              After adding a package you can find it in the pop up and copy the
+              install snippet.
+            </p>
+            <p>
+              Open the extension from the toolbar and navigate to the package.
+            </p>
+            <p>
+              Click on the install snippet and it will be copied to the
+              clipboard
+            </p>
+          </div>
+          <div class="w50 center">
+            <img
+              src="../images/help/help-copy-snippet.png"
+              alt="Copy install snippet"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      npm faves is an
+      <a href="https://github.com/tulu/chrome-extension-npm-faves" target="_blank"
+        >open source</a
+      >
+      extension from devs to devs
+      <img src="../images/npm-faves-logo-32.png" alt="npm faves logo" />
+    </div>
     <!-- build:js ../scripts/npm-faves.core.min.js -->
     <script src="../scripts/services/npmFaves-tracking-service.js"></script>
     <script src="../scripts/services/npmFaves-storage-service.js"></script>
