@@ -1,12 +1,12 @@
 let baseManifest = {
   name: "npm faves",
   description: "Manage your favorite node packages",
-  version: "1.0.0",
+  version: "1.0.1",
   manifest_version: 3,
   background: {
     service_worker: "./service-worker.js",
   },
-  permissions: ["storage", "activeTab", "tabs", "clipboardWrite"],
+  permissions: ["storage", "tabs", "clipboardWrite"],
   action: {
     default_popup: "./views/popup-main.html",
     default_title: "npm faves",
