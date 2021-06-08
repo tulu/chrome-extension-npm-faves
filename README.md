@@ -6,8 +6,8 @@
 <p align="center">Manage your favorite node packages directly from Google Chrome</p>
 
 <p align="center">
-    <img src="https://img.shields.io/chrome-web-store/v/{ID}?label=Version" />
-    <img src="https://img.shields.io/chrome-web-store/users/{ID}?label=Downloads" />
+    <img src="https://img.shields.io/chrome-web-store/v/lgcedkogdjoickahfdegicgmbkloaaem?label=Version" />
+    <img src="https://img.shields.io/chrome-web-store/users/lgcedkogdjoickahfdegicgmbkloaaem?label=Downloads" />
     <img src="https://www.code-inspector.com/project/23258/score/svg" />
     <img src="https://img.shields.io/github/license/tulu/chrome-extension-npm-faves?label=License" />
 </p>
@@ -44,7 +44,7 @@
 
 ### Chrome Web Store
 
-Install the extension from the Chrome web store. (Not yet available)
+Install the extension from the [Chrome Web Store](https://chrome.google.com/webstore/detail/npm-faves/lgcedkogdjoickahfdegicgmbkloaaem).
 
 ### Release
 
