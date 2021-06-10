@@ -28,6 +28,8 @@ let baseManifest = {
   host_permissions: ["https://registry.npmjs.org/*"],
 };
 
+const nameDev = "npm faves (development)";
+
 const contentScriptsDev = {
   matches: ["*://www.npmjs.com/package/*"],
   all_frames: true,
@@ -41,6 +43,8 @@ const contentScriptsDev = {
   ],
   css: ["./styles/buttons.css", "./styles/notifications.css"],
 };
+
+const nameProd = "npm faves";
 
 const contentScriptsProd = {
   matches: ["*://www.npmjs.com/package/*"],
@@ -59,9 +63,11 @@ const contentScriptsProd = {
  */
 exports.generateManifest = function (env) {
   if (env == "production") {
+    baseManifest.name = nameProd;
     baseManifest.content_scripts.push(contentScriptsProd);
   }
   if (env == "development") {
+    baseManifest.name = nameDev;
     baseManifest.content_scripts.push(contentScriptsDev);
   }
   return baseManifest;
