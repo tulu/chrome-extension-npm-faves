@@ -125,7 +125,7 @@ function getPackageView(fave) {
     const baseUrl = "https://www.npmjs.com/";
     fave.maintainers.split(",").forEach((maintainer) => {
       maintainersHtml += `<a target="_blank" href="${baseUrl}~${maintainer.trim()}">
-        <img src="http://tinygraphs.com/labs/isogrids/hexa16/${maintainer.trim()}?theme=berrypie&numcolors=2&size=42&fmt=svg" 
+        <img src="${getUserAvatar(maintainer)}" 
         title="${maintainer.trim()}">
       </a>`;
     });
@@ -170,6 +170,18 @@ ${repositoryLinkHtml}
         Remove from faves
     </a>
 </div>`;
+}
+
+/**
+ * Returns the user avatar url based on the name.
+ * 2 different services implemented but only 1 used
+ * @param {string} maintainer username of the maintainer
+ * @returns URL with a random avatar of the user
+ */
+function getUserAvatar(maintainer) {
+  let tinygraphs = `http://tinygraphs.com/labs/isogrids/hexa16/${maintainer.trim()}?theme=berrypie&numcolors=2&size=42&fmt=svg`;
+  let dicebear = `https://avatars.dicebear.com/api/gridy/${maintainer.trim()}.svg`;
+  return dicebear;
 }
 
 /**

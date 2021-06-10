@@ -165,6 +165,7 @@ Besides the javascript libraries other resources are used so the credits to them
 - [chrome.storage.sync API Promise](https://gist.github.com/sumitpore/47439fcd86696a71bf083ede8bbd5466) - To make life easier. Thank you [sumitpore](https://gist.github.com/sumitpore)!
 - [Heart loader](https://loading.io/css/) - To make a nice transition when loading the package information.
 - [tinygraphs](https://www.tinygraphs.com/) - To show npm user avatars
+- [DiceBear Avatars](https://avatars.dicebear.com/) - To show npm user avatars (because one service is not enough)
 - The logo was created with svg files from wikimedia: [Heart](https://commons.wikimedia.org/wiki/File:Heart_font_awesome.svg) & [npm logo](https://commons.wikimedia.org/wiki/File:Npm-logo.svg)
 
 ## Contributing
