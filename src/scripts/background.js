@@ -25,7 +25,7 @@ chrome.runtime.onInstalled.addListener(async function (reason) {
     showReadme();
   }
   await reloadNpmTabs();
-  await updateFavesBadgeWithQuantity();
+  await updateToolbarButton();
 });
 
 /**
@@ -33,7 +33,7 @@ chrome.runtime.onInstalled.addListener(async function (reason) {
  */
 chrome.storage.onChanged.addListener(async function (changes, areaName) {
   if (changes && changes.faves) {
-    await updateFavesBadgeWithQuantity();
+    await updateToolbarButton();
   }
 });
 
@@ -51,6 +51,37 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
   })();
   return true; // <-- Keeps the connection open.
+});
+
+/**
+ * Listens to tab onActivated event to check if the site is npmjs.com.
+ * Ref.: Fires when the active tab in a window changes.
+ */
+chrome.tabs.onActivated.addListener(function (activeInfo) {
+  (async () => {
+    try {
+      updateToolbarButton();
+    } catch (error) {
+      console.log(error);
+    }
+  })();
+});
+
+/**
+ * Listens to tab onUpdated event to check if the site is npmjs.com.
+ * Ref.: Fired when a tab is updated.
+ */
+chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+  (async () => {
+    try {
+      // Check if completed, active
+      if (changeInfo.status && changeInfo.status == "complete" && tab.active) {
+        updateToolbarButton();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  })();
 });
 
 // Functions <<<==============================================================
@@ -80,18 +111,6 @@ async function reloadNpmTabs() {
 }
 
 /**
- * Updates the number of faved packages in the badge of the extension.
- */
-async function updateFavesBadgeWithQuantity() {
-  let faves = await npmFaves.storage.getFaves();
-  let favesCount = faves.length > 0 ? faves.length.toString() : "";
-  chrome.action.setBadgeText({
-    text: favesCount,
-  });
-  chrome.action.setBadgeBackgroundColor({ color: "#cb3837ff" }, () => {});
-}
-
-/**
  * Adds or removes a fave according to the action.
  * @param {string} action The action to perform (add | remove).
  * @param {string} packageName The name of the package.
@@ -108,4 +127,101 @@ async function handlePackage(action, packageName) {
   } catch (error) {
     console.log(error);
   }
+}
+
+/**
+ * Updates the extension's toolbar button image and badge based on the current
+ * active url.
+ */
+async function updateToolbarButton() {
+  try {
+    const validUrls = [
+      "https://www.npmjs.com", // npmjs.com site
+      `chrome-extension://${chrome.runtime.id}`, // extension's url
+      "chrome://extensions/", // extension management
+    ];
+    // Get the current tab
+    const tab = await getCurrentTab();
+    const index = validUrls.findIndex((url) => {
+      return tab.url.startsWith(url);
+    }, tab);
+    if (index == 0) {
+      // The active tab is npmjs.com
+      // Check the package in the url
+      let packageName = npmFaves.helpers.getUrlPartAfterToken(
+        tab.url,
+        "package/"
+      );
+      if (packageName) {
+        // Check if package is faved
+        const fave = await npmFaves.storage.getFave(packageName, false);
+        if (fave) {
+          // The package is already faved
+          // Show a colored icon with a green badge and a "tick" sign
+          changeToolbarButtonStyle(true, "✓", "#6aa84fff");
+        } else {
+          // The package is NOT faved yet
+          // Show a colored icon with a blue badge and a "plus" sign
+          changeToolbarButtonStyle(true, "+", "#3c78d8ff");
+        }
+      } else {
+        // The url is npmjs.com but not a package page
+        // Show a colored icon with the number of faved packages in the badge
+        let faves = await npmFaves.storage.getFaves();
+        let favesCount = faves.length > 0 ? faves.length.toString() : "";
+        changeToolbarButtonStyle(true, favesCount, "#cb3837ff");
+      }
+    } else if (index == 1 || index == 2) {
+      // The active tab is the extension or the chrome extensions management
+      // Show a colored icon with no badge
+      changeToolbarButtonStyle(true);
+    } else {
+      // The active tab is not valid for the extension
+      // Show a "disabled" icon with no badge
+      changeToolbarButtonStyle(false);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+/**
+ * Changes the styles of the button in the toolbar.
+ * @param {boolean} enabled Show enabled or disabled icon.
+ * @param {string} badgeText The text to show in the badge. Empty by default.
+ * @param {string} badgeBackground The background color of the badge. Empty by
+ * default.
+ */
+function changeToolbarButtonStyle(
+  enabled,
+  badgeText = "",
+  badgeBackground = "#fff"
+) {
+  let iconPath = "../images/npm-faves-logo-32.png";
+  if (!enabled) {
+    iconPath = "../images/npm-faves-logo-grey-32.png";
+  }
+  // Change the badge icon
+  chrome.action.setIcon({ path: iconPath });
+  // Change the badge text
+  chrome.action.setBadgeText({
+    text: badgeText,
+  });
+  // Change the badge background color
+  chrome.action.setBadgeBackgroundColor({ color: badgeBackground });
+}
+
+/**
+ * Gets the current active tab.
+ * @returns {Tab} The current tab.
+ */
+async function getCurrentTab() {
+  let tab = null;
+  try {
+    const queryOptions = { active: true, currentWindow: true };
+    [tab] = await chrome.tabs.query(queryOptions);
+  } catch (error) {
+    console.log(error);
+  }
+  return tab;
 }
