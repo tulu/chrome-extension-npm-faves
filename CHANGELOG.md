@@ -3,6 +3,15 @@
 Changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
+## [v?.?.?] - Unreleased
+
+### Added
+- Popup toolbar button new interactions depending on the active tab
+
+### Bugs
+- Fixed footer overlap with the faves list in the options page
+- Fixed package load in view when unpacked size or file count is null
+
 ## [v1.0.1] - 2021-06-06
 
 ### Removed
