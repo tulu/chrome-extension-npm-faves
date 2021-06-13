@@ -60,6 +60,22 @@ var npmFaves = npmFaves || {};
     });
   };
 
+  const getNextCollectionId = async function () {
+    let nextId = 0;
+    try {
+      let collections = await npmFaves.storage.getCollections();
+      if (collections.length > 0) {
+        nextId = collections.reduce(
+          (max, collection) => (collection.id > max ? collection.id : max),
+          collections[0].id
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    return nextId + 1;
+  };
+
   //#endregion
 
   /**
@@ -211,5 +227,102 @@ var npmFaves = npmFaves || {};
       console.log(error);
     }
     return fave;
+  };
+
+  this.storage.getCollections = async function () {
+    let collections = [];
+    try {
+      collections = await asyncGetFromSyncStorage("collections");
+    } catch (error) {
+      console.log(error);
+    }
+    return collections || [];
+  };
+
+  this.storage.saveCollection = async function (collectionToCreate) {
+    let collection = null;
+    try {
+      // Get collection if exists
+      if (collectionToCreate.id) {
+        collection = await this.getCollectionById(collectionToCreate.id);
+      }
+      // Get all the collections
+      let collections = await this.getCollections();
+      if (!collection) {
+        // Initiate and add values
+        collection = {};
+        collection.id = await getNextCollectionId();
+        collection.name = collectionToCreate.name;
+        collection.type = collectionToCreate.type;
+        // Add created date
+        collection.createdAt = Date.now();
+        // Add to list
+        collections.push(collection);
+      } else {
+        // Add new values
+        collection.name = collectionToCreate.name;
+        collection.type = collectionToCreate.type;
+        // Update collection in list
+        let collectionPosition = -1;
+        collectionPosition = collections
+          .map(function (e) {
+            return e.id;
+          })
+          .indexOf(collection.id);
+        if (collectionPosition > -1) {
+          // Update the dates before overriding
+          collection.createdAt = collections[collectionPosition].createdAt;
+          collection.updatedAt = Date.now();
+          collections[collectionPosition] = collection;
+        }
+      }
+      // Sort packages alphabetically
+      collections.sort((a, b) => (a.name > b.name ? 1 : -1));
+      // Save the faves again
+      await asyncSetToSyncStorage({ collections: collections });
+    } catch (error) {
+      console.log(error);
+    }
+    return collection;
+  };
+
+  this.storage.getCollectionById = async function (collectionId) {
+    let collection;
+    try {
+      if (collectionId) {
+        // Get all the collections
+        let collections = await this.getCollections();
+        // Get the collection by name
+        collection = collections.filter((item) => item.id == collectionId);
+        if (collection.length == 1) {
+          collection = collection[0];
+        } else {
+          collection = null;
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    return collection;
+  };
+
+  this.storage.getCollectionByName = async function (collectionName) {
+    let collection;
+    try {
+      if (collectionName) {
+        // Get all the collections
+        let collections = await this.getCollections();
+        // Get the collection by name
+        collection = collections.filter((item) => item.name == collectionName);
+        if (collection.length == 1) {
+          collection = collection[0];
+        } else {
+          collection = null;
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    return collection;
   };
 }.apply(npmFaves));

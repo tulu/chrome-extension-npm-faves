@@ -13,6 +13,18 @@ body {
   border: none !important;
 }
 
+.separator-top {
+  border-color: rgba(0, 0, 0, 0.1);
+  border-top-style: solid;
+  border-top-width: 1px;
+}
+
+.separator-bottom {
+  border-color: rgba(0, 0, 0, 0.1);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
+
 .menu-item {
   display: flex;
   width: 100%;
@@ -22,8 +34,6 @@ body {
   font-size: 1rem;
   align-items: center;
   padding: 0px 5px;
-  border-bottom: 1px solid #cacaca;
-  border-top: 1px solid #cacaca;
 }
 
 .menu-item-gray {
@@ -43,6 +53,88 @@ body {
   margin-left: auto;
   margin-right: 15px;
   font-size: 15px;
+}
+
+.title-container {
+  font-size: 1.25rem;
+  color: rgba(0, 0, 0, 0.9);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 10px;
+  border-bottom: 1px solid #ea2039;
+  display: flex;
+}
+
+.title-container .material-icons-outlined {
+  margin-right: 5px;
+  color: #676767;
+  padding-top: 1px;
+}
+
+/* ==[ Forms ]== */
+
+.field-container {
+  padding: 0 1rem;
+}
+
+.field-container label {
+  line-height: 30px;
+  white-space: nowrap;
+  font-size: 1rem;
+  margin: 0.25rem 0;
+  font-weight: 600;
+  display: block;
+}
+
+.field-container input[type="text"] {
+  box-sizing: border-box;
+  height: 38px;
+  padding: 1rem 0.5rem;
+  width: 100%;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-family: "Source Sans Pro", "Lucida Grande", sans-serif;
+  overflow: visible;
+}
+
+.field-container select {
+  box-sizing: border-box;
+  height: 38px;
+  padding: 0 0.5rem;
+  width: 100%;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-family: "Source Sans Pro", "Lucida Grande", sans-serif;
+}
+
+.field-container button {
+  background-color: #fff;
+  background-image: linear-gradient( 
+-180deg
+, rgba(255, 255, 255, 0.09) 0%, rgba(17, 17, 17, 0.04) 100% );
+  border: 1px solid rgba(22, 22, 22, 0.2);
+  letter-spacing: 0.25px;
+  font-size: 1rem;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  border-radius: 0.25rem;
+  font-family: "Source Sans Pro", "Lucida Grande", sans-serif;
+  line-height: 1.15;
+  margin: 1rem 0;
+}
+
+.field-container button:hover {
+  background-image: linear-gradient(
+    -180deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(17, 17, 17, 0.08) 100%
+  );
+  border: 1px solid rgba(22, 22, 22, 0.2);
+  color: #111;
+  cursor: pointer;
 }
 
 /* ==[ Search bar ]== */

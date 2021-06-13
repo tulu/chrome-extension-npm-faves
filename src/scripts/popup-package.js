@@ -8,6 +8,7 @@
 
 (async () => {
   sendView();
+  addBackNavigation();
   await showPackageInformation();
   addEventToCopyInstallation();
   addEventsToRemoveLinks();
@@ -20,6 +21,16 @@ function sendView() {
   npmFaves.tracking.a.sendView(
     npmFaves.helpers.excludeExtensionFromUrl(window.location.href)
   );
+}
+
+function addBackNavigation() {
+  let collectionName = npmFaves.helpers.getQueryStringValue(
+    window.location.href,
+    "collection"
+  );
+  collectionName = collectionName ? collectionName : "all";
+  const backButton = document.getElementById("backButton");
+  backButton.href = `./popup-collection.html?collection=${collectionName}`;
 }
 
 /**

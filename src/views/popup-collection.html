@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>npm faves :: Popup Package</title>
+    <title>npm faves :: Popup Collection</title>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -26,15 +26,16 @@
     <!-- endbuild -->
   </head>
   <body>
-    <a id="backButton" class="menu-item menu-item-gray" href="./popup-main.html"
+    <a class="menu-item menu-item-gray" href="./popup-main.html"
       ><span class="material-icons"> arrow_left </span>Back</a
     >
     <div id="npmfNotification"></div>
-    <div id="packageView">
-      <div class="lds-heart-container">
-        <div class="lds-heart"><div></div></div>
-      </div>
+    <div class="title-container">
+      <span class="material-icons-outlined"> favorite </span
+      ><span id=collectionTitle>All faves</span>
     </div>
+    <div id="favesContainer"></div>
+
     <!-- build:js ../scripts/vendor.min.js -->
     <script src="../scripts/lib/timeago.min.js"></script>
     <script src="../scripts/lib/pretty-bytes.js"></script>
@@ -46,8 +47,8 @@
     <script src="../scripts/utils/npmFaves-ui-notification.js"></script>
     <script src="../scripts/utils/npmFaves-helpers.js"></script>
     <!-- endbuild -->
-    <!-- build:js ../scripts/popup-package.min.js -->
-    <script src="../scripts/popup-package.js"></script>
+    <!-- build:js ../scripts/popup-collection.min.js -->
+    <script src="../scripts/popup-collection.js"></script>
     <!-- endbuild -->
   </body>
 </html>
