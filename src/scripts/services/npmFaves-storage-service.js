@@ -325,4 +325,9 @@ var npmFaves = npmFaves || {};
     }
     return collection;
   };
+
+  // To implement
+  this.storage.getCollectionFaves = async function (collectionOd) {
+    return [];
+  };
 }.apply(npmFaves));

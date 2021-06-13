@@ -9,7 +9,7 @@
 (async () => {
   sendView();
   checkNotification();
-  await showFavesList();
+  await showCollectionInformation();
 })();
 
 /**
@@ -44,12 +44,10 @@ function checkNotification() {
   }
 }
 
-/**
- * Loads faved packages from the storage and shows the list.
- * Also renders an option to remove from faves.
- */
-async function showFavesList() {
+async function showCollectionInformation() {
   try {
+    const titleEl = document.getElementById("collectionTitle");
+    const typeEl = document.getElementById("collectionType");
     // Get collection to show
     const collectionId = npmFaves.helpers.getQueryStringValue(
       window.location.href,
@@ -59,10 +57,16 @@ async function showFavesList() {
     if (!collectionId) {
       // No collection selected
       faves = await npmFaves.storage.getFaves();
+      titleEl.innerHTML = "All faves";
+      typeEl.innerHTML = "favorite";
+      setActions(null);
     } else {
       // Check for collection
       collection = await npmFaves.storage.getCollectionById(collectionId);
       if (collection) {
+        titleEl.innerHTML = collection.name;
+        typeEl.innerHTML = npmFaves.helpers.getCollectionIcon(collection.type);
+        setActions(collection.id);
         faves = await npmFaves.storage.getCollectionFaves(collection.id);
       } else {
         // Return to main and show error
@@ -86,6 +90,23 @@ async function showFavesList() {
     }
   } catch (error) {
     console.log(error);
+  }
+}
+
+function setActions(collectionId) {
+  const actionsEl = document.getElementById("collectionActions");
+  if (!collectionId) {
+    // All faves so options are hidden
+    actionsEl.style.visibility = "hidden";
+  } else {
+    // Set the actions for each link
+    const actionEditEl = document.getElementById("actionEdit");
+    const actionManageEl = document.getElementById("actionManage");
+    const actionDeleteEl = document.getElementById("actionDelete");
+
+    actionEditEl.href = `./popup-edit-collection.html?id=${collectionId}`;
+    //actionManageEl.href = `./popup-edit-collection.html?id=${collectionId}`;
+    //actionDeleteEl.href = `./popup-edit-collection.html?id=${collectionId}`;
   }
 }
 

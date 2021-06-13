@@ -13,6 +13,7 @@
   addSearchBarEvent();
   checkNotification();
   addMenuEvents();
+  await showCollectionsList();
 })();
 
 /**
@@ -76,4 +77,29 @@ function checkNotification() {
       true
     );
   }
+}
+
+async function showCollectionsList() {
+  try {
+    const collections = await npmFaves.storage.getCollections();
+    const collectionsContainer = document.getElementById("collectionsList");
+    if (collections.length > 0) {
+      let list = "";
+      collections.forEach((collection) => {
+        list += getCollectionListElement(collection);
+      });
+      collectionsContainer.innerHTML = list;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function getCollectionListElement(collection) {
+let type  = npmFaves.helpers.getCollectionIcon(collection.type);
+  return `<a class="menu-item" href="./popup-collection.html?id=${collection.id}">
+    <span class="material-icons-outlined"> ${type} </span>
+    ${collection.name}
+    <span class="material-icons-outlined">arrow_right</span>
+  </a>`;
 }

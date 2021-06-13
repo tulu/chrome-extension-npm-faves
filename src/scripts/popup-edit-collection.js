@@ -28,6 +28,7 @@ async function loadCollection() {
   if (id) {
     collection = await npmFaves.storage.getCollectionById(id);
     if (collection) {
+      document.getElementById("collectionTitle").innerHTML = "Edit collection";
       document.getElementById("txtName").value = collection.name;
       document.getElementById("selType").value = collection.type;
     }
@@ -46,26 +47,37 @@ function addSaveEvent() {
  * Saves the collection
  */
 async function saveCollection() {
-  const name = document.getElementById("txtName").value;
-  const type = document.getElementById("selType").value;
-  const id = npmFaves.helpers.getQueryStringValue(window.location.href, "id");
-  if (await validName(name)) {
+  try {
+    const name = document.getElementById("txtName").value;
+    const type = document.getElementById("selType").value;
+    const id = npmFaves.helpers.getQueryStringValue(window.location.href, "id");
     let collection = {};
+    //Check if id and valid collection
     if (id) {
       collection = await npmFaves.storage.getCollectionById(id);
+      if (!collection) {
+        throw new Error("Collection not found");
+      }
     }
-    collection.name = name;
-    collection.type = type;
-    // Saves the collection
-    collection = await npmFaves.storage.saveCollection(collection);
-    // Redirects to collection view
-    location.href = `./popup-collection.html?id=${collection.id}`;
-  } else {
+    // Validate the name length and uniqueness
+    if (await validName(name, id)) {
+      collection.name = name;
+      collection.type = type;
+      // Saves the collection
+      collection = await npmFaves.storage.saveCollection(collection);
+      // Redirects to collection view
+      location.href = `./popup-collection.html?id=${collection.id}`;
+    } else {
+      throw new Error(
+        "The collection name must have 3 chars min and be unique"
+      );
+    }
+  } catch (error) {
+    console.log(error);
     // Show message as name is not valid
-    const message = "The collection name must have 3 chars min and be unique";
     npmFaves.ui.createNotification(
       npmFaves.ui.notificationTypes.ERROR,
-      message,
+      error,
       true
     );
   }
@@ -74,16 +86,17 @@ async function saveCollection() {
 /**
  * Validates the collection name based on length and uniqueness
  * @param {string} name
+ * @param {string} id Collection id to validate
  * @returns {boolean} True if is valid
  */
-async function validName(name) {
+async function validName(name, id) {
   // Min length 3 chars because yes
   if (name.length < 3) {
     return false;
   }
   // Check if name already used
   const collection = await npmFaves.storage.getCollectionByName(name);
-  if (collection) {
+  if (collection && collection.id != id) {
     return false;
   }
   return true;
