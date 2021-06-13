@@ -182,7 +182,7 @@ var npmFaves = npmFaves || {};
       // Get all the faved packages
       let faves = await this.getFaves();
       // Remove the package based on the name
-      faves = faves.filter((item) => item.name !== packageName);
+      faves = faves.filter((item) => item.name != packageName);
       // Sort packages alphabetically
       faves.sort((a, b) => (a.name > b.name ? 1 : -1));
       // Save the faves again
@@ -320,6 +320,22 @@ var npmFaves = npmFaves || {};
           collection = null;
         }
       }
+    } catch (error) {
+      console.log(error);
+    }
+    return collection;
+  };
+
+  this.storage.deleteCollection = async function (collectionId) {
+    try {
+      // Get all the collections
+      let collections = await this.getCollections();
+      // Remove the collection based on the id
+      collections = collections.filter((item) => item.id != collectionId);
+      // Sort collections alphabetically
+      collections.sort((a, b) => (a.name > b.name ? 1 : -1));
+      // Save the faves again
+      await asyncSetToSyncStorage({ collections: collections });
     } catch (error) {
       console.log(error);
     }

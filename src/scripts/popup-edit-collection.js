@@ -31,6 +31,9 @@ async function loadCollection() {
       document.getElementById("collectionTitle").innerHTML = "Edit collection";
       document.getElementById("txtName").value = collection.name;
       document.getElementById("selType").value = collection.type;
+      document.getElementById(
+        "backButton"
+      ).href = `./popup-collection.html?id=${collection.id}`;
     }
   }
 }

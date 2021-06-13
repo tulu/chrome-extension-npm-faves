@@ -93,6 +93,11 @@ body {
   padding: 0 1rem;
 }
 
+.field-container .information{
+  font-size: 1rem;
+  text-align: center;
+}
+
 .field-container label {
   line-height: 30px;
   white-space: nowrap;
@@ -121,36 +126,6 @@ body {
   border-radius: 0.25rem;
   border: 1px solid rgba(0, 0, 0, 0.1);
   font-family: "Source Sans Pro", "Lucida Grande", sans-serif;
-}
-
-.field-container button {
-  background-color: #fff;
-  background-image: linear-gradient(
-    -180deg,
-    rgba(255, 255, 255, 0.09) 0%,
-    rgba(17, 17, 17, 0.04) 100%
-  );
-  border: 1px solid rgba(22, 22, 22, 0.2);
-  letter-spacing: 0.25px;
-  font-size: 1rem;
-  text-align: center;
-  padding: 0.5rem 1rem;
-  font-weight: 500;
-  border-radius: 0.25rem;
-  font-family: "Source Sans Pro", "Lucida Grande", sans-serif;
-  line-height: 1.15;
-  margin: 1rem 0;
-}
-
-.field-container button:hover {
-  background-image: linear-gradient(
-    -180deg,
-    rgba(255, 255, 255, 0.18) 0%,
-    rgba(17, 17, 17, 0.08) 100%
-  );
-  border: 1px solid rgba(22, 22, 22, 0.2);
-  color: #111;
-  cursor: pointer;
 }
 
 /* ==[ Search bar ]== */

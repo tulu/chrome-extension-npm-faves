@@ -103,10 +103,9 @@ function setActions(collectionId) {
     const actionEditEl = document.getElementById("actionEdit");
     const actionManageEl = document.getElementById("actionManage");
     const actionDeleteEl = document.getElementById("actionDelete");
-
     actionEditEl.href = `./popup-edit-collection.html?id=${collectionId}`;
-    //actionManageEl.href = `./popup-edit-collection.html?id=${collectionId}`;
-    //actionDeleteEl.href = `./popup-edit-collection.html?id=${collectionId}`;
+    actionManageEl.href = `./popup-manage-collection.html?id=${collectionId}`;
+    actionDeleteEl.href = `./popup-delete-collection.html?id=${collectionId}`;
   }
 }
 
