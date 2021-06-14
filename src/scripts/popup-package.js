@@ -24,13 +24,13 @@ function sendView() {
 }
 
 function addBackNavigation() {
-  let collectionName = npmFaves.helpers.getQueryStringValue(
+  let collectionId = npmFaves.helpers.getQueryStringValue(
     window.location.href,
-    "collection"
+    "collectionId"
   );
-  collectionName = collectionName ? collectionName : "all";
+  collectionId = collectionId != "null" ? `?id=${collectionId}` : "";
   const backButton = document.getElementById("backButton");
-  backButton.href = `./popup-collection.html?collection=${collectionName}`;
+  backButton.href = `./popup-collection.html${collectionId}`;
 }
 
 /**

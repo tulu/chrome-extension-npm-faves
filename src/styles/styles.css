@@ -93,7 +93,7 @@ body {
   padding: 0 1rem;
 }
 
-.field-container .information{
+.field-container .information {
   font-size: 1rem;
   text-align: center;
 }
@@ -383,4 +383,24 @@ a.package-value {
   100% {
     transform: scale(0.9);
   }
+}
+
+#packagesContainer ul {
+  list-style: none;
+  padding: 0;
+  font-size: 1.1rem;
+}
+
+#packagesContainer ul li {
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+}
+
+#packagesContainer ul li input {
+  margin: 3px 10px 0 0;
+  cursor: pointer;
+}
+#packagesContainer ul li label {
+  cursor: pointer;
 }

@@ -254,6 +254,7 @@ var npmFaves = npmFaves || {};
         collection.id = await getNextCollectionId();
         collection.name = collectionToCreate.name;
         collection.type = collectionToCreate.type;
+        collection.packages = [];
         // Add created date
         collection.createdAt = Date.now();
         // Add to list
@@ -342,8 +343,80 @@ var npmFaves = npmFaves || {};
     return collection;
   };
 
-  // To implement
-  this.storage.getCollectionFaves = async function (collectionOd) {
-    return [];
+  this.storage.addToCollection = async function (collectionId, packageName) {
+    try {
+      // Get all the collections
+      let collections = await this.getCollections();
+      // Find the position in the list to update
+      let collectionPosition = -1;
+      collectionPosition = collections
+        .map(function (e) {
+          return e.id;
+        })
+        .indexOf(collectionId);
+      if (collectionPosition > -1) {
+        // Add the package to the list
+        collections[collectionPosition].packages.push({
+          addedAt: Date.now(),
+          name: packageName,
+        });
+        // Sort packages by name
+        collections[collectionPosition].packages.sort((a, b) =>
+          a.name > b.name ? 1 : -1
+        );
+        // Save the collections
+        await asyncSetToSyncStorage({ collections: collections });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  this.storage.removeFromCollection = async function (
+    collectionId,
+    packageName
+  ) {
+    try {
+      // Get all the collections
+      let collections = await this.getCollections();
+      // Find the position in the list to update
+      let collectionPosition = -1;
+      collectionPosition = collections
+        .map(function (e) {
+          return e.id;
+        })
+        .indexOf(collectionId);
+      if (collectionPosition > -1) {
+        // Remove the package from the list
+        collections[collectionPosition].packages = collections[
+          collectionPosition
+        ].packages.filter((item) => item.name != packageName);
+        // Sort packages by name
+        collections[collectionPosition].packages.sort((a, b) =>
+          a.name > b.name ? 1 : -1
+        );
+        // Save the collections
+        await asyncSetToSyncStorage({ collections: collections });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  this.storage.getCollectionFaves = async function (collectionId) {
+    let faves = [];
+    try {
+      // Get all faved packages
+      const allFaves = await this.getFaves();
+      // Get the collection
+      const collection = await this.getCollectionById(collectionId);
+      // Filter all the packages to get only what the collection has
+      faves = allFaves.filter((fave) =>
+        collection.packages.some((pack) => pack.name === fave.name)
+      );
+    } catch (error) {
+      console.log(error);
+    }
+    return faves || [];
   };
 }.apply(npmFaves));

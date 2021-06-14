@@ -29,6 +29,7 @@ async function loadCollection() {
     collection = await npmFaves.storage.getCollectionById(id);
     if (collection) {
       document.getElementById("collectionTitle").innerHTML = "Edit collection";
+      document.getElementById("collectionType").innerHTML = "edit";
       document.getElementById("txtName").value = collection.name;
       document.getElementById("selType").value = collection.type;
       document.getElementById(
@@ -54,7 +55,7 @@ async function saveCollection() {
     const name = document.getElementById("txtName").value;
     const type = document.getElementById("selType").value;
     const id = npmFaves.helpers.getQueryStringValue(window.location.href, "id");
-    let collection = {};
+    let collection = {  };
     //Check if id and valid collection
     if (id) {
       collection = await npmFaves.storage.getCollectionById(id);

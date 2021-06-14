@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>npm faves :: Popup Manage Collection Packages</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&family=Source+Sans+Pro:wght@200;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined"
+      rel="stylesheet"
+    />
+    <!-- build:css ../styles/styles.min.css -->
+    <link rel="stylesheet" href="../styles/styles.css" />
+    <!-- endbuild -->
+    <!-- build:css ../styles/npm-faves.ui.min.css -->
+    <link rel="stylesheet" href="../styles/buttons.css" />
+    <link rel="stylesheet" href="../styles/notifications.css" />
+    <!-- endbuild -->
+    <!-- build:js ../scripts/analytics.min.js -->
+    <script src="../scripts/lib/analytics.js"></script>
+    <!-- endbuild -->
+  </head>
+  <body>
+    <a id="backButton" class="menu-item menu-item-gray" href=""
+      ><span class="material-icons"> arrow_left </span>Back</a
+    >
+    <div class="title-container">
+      <span id="collectionType" class="material-icons-outlined"> exposure </span
+      ><span id="collectionTitle">Manage packages:</span>
+    </div>
+    <div id="packagesContainer" class="field-container"></div>
+
+    <!-- build:js ../scripts/vendor.min.js -->
+    <script src="../scripts/lib/timeago.min.js"></script>
+    <script src="../scripts/lib/pretty-bytes.js"></script>
+    <!-- endbuild -->
+    <!-- build:js ../scripts/npm-faves.core.min.js -->
+    <script src="../scripts/services/npmFaves-tracking-service.js"></script>
+    <script src="../scripts/services/npmFaves-storage-service.js"></script>
+    <script src="../scripts/services/npmFaves-registry-service.js"></script>
+    <script src="../scripts/utils/npmFaves-ui-notification.js"></script>
+    <script src="../scripts/utils/npmFaves-helpers.js"></script>
+    <!-- endbuild -->
+    <!-- build:js ../scripts/popup-manage-collection.min.js -->
+    <script src="../scripts/popup-manage-collection.js"></script>
+    <!-- endbuild -->
+  </body>
+</html>

@@ -125,11 +125,11 @@ function addEventsToListPackages() {
  */
 async function handleViewPackageClick() {
   let packageName = this.getAttribute("package-name");
-  const collectionName = npmFaves.helpers.getQueryStringValue(
+  const collectionId = npmFaves.helpers.getQueryStringValue(
     window.location.href,
-    "collection"
+    "id"
   );
-  location.href = `./popup-package.html?package-name=${packageName}&collection=${collectionName}`;
+  location.href = `./popup-package.html?package-name=${packageName}&collectionId=${collectionId}`;
 }
 
 /**
