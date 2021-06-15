@@ -221,7 +221,15 @@ async function getCurrentTab() {
     const queryOptions = { active: true, currentWindow: true };
     [tab] = await chrome.tabs.query(queryOptions);
   } catch (error) {
-    console.log(error);
+    // There is a fancy error in chrome 91: 
+    // “Tabs cannot be edited right now (user may be dragging a tab)”
+    // By adding a timeout and calling the api again it works...
+    await timeout(100);
+    tab = getCurrentTab();
   }
   return tab;
+}
+
+function timeout(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }

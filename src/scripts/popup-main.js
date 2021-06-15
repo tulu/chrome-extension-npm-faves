@@ -13,6 +13,7 @@
   addSearchBarEvent();
   checkNotification();
   addMenuEvents();
+  await showAllFavesCount();
   await showCollectionsList();
 })();
 
@@ -96,10 +97,20 @@ async function showCollectionsList() {
 }
 
 function getCollectionListElement(collection) {
-let type  = npmFaves.helpers.getCollectionIcon(collection.type);
+  let type = npmFaves.helpers.getCollectionIcon(collection.type);
   return `<a class="menu-item" href="./popup-collection.html?id=${collection.id}">
     <span class="material-icons-outlined"> ${type} </span>
-    ${collection.name}
+    ${collection.name}<span class="badge">(${collection.packages.length})</span>
     <span class="material-icons-outlined">arrow_right</span>
   </a>`;
+}
+
+async function showAllFavesCount() {
+  try {
+    let faves = await npmFaves.storage.getFaves();
+    let badge = faves.length > 0 ? `(${faves.length})` : "";
+    document.getElementById("allFavesCount").innerHTML = badge;
+  } catch (error) {
+    console.log(error);
+  }
 }

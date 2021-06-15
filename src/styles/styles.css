@@ -25,6 +25,11 @@ body {
   border-bottom-width: 1px;
 }
 
+.badge {
+  font-size: 0.8em;
+  margin-left: 0.3em;
+}
+
 .menu-item {
   display: flex;
   width: 100%;
