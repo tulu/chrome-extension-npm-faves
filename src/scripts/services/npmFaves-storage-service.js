@@ -192,6 +192,12 @@ var npmFaves = npmFaves || {};
       // service worker there is no window object to execute the
       // Google Analytics script
       // npmFaves.tracking.a.sendFaveRemoved(packageName);
+
+      // Remove fave from collections
+      let collections = await this.getCollections();
+      for await (collection of collections) {
+        await this.removeFromCollection(collection.id, packageName);
+      }
     } catch (error) {
       console.log(error);
     }
