@@ -146,12 +146,6 @@ function getFaveButtonElement(toAddToFaves) {
  * package information from the registry service from the content script.
  */
 async function handleFaveLinkClick() {
-  // Disable button as it will be created again
-  let faveButton = document.querySelector("#npmFavesLink");
-  if (faveButton) {
-    faveButton.className = "npmf_button npmf_disabled-button";
-  }
-
   let displayMessage = "";
   let actionToSend = "";
   // Get the package name from the url
@@ -160,11 +154,13 @@ async function handleFaveLinkClick() {
     "package/"
   );
   // Get the action to perform from the link
+  let add = true;
   let action = this.getAttribute("fave-action");
   if (action == "addToFaves") {
     actionToSend = "add";
     displayMessage = "Package added to faves :)";
   } else {
+    add = false;
     actionToSend = "remove";
     displayMessage = "Package removed from faves :(";
   }
@@ -172,25 +168,39 @@ async function handleFaveLinkClick() {
     action: actionToSend,
     packageName: packageName,
   };
-  // Send message to the service worker
-  chrome.runtime.sendMessage(message, function (response) {
-    if (!response.result) {
-      displayMessage = "An error ocurred :(";
-    } else {
-      // Send event to Google Analytics.
-      // Can't centralize this call in the storage service because the add
-      // function is called from the service worker and there is no window
-      // in that context to execute the Google Analytics script
-      if (response.action == "add") {
-        npmFaves.tracking.a.sendFaveAdded(packageName);
-      } else if (response.action == "remove") {
-        npmFaves.tracking.a.sendFaveRemoved(packageName);
-      }
-    }
 
-    // Adds again the new button
-    addButtonToPage(displayMessage);
-  });
+  // Show warning
+  if (
+    add ||
+    confirm(
+      `By removing the faved package it will also be removed from the collections it was added to.\nDo you want to proceed?`
+    )
+  ) {
+    // Disable button as it will be created again
+    let faveButton = document.querySelector("#npmFavesLink");
+    if (faveButton) {
+      faveButton.className = "npmf_button npmf_disabled-button";
+    }
+    // Send message to the service worker
+    chrome.runtime.sendMessage(message, function (response) {
+      if (!response.result) {
+        displayMessage = "An error ocurred :(";
+      } else {
+        // Send event to Google Analytics.
+        // Can't centralize this call in the storage service because the add
+        // function is called from the service worker and there is no window
+        // in that context to execute the Google Analytics script
+        if (response.action == "add") {
+          npmFaves.tracking.a.sendFaveAdded(packageName);
+        } else if (response.action == "remove") {
+          npmFaves.tracking.a.sendFaveRemoved(packageName);
+        }
+      }
+
+      // Adds again the new button
+      addButtonToPage(displayMessage);
+    });
+  }
 }
 
 /**
