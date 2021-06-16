@@ -3,7 +3,7 @@
  *
  * Responsibilities:
  *  - Show the details of the package.
- *  - Remove selected package from faves.
+ *  - Redirects to remove package warning.
  */
 
 (async () => {
@@ -14,7 +14,7 @@
 })();
 
 /**
- * Sends the pageview event
+ * Sends the pageview event.
  */
 function sendView() {
   npmFaves.tracking.a.sendView(
@@ -22,20 +22,22 @@ function sendView() {
   );
 }
 
+/**
+ * Adds the back navigation link.
+ */
 function addBackNavigation() {
   let collectionId = npmFaves.helpers.getQueryStringValue(
     window.location.href,
     "collectionId"
   );
-  collectionId = collectionId != "null" ? `?id=${collectionId}` : "";
+  collectionId = collectionId != "null" ? `id=${collectionId}` : "";
   const backButton = document.getElementById("backButton");
-  backButton.href = `./popup-collection.html${collectionId}`;
+  backButton.href = `./popup-collection.html?${collectionId}`;
 }
 
 /**
  * Gets the package information from the storage and shows it in the view.
  * @param {string} packageName The name of the package.
- * @todo Show not found message in UI.
  */
 async function showPackageInformation() {
   try {
@@ -48,7 +50,9 @@ async function showPackageInformation() {
       const packageView = document.getElementById("packageView");
       packageView.innerHTML = getPackageView(fave);
     } else {
-      console.log(`Package ${packageName} not found!`);
+      const message = `${packageName} not found`;
+      const messageType = "ERROR";
+      location.href = `./popup-collection.html?notiMessage=${message}&notiType=${messageType}&${collectionId}`;
     }
   } catch (error) {
     console.log(error);

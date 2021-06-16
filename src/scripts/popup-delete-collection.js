@@ -22,25 +22,34 @@ function sendView() {
 }
 
 /**
- * Loads the collection information if exits
+ * Loads the collection information if exists.
  */
 async function loadCollection() {
-  const id = npmFaves.helpers.getQueryStringValue(window.location.href, "id");
-  if (id) {
-    const collection = await npmFaves.storage.getCollectionById(id);
-    if (collection) {
-      document.getElementById(
-        "collectionTitle"
-      ).innerHTML = `Delete collection: ${collection.name}`;
-      document.getElementById(
-        "backButton"
-      ).href = `./popup-collection.html?id=${collection.id}`;
+  try {
+    const id = npmFaves.helpers.getQueryStringValue(window.location.href, "id");
+    if (id) {
+      const collection = await npmFaves.storage.getCollectionById(id);
+      if (collection) {
+        document.getElementById(
+          "collectionTitle"
+        ).innerHTML = `Delete collection: ${collection.name}`;
+        document.getElementById(
+          "backButton"
+        ).href = `./popup-collection.html?id=${collection.id}`;
+      } else {
+        // Returns to main view with a error message to show
+        const message = `Collection not found`;
+        const messageType = "ERROR";
+        location.href = `./popup-main.html?notiMessage=${message}&notiType=${messageType}`;
+      }
     }
+  } catch (error) {
+    console.log(error);
   }
 }
 
 /**
- * Adds the delete event to the button
+ * Adds the delete event to the button.
  */
 function addDeleteEvent() {
   const deleteButton = document.getElementById("deleteButton");
@@ -48,7 +57,7 @@ function addDeleteEvent() {
 }
 
 /**
- * Saves the collection
+ * deletes the collection.
  */
 async function deleteCollection() {
   try {
@@ -63,6 +72,11 @@ async function deleteCollection() {
         // Returns to main view with a message to show
         const message = `Collection ${collection.name} was deleted :(`;
         const messageType = "SUCCESS";
+        location.href = `./popup-main.html?notiMessage=${message}&notiType=${messageType}`;
+      } else {
+        // Returns to main view with a error message to show
+        const message = `Collection not found`;
+        const messageType = "ERROR";
         location.href = `./popup-main.html?notiMessage=${message}&notiType=${messageType}`;
       }
     }

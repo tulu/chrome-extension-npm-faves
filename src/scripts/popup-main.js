@@ -6,6 +6,7 @@
  *  - Access the collection information.
  *  - Access the create collection option.
  *  - Access the options page
+ *  - Add search package in npmjs.com site functionality 
  */
 
 (async () => {
@@ -80,6 +81,9 @@ function checkNotification() {
   }
 }
 
+/**
+ * Shows the list of the existing collections to navigate to them.
+ */
 async function showCollectionsList() {
   try {
     const collections = await npmFaves.storage.getCollections();
@@ -96,6 +100,11 @@ async function showCollectionsList() {
   }
 }
 
+/**
+ * Returns the HTML representation of the collection.
+ * @param {object} collection The collection.
+ * @returns {string} Html of the collection element.
+ */
 function getCollectionListElement(collection) {
   let type = npmFaves.helpers.getCollectionIcon(collection.type);
   return `<a class="menu-item" href="./popup-collection.html?id=${collection.id}">
@@ -105,6 +114,9 @@ function getCollectionListElement(collection) {
   </a>`;
 }
 
+/**
+ * Displays the amount of faved packages for the "All faves" collection.
+ */
 async function showAllFavesCount() {
   try {
     let faves = await npmFaves.storage.getFaves();

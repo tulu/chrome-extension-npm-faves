@@ -1,9 +1,11 @@
 /**
- * Script that adds functionality to the extension's popup manage collection packages.
+ * Script that adds functionality to the extension's popup manage collection 
+ * packages.
  *
  * Responsibilities:
- *  - Show warning and button to delete collection
- *  - Delete collection
+ *  - Show list of all packages and a checkbox to add and remove from the 
+ *    collection.
+ *  - Add and remove package from collection.
  */
 
 (async () => {
@@ -56,6 +58,10 @@ async function loadCollection() {
   }
 }
 
+/**
+ * Sets the title and back button based on the collection.
+ * @param {object} collection The collection.
+ */
 function setUiElements(collection) {
   document.getElementById(
     "collectionTitle"
@@ -65,11 +71,21 @@ function setUiElements(collection) {
   ).href = `./popup-collection.html?id=${collection.id}`;
 }
 
+/**
+ * Returns to the main view with a message
+ * @param {string} message The message to show.
+ */
 function returnWithError(message) {
   const messageType = "ERROR";
   location.href = `./popup-main.html?notiMessage=${message}&notiType=${messageType}`;
 }
 
+/**
+ * Returns an html list representation with all the packages and their 
+ * checkboxes.
+ * @param {object[]} packagesToShow The list of packages to show.
+ * @returns {string} Html with the list of packages to show.
+ */
 function getPackagesListHtml(packagesToShow) {
   let html = "<ul>";
 
@@ -86,6 +102,9 @@ function getPackagesListHtml(packagesToShow) {
   return html;
 }
 
+/**
+ * Adds the click event listener to the checkboxes.
+ */
 function addPackagesEvent() {
   let packageItems = document.querySelectorAll("input[type=checkbox]");
   packageItems.forEach((check) => {
@@ -93,6 +112,9 @@ function addPackagesEvent() {
   });
 }
 
+/**
+ * Handles the management of the packages for the collection: add or remove.
+ */
 async function handlePackageManagement() {
   try {
     const collectionId = npmFaves.helpers.getQueryStringValue(

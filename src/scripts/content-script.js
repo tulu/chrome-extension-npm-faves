@@ -148,6 +148,7 @@ function getFaveButtonElement(toAddToFaves) {
 async function handleFaveLinkClick() {
   let displayMessage = "";
   let actionToSend = "";
+  let confirmMessage = "";
   // Get the package name from the url
   const packageName = npmFaves.helpers.getUrlPartAfterToken(
     document.location.href,
@@ -160,9 +161,10 @@ async function handleFaveLinkClick() {
     actionToSend = "add";
     displayMessage = "Package added to faves :)";
   } else {
-    add = false;
     actionToSend = "remove";
     displayMessage = "Package removed from faves :(";
+    add = false;
+    confirmMessage = await getConfirmMessage(packageName);
   }
   const message = {
     action: actionToSend,
@@ -170,12 +172,7 @@ async function handleFaveLinkClick() {
   };
 
   // Show warning
-  if (
-    add ||
-    confirm(
-      `By removing the faved package it will also be removed from the collections it was added to.\nDo you want to proceed?`
-    )
-  ) {
+  if (add || confirm(confirmMessage)) {
     // Disable button as it will be created again
     let faveButton = document.querySelector("#npmFavesLink");
     if (faveButton) {
@@ -201,6 +198,31 @@ async function handleFaveLinkClick() {
       addButtonToPage(displayMessage);
     });
   }
+}
+
+/**
+ * Gets the removal confirmation message including the collections the package
+ * was added to.
+ * @returns {string} The message to show before removing.
+ */
+async function getConfirmMessage() {
+  let message = `By removing the faved package it will also be removed from the collections 
+  it was added to`;
+  try {
+    // Get the collections with the package
+    const collections = await npmFaves.storage.getCollectionsByPackage(
+      packageName
+    );
+    if (collections.length > 0) {
+      message += `: ${collections.join(", ")}.`;
+    } else {
+      message += ".";
+    }
+    message += "\n\nDo you wan to proceed?";
+  } catch (error) {
+    console.log(error);
+  }
+  return message;
 }
 
 /**

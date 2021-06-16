@@ -4,6 +4,10 @@
  * Responsibilities:
  *  - Show the collection information and all faved packages.
  *  - Access the package information.
+ *  - Access to collection actions:
+ *    - Edit collection
+ *    - Manage collection packages
+ *    - Delete collection
  */
 
 (async () => {
@@ -44,6 +48,9 @@ function checkNotification() {
   }
 }
 
+/**
+ * Shows the collection information.
+ */
 async function showCollectionInformation() {
   try {
     const titleEl = document.getElementById("collectionTitle");
@@ -94,6 +101,10 @@ async function showCollectionInformation() {
   }
 }
 
+/**
+ * Sets the available actions to the collection.
+ * @param {integer} collectionId The id of the collection.
+ */
 function setActions(collectionId) {
   const actionsEl = document.getElementById("collectionActions");
   if (!collectionId) {

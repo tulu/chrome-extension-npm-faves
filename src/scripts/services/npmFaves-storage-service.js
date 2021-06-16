@@ -7,6 +7,15 @@
  *  - Remove package from faves.
  *  - Get package information.
  *  - Update package information from registry: Dependency on registry-service.
+ *  - Get all collections
+ *  - Get collection by Id
+ *  - Get collection by name (for uniqueness validation)
+ *  - Add collection
+ *  - Delete collection
+ *  - Add package to collection
+ *  - Remove package from collection
+ *  - Get packages with full information from collection
+ *  - Get collections that have a package by package name
  */
 
 /**
@@ -60,6 +69,9 @@ var npmFaves = npmFaves || {};
     });
   };
 
+  /**
+   * Gets the next id for the collection based on the max current Id.
+   */
   const getNextCollectionId = async function () {
     let nextId = 0;
     try {
@@ -235,6 +247,9 @@ var npmFaves = npmFaves || {};
     return fave;
   };
 
+  /**
+   * Returns a list with all the collections.
+   */
   this.storage.getCollections = async function () {
     let collections = [];
     try {
@@ -245,6 +260,11 @@ var npmFaves = npmFaves || {};
     return collections || [];
   };
 
+  /**
+   * Adds a collection to the list and returns it.
+   * @param {object} collectionToCreate The collection to add.
+   * @returns {object} The added collection.
+   */
   this.storage.saveCollection = async function (collectionToCreate) {
     let collection = null;
     try {
@@ -293,6 +313,11 @@ var npmFaves = npmFaves || {};
     return collection;
   };
 
+  /**
+   * Returns a collection by Id.
+   * @param {integer} collectionId The Id of the collection.
+   * @returns {object} The collection.
+   */
   this.storage.getCollectionById = async function (collectionId) {
     let collection;
     try {
@@ -313,6 +338,11 @@ var npmFaves = npmFaves || {};
     return collection;
   };
 
+  /**
+   * Returns a collection by name.
+   * @param {string} collectionName The name of the collection.
+   * @returns {object} The collection.
+   */
   this.storage.getCollectionByName = async function (collectionName) {
     let collection;
     try {
@@ -333,6 +363,10 @@ var npmFaves = npmFaves || {};
     return collection;
   };
 
+  /**
+   * Removes a collection from the list.
+   * @param {integer} collectionId The id of the collection.
+   */
   this.storage.deleteCollection = async function (collectionId) {
     try {
       // Get all the collections
@@ -346,9 +380,13 @@ var npmFaves = npmFaves || {};
     } catch (error) {
       console.log(error);
     }
-    return collection;
   };
 
+  /**
+   * Adds a package to a collection.
+   * @param {integer} collectionId The id of the collection.
+   * @param {string} packageName The name of the package.
+   */
   this.storage.addToCollection = async function (collectionId, packageName) {
     try {
       // Get all the collections
@@ -378,6 +416,11 @@ var npmFaves = npmFaves || {};
     }
   };
 
+  /**
+   * Removes a package from a collection.
+   * @param {integer} collectionId The id of the collection.
+   * @param {string} packageName The name of the package.
+   */
   this.storage.removeFromCollection = async function (
     collectionId,
     packageName
@@ -409,6 +452,11 @@ var npmFaves = npmFaves || {};
     }
   };
 
+  /**
+   * Gets the packages with full information from the collection.
+   * @param {integer} collectionId The id of the collection.
+   * @returns {object[]} List of packages of the collection.
+   */
   this.storage.getCollectionFaves = async function (collectionId) {
     let faves = [];
     try {
@@ -426,6 +474,11 @@ var npmFaves = npmFaves || {};
     return faves || [];
   };
 
+  /**
+   * Gets a list of collection names that have the package.
+   * @param {string} packageName The name of the package.
+   * @returns {string[]} List of collection names that have the package.
+   */
   this.storage.getCollectionsByPackage = async function (packageName) {
     let collectionsWithPackage = [];
     try {

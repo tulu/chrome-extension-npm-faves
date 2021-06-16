@@ -1,8 +1,8 @@
 /**
- * Script that adds functionality to the extension's popup create collection.
+ * Script that adds functionality to the extension's popup edit collection.
  *
  * Responsibilities:
- *  - Show form to add new collection.
+ *  - Show form to add or edit collection.
  */
 
 (async () => {
@@ -55,7 +55,7 @@ async function saveCollection() {
     const name = document.getElementById("txtName").value;
     const type = document.getElementById("selType").value;
     const id = npmFaves.helpers.getQueryStringValue(window.location.href, "id");
-    let collection = {  };
+    let collection = {};
     //Check if id and valid collection
     if (id) {
       collection = await npmFaves.storage.getCollectionById(id);
@@ -94,14 +94,19 @@ async function saveCollection() {
  * @returns {boolean} True if is valid
  */
 async function validName(name, id) {
-  // Min length 3 chars because yes
-  if (name.length < 3) {
-    return false;
+  try {
+    // Min length 3 chars because yes
+    if (name.length < 3) {
+      return false;
+    }
+    // Check if name already used
+    const collection = await npmFaves.storage.getCollectionByName(name);
+    if (collection && collection.id != id) {
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.log(error);
   }
-  // Check if name already used
-  const collection = await npmFaves.storage.getCollectionByName(name);
-  if (collection && collection.id != id) {
-    return false;
-  }
-  return true;
+  return false;
 }

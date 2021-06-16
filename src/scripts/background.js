@@ -4,12 +4,14 @@
  * Responsibilities:
  *  - Show readme file:
  *    -  onInstalled event from the extension.
- *  - Update the badge of the extension with the number of faves:
- *    -  onInstalled event from the extension.
- *    -  onChanged event from the storage.
+ *  - Handle the toolbar button based on the tab navigation.
+ *    - onInstalled
+ *    - storage.onChanged
+ *    - tabs.onActivated
+ *    - tabs.onUpdated
  *  - Reload npmjs.com tabs:
  *    -  onInstalled event from the extension.
- *  - Add / Remove fave
+ *  - Add / Remove fave:
  *    -  onMessage event sent from the content script.
  */
 

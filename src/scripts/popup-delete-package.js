@@ -1,9 +1,9 @@
 /**
- * Script that adds functionality to the extension's popup delete collection.
+ * Script that adds functionality to the extension's popup delete package.
  *
  * Responsibilities:
- *  - Show warning and button to delete collection
- *  - Delete collection
+ *  - Show warning and button to delete package
+ *  - Delete package
  */
 
 (async () => {
@@ -22,26 +22,38 @@ function sendView() {
   );
 }
 
+/**
+ * Loads the package information (name) and sets the back button link.
+ */
 async function loadPackage() {
-  const packageName = npmFaves.helpers.getQueryStringValue(
-    window.location.href,
-    "packageName"
-  );
-  let collectionId = npmFaves.helpers.getQueryStringValue(
-    window.location.href,
-    "collectionId"
-  );
-  collectionId = collectionId != "null" ? `&collectionId=${collectionId}` : "";
-  if (packageName) {
-    const fave = await npmFaves.storage.getFave(packageName, false);
-    if (fave) {
-      document.getElementById(
-        "faveTitle"
-      ).innerHTML = `Delete fave: ${fave.name}`;
-      document.getElementById(
-        "backButton"
-      ).href = `./popup-package.html?packageName=${packageName}${collectionId}`;
+  try {
+    const packageName = npmFaves.helpers.getQueryStringValue(
+      window.location.href,
+      "packageName"
+    );
+    let collectionId = npmFaves.helpers.getQueryStringValue(
+      window.location.href,
+      "collectionId"
+    );
+    collectionId =
+      collectionId != "null" ? `&collectionId=${collectionId}` : "";
+    if (packageName) {
+      const fave = await npmFaves.storage.getFave(packageName, false);
+      if (fave) {
+        document.getElementById(
+          "faveTitle"
+        ).innerHTML = `Delete fave: ${fave.name}`;
+        document.getElementById(
+          "backButton"
+        ).href = `./popup-package.html?packageName=${packageName}${collectionId}`;
+      } else {
+        const message = `${packageName} not found`;
+        const messageType = "ERROR";
+        location.href = `./popup-collection.html?notiMessage=${message}&notiType=${messageType}${collectionId}`;
+      }
     }
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -53,6 +65,9 @@ function addDeleteEvent() {
   deleteButton.addEventListener("click", deleteFave);
 }
 
+/**
+ * Deletes the faved package.
+ */
 async function deleteFave() {
   try {
     // Get the package name from url
@@ -93,6 +108,9 @@ function notifyEvent(message) {
   });
 }
 
+/**
+ * Gets and shows the collections the package is added to.
+ */
 async function showCollections() {
   try {
     // Get the package name from url
@@ -100,7 +118,9 @@ async function showCollections() {
       window.location.href,
       "packageName"
     );
-    const collections = await npmFaves.storage.getCollectionsByPackage(packageName);
+    const collections = await npmFaves.storage.getCollectionsByPackage(
+      packageName
+    );
     if (collections.length > 0) {
       document.getElementById(
         "collectionList"
