@@ -10,6 +10,7 @@
   sendView();
   loadPackage();
   addDeleteEvent();
+  await showCollections();
 })();
 
 /**
@@ -86,8 +87,26 @@ async function deleteFave() {
  * @param {string} message.action The action to perform (add | remove).
  * @param {string} message.packageName The name of the package.
  */
- function notifyEvent(message) {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      chrome.tabs.sendMessage(tabs[0].id, message);
-    });
+function notifyEvent(message) {
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, message);
+  });
+}
+
+async function showCollections() {
+  try {
+    // Get the package name from url
+    const packageName = npmFaves.helpers.getQueryStringValue(
+      window.location.href,
+      "packageName"
+    );
+    const collections = await npmFaves.storage.getCollectionsByPackage(packageName);
+    if (collections.length > 0) {
+      document.getElementById(
+        "collectionList"
+      ).innerHTML = `: <b>${collections.join(", ")}</b>.`;
+    }
+  } catch (error) {
+    console.log(error);
   }
+}

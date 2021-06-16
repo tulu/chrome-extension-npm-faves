@@ -425,4 +425,19 @@ var npmFaves = npmFaves || {};
     }
     return faves || [];
   };
+
+  this.storage.getCollectionsByPackage = async function (packageName) {
+    let collectionsWithPackage = [];
+    try {
+      let collections = await this.getCollections();
+      collectionsWithPackage = collections
+        .filter((collection) =>
+          collection.packages.some((fave) => fave.name === packageName)
+        )
+        .map((collection) => collection.name);
+    } catch (error) {
+      console.log(error);
+    }
+    return collectionsWithPackage;
+  };
 }.apply(npmFaves));
