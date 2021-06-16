@@ -69,6 +69,8 @@ async function deleteCollection() {
         // Collection found, can be deleted
         // Deletes the collection
         await npmFaves.storage.deleteCollection(collection.id);
+        // Send delete event
+        npmFaves.tracking.a.sendCollectionRemoved(collection.name);
         // Returns to main view with a message to show
         const message = `Collection ${collection.name} was deleted :(`;
         const messageType = "SUCCESS";

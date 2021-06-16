@@ -130,11 +130,15 @@ async function handlePackageManagement() {
           parseInt(collectionId),
           packageName
         );
+        // Send package added event
+        npmFaves.tracking.a.sendPackageAddedToCollection(packageName);
       } else {
         await npmFaves.storage.removeFromCollection(
           parseInt(collectionId),
           packageName
         );
+        // Send package added event
+        npmFaves.tracking.a.sendPackageRemovedFromCollection(packageName);
       }
     }
   } catch (error) {

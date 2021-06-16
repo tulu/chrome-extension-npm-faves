@@ -69,6 +69,15 @@ async function saveCollection() {
       collection.type = type;
       // Saves the collection
       collection = await npmFaves.storage.saveCollection(collection);
+      // Send tracking events
+      if (id) {
+        // Send edit event
+        npmFaves.tracking.a.sendCollectionEdited(collection.name);
+      } else {
+        // Send add event
+        npmFaves.tracking.a.sendCollectionAdded(collection.name);
+      }
+
       // Redirects to collection view
       location.href = `./popup-collection.html?id=${collection.id}`;
     } else {
