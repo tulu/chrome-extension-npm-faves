@@ -67,7 +67,7 @@ function setUiElements(collection) {
 
 function returnWithError(message) {
   const messageType = "ERROR";
-  location.href = `./popup-main.html?noti-message=${message}&noti-type=${messageType}`;
+  location.href = `./popup-main.html?notiMessage=${message}&notiType=${messageType}`;
 }
 
 function getPackagesListHtml(packagesToShow) {

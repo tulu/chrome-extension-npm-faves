@@ -64,11 +64,11 @@ function addSearchBarEvent() {
 function checkNotification() {
   const notificationMessage = npmFaves.helpers.getQueryStringValue(
     window.location.href,
-    "noti-message"
+    "notiMessage"
   );
   const notificationType = npmFaves.helpers.getQueryStringValue(
     window.location.href,
-    "noti-type"
+    "notiType"
   );
   // Checks the query string to create a message
   if (notificationMessage && notificationType) {

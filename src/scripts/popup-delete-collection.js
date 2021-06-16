@@ -27,7 +27,7 @@ function sendView() {
 async function loadCollection() {
   const id = npmFaves.helpers.getQueryStringValue(window.location.href, "id");
   if (id) {
-    collection = await npmFaves.storage.getCollectionById(id);
+    const collection = await npmFaves.storage.getCollectionById(id);
     if (collection) {
       document.getElementById(
         "collectionTitle"
@@ -63,7 +63,7 @@ async function deleteCollection() {
         // Returns to main view with a message to show
         const message = `Collection ${collection.name} was deleted :(`;
         const messageType = "SUCCESS";
-        location.href = `./popup-main.html?noti-message=${message}&noti-type=${messageType}`;
+        location.href = `./popup-main.html?notiMessage=${message}&notiType=${messageType}`;
       }
     }
   } catch (error) {

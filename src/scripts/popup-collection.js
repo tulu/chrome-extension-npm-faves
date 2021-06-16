@@ -28,11 +28,11 @@ function sendView() {
 function checkNotification() {
   const notificationMessage = npmFaves.helpers.getQueryStringValue(
     window.location.href,
-    "noti-message"
+    "notiMessage"
   );
   const notificationType = npmFaves.helpers.getQueryStringValue(
     window.location.href,
-    "noti-type"
+    "notiType"
   );
   // Checks the query string to create a message
   if (notificationMessage && notificationType) {
@@ -49,10 +49,11 @@ async function showCollectionInformation() {
     const titleEl = document.getElementById("collectionTitle");
     const typeEl = document.getElementById("collectionType");
     // Get collection to show
-    const collectionId = npmFaves.helpers.getQueryStringValue(
+    let collectionId = npmFaves.helpers.getQueryStringValue(
       window.location.href,
       "id"
     );
+    collectionId = collectionId == "null" ? null : collectionId;
     let faves = [];
     if (!collectionId) {
       // No collection selected
@@ -72,7 +73,7 @@ async function showCollectionInformation() {
         // Return to main and show error
         const message = "Collection not found";
         const messageType = "ERROR";
-        location.href = `./popup-main.html?noti-message=${message}&noti-type=${messageType}`;
+        location.href = `./popup-main.html?notiMessage=${message}&notiType=${messageType}`;
       }
     }
     const favesContainer = document.getElementById("favesContainer");
@@ -129,7 +130,7 @@ async function handleViewPackageClick() {
     window.location.href,
     "id"
   );
-  location.href = `./popup-package.html?package-name=${packageName}&collectionId=${collectionId}`;
+  location.href = `./popup-package.html?packageName=${packageName}&collectionId=${collectionId}`;
 }
 
 /**
