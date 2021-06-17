@@ -220,10 +220,11 @@ function changeToolbarButtonStyle(
 async function getCurrentTab() {
   let tab = null;
   try {
-    const queryOptions = { active: true, currentWindow: true };
+    const window = await chrome.windows.getCurrent();
+    const queryOptions = { active: true, windowId: window.id };
     [tab] = await chrome.tabs.query(queryOptions);
   } catch (error) {
-    // There is a fancy error in chrome 91: 
+    // There is a fancy error in chrome 91:
     // “Tabs cannot be edited right now (user may be dragging a tab)”
     // By adding a timeout and calling the api again it works...
     await timeout(100);

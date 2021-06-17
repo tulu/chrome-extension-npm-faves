@@ -468,6 +468,10 @@ var npmFaves = npmFaves || {};
       faves = allFaves.filter((fave) =>
         collection.packages.some((pack) => pack.name === fave.name)
       );
+      // Add collection added date
+      faves = faves.map((item, i) =>
+        Object.assign({}, item, collection.packages[i])
+      );
     } catch (error) {
       console.log(error);
     }

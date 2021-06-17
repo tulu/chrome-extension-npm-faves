@@ -18,7 +18,7 @@
  */
 function sendView() {
   npmFaves.tracking.a.sendView(
-    npmFaves.helpers.excludeExtensionFromUrl(window.location.href)
+    npmFaves.helpers.excludeExtensionFromUrl(window.location.href, false)
   );
 }
 

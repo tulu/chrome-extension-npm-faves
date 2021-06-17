@@ -20,6 +20,82 @@ header {
   z-index: 2;
 }
 
+main {
+  display: flex;
+  width: 960px;
+  margin: 0 auto;
+}
+
+aside {
+  background-color: rgba(0, 0, 0, 0.03);
+  box-shadow: inset -8px 0 6px -2px rgb(162 162 162 / 10%);
+  border-right-style: solid;
+  border-right-width: 1px;
+  flex-direction: column;
+  border-color: rgba(0, 0, 0, 0.1);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  box-sizing: border-box;
+  top: 0;
+  position: -webkit-sticky;
+  position: sticky;
+  width: 282px;
+  height: 89vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 24px 0;
+  display: flex;
+}
+
+.collectionListTitle {
+  font-size: 1.25em;
+  font-weight: 600;
+  color: #00000078;
+  margin: 0.5em 0 0.2em 0.5em;
+  padding-left: 0.5em;
+  display: flex;
+  align-items: center;
+}
+
+.collectionListTitle .material-icons-outlined {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+aside a {
+  color: rgba(0, 0, 0, 0.9);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1.25em;
+  text-decoration: none;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  padding-left: 1em;
+  display: flex;
+  align-items: center;
+}
+
+aside a .material-icons-outlined {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+aside a:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.menu-item-active {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.badge {
+  font-size: 0.8em;
+  margin-left: 0.3em;
+  padding-top: 2px;
+}
+
 .header-content {
   width: 960px;
   margin: 0 auto;
@@ -59,7 +135,7 @@ h2 {
 }
 
 .fave-list {
-  width: 960px;
+  width: 100%;
   margin: 0 auto 80px;
 }
 

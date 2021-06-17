@@ -203,11 +203,12 @@ async function handleFaveLinkClick() {
 /**
  * Gets the removal confirmation message including the collections the package
  * was added to.
+ * @param {string} packageName The name of the package to remove.
  * @returns {string} The message to show before removing.
  */
-async function getConfirmMessage() {
-  let message = `By removing the faved package it will also be removed from the collections 
-  it was added to`;
+async function getConfirmMessage(packageName) {
+  let message =
+    "By removing the faved package it will also be removed from the collections it was added to";
   try {
     // Get the collections with the package
     const collections = await npmFaves.storage.getCollectionsByPackage(
