@@ -2,16 +2,20 @@
  * Script that adds functionality to the extension's popup.
  *
  * Responsibilities:
- *  - Show the list of faved packages.
- *  - Access the package information.
+ *  - Show the list of options and collections.
+ *  - Access the collection information.
+ *  - Access the create collection option.
+ *  - Access the options page
+ *  - Add search package in npmjs.com site functionality 
  */
 
 (async () => {
   sendView();
   addSearchBarEvent();
   checkNotification();
-  await showFavesList();
   addMenuEvents();
+  await showAllFavesCount();
+  await showCollectionsList();
 })();
 
 /**
@@ -61,11 +65,11 @@ function addSearchBarEvent() {
 function checkNotification() {
   const notificationMessage = npmFaves.helpers.getQueryStringValue(
     window.location.href,
-    "noti-message"
+    "notiMessage"
   );
   const notificationType = npmFaves.helpers.getQueryStringValue(
     window.location.href,
-    "noti-type"
+    "notiType"
   );
   // Checks the query string to create a message
   if (notificationMessage && notificationType) {
@@ -78,25 +82,18 @@ function checkNotification() {
 }
 
 /**
- * Loads faved packages from the storage and shows the list.
- * Also renders an option to remove from faves.
+ * Shows the list of the existing collections to navigate to them.
  */
-async function showFavesList() {
-  const favesContainer = document.getElementById("favesContainer");
-  let faves = [];
+async function showCollectionsList() {
   try {
-    faves = await npmFaves.storage.getFaves();
-    if (faves.length > 0) {
+    const collections = await npmFaves.storage.getCollections();
+    const collectionsContainer = document.getElementById("collectionsList");
+    if (collections.length > 0) {
       let list = "";
-      faves.forEach((favePackage) => {
-        list += getPackageListElement(favePackage);
+      collections.forEach((collection) => {
+        list += getCollectionListElement(collection);
       });
-      favesContainer.innerHTML = list;
-      // Add navigation links
-      addEventsToListPackages();
-    } else {
-      favesContainer.innerHTML =
-        "<div class='empty-list'>No faves to show</div>";
+      collectionsContainer.innerHTML = list;
     }
   } catch (error) {
     console.log(error);
@@ -104,50 +101,28 @@ async function showFavesList() {
 }
 
 /**
- * Adds the click event to the list of packages to access the package view
- * with more detailed information.
+ * Returns the HTML representation of the collection.
+ * @param {object} collection The collection.
+ * @returns {string} Html of the collection element.
  */
-function addEventsToListPackages() {
-  let packageListItems = document.querySelectorAll("div.pack");
-  packageListItems.forEach((link) => {
-    link.addEventListener("click", handleViewPackageClick);
-  });
+function getCollectionListElement(collection) {
+  let type = npmFaves.helpers.getCollectionIcon(collection.type);
+  return `<a class="menu-item" href="./popup-collection.html?id=${collection.id}">
+    <span class="material-icons-outlined"> ${type} </span>
+    ${collection.name}<span class="badge">(${collection.packages.length})</span>
+    <span class="material-icons-outlined">arrow_right</span>
+  </a>`;
 }
 
 /**
- * Package list item click event handler to access the package details.
+ * Displays the amount of faved packages for the "All faves" collection.
  */
-async function handleViewPackageClick() {
-  let packageName = this.getAttribute("package-name");
-  location.href = `./popup-package.html?package-name=${packageName}`;
-}
-
-/**
- * Generates and returns the HTML markup for the list item based on the
- * package information.
- * @param {object} fave The package to create the list item.
- * @returns {string} The HTML markup of the package structure.
- */
-function getPackageListElement(fave) {
-  let publishInformation = "";
-  if (fave.date) {
-    publishInformation = `published ${fave.version} \n\u2022 ${timeago.format(
-      fave.date
-    )}`;
+async function showAllFavesCount() {
+  try {
+    let faves = await npmFaves.storage.getFaves();
+    let badge = faves.length > 0 ? `(${faves.length})` : "";
+    document.getElementById("allFavesCount").innerHTML = badge;
+  } catch (error) {
+    console.log(error);
   }
-
-  let description = fave.description ? fave.description : "";
-
-  return `<div class="pack" package-name="${fave.name}">
-      <div class="pack-info">
-        <div class="pack-name">${fave.name}</div>
-        <div class="pack-description">${description}</div>
-        <div class="pack-version">
-          <span class="pack-publisher">${fave.publisher}</span>
-          <span class="pack-date-version" datetime="${fave.date}">
-            ${publishInformation}
-          </span>
-        </div>
-      </div>
-    </div>`;
 }

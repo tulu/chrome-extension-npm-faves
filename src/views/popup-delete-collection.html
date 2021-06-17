@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>npm faves :: Popup Package</title>
+    <title>npm faves :: Popup Delete Collection</title>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -29,12 +29,23 @@
     <a id="backButton" class="menu-item menu-item-gray" href="./popup-main.html"
       ><span class="material-icons"> arrow_left </span>Back</a
     >
-    <div id="npmfNotification"></div>
-    <div id="packageView">
-      <div class="lds-heart-container">
-        <div class="lds-heart"><div></div></div>
+    <div class="title-container">
+      <span id="collectionType" class="material-icons-outlined"> delete </span
+      ><span id="collectionTitle">Delete collection</span>
+    </div>
+    <div class="field-container">
+      <p class="information">
+        By deleting the collection all information regarding the collection will
+        be deleted but the faved packages will remain added to other collections
+        and to all faved packages.
+      </p>
+    </div>
+    <div class="field-container">
+      <div class="npmf_button npmf_cancel-button">
+        <a id="deleteButton" class="pack-unfave"> Delete collection </a>
       </div>
     </div>
+
     <!-- build:js ../scripts/vendor.min.js -->
     <script src="../scripts/lib/timeago.min.js"></script>
     <script src="../scripts/lib/pretty-bytes.js"></script>
@@ -46,8 +57,8 @@
     <script src="../scripts/utils/npmFaves-ui-notification.js"></script>
     <script src="../scripts/utils/npmFaves-helpers.js"></script>
     <!-- endbuild -->
-    <!-- build:js ../scripts/popup-package.min.js -->
-    <script src="../scripts/popup-package.js"></script>
+    <!-- build:js ../scripts/popup-delete-collection.min.js -->
+    <script src="../scripts/popup-delete-collection.js"></script>
     <!-- endbuild -->
   </body>
 </html>

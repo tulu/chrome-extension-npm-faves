@@ -65,12 +65,12 @@ var npmFaves = npmFaves || {};
   };
 
   /**
-   * Removes the initial part of the url. Example url: 
+   * Removes the initial part of the url. Example url:
    * chrome-extension://fdbicpedbfjbcjfmbbaoikcmeamahnoe/views/popup-main.html
-   * @param {string} url The url to clean up
-   * @param {boolean} includeQueryString Indicates if the returned url must 
-   * include the query string
-   * @returns {string} The clean url
+   * @param {string} url The url to clean up.
+   * @param {boolean} includeQueryString Indicates if the returned url must
+   * include the query string.
+   * @returns {string} The clean url.
    */
   this.helpers.excludeExtensionFromUrl = function (
     url,
@@ -85,4 +85,26 @@ var npmFaves = npmFaves || {};
     }
     return cleanUrl;
   };
+
+  /**
+   * Returns the icon name depending on the type of collection.
+   * @param {string} type The type of collection.
+   * @returns {string} The name of the icon.
+   */
+  this.helpers.getCollectionIcon = function (type) {
+    let icon = "auto_fix_high";
+    switch (type) {
+      case "web":
+        icon = "language";
+        break;
+      case "api":
+        icon = "api";
+        break;
+      case "cli":
+        icon = "wysiwyg";
+        break;
+    }
+    return icon;
+  };
+
 }.apply(npmFaves));

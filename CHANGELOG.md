@@ -7,10 +7,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ### Added
 - Popup toolbar button new interactions depending on the active tab
+- Collection management in pop up
+- Warning before removing fave
 
 ### Bugs
 - Fixed footer overlap with the faves list in the options page
 - Fixed package load in view when unpacked size or file count is null
+- Fixed bug introduced in chrome 91: “Tabs cannot be edited right now (user may be dragging a tab)” when detecting active tab change
 
 ## [v1.0.1] - 2021-06-06
 

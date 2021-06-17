@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>npm faves :: Popup Package</title>
+    <title>npm faves :: Popup Create and Edit Collection</title>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -29,12 +29,30 @@
     <a id="backButton" class="menu-item menu-item-gray" href="./popup-main.html"
       ><span class="material-icons"> arrow_left </span>Back</a
     >
-    <div id="npmfNotification"></div>
-    <div id="packageView">
-      <div class="lds-heart-container">
-        <div class="lds-heart"><div></div></div>
+    <div class="title-container">
+      <span id="collectionType" class="material-icons-outlined"> library_add </span
+      ><span id="collectionTitle">Create collection</span>
+    </div>
+    <div class="field-container">
+      <label>Name</label>
+      <input id="txtName" type="text" />
+    </div>
+    <div class="field-container">
+      <label>Application type</label>
+      <select id="selType" name="Type">
+        <option value="api">API</option>
+        <option value="cli">Command Line</option>
+        <option value="web">Web</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="field-container">
+      <div class="npmf_button npmf_regular-button">
+        <a id="saveCollection" class="pack-unfave"> Save </a>
       </div>
     </div>
+    <div id="npmfNotification"></div>
+
     <!-- build:js ../scripts/vendor.min.js -->
     <script src="../scripts/lib/timeago.min.js"></script>
     <script src="../scripts/lib/pretty-bytes.js"></script>
@@ -46,8 +64,8 @@
     <script src="../scripts/utils/npmFaves-ui-notification.js"></script>
     <script src="../scripts/utils/npmFaves-helpers.js"></script>
     <!-- endbuild -->
-    <!-- build:js ../scripts/popup-package.min.js -->
-    <script src="../scripts/popup-package.js"></script>
+    <!-- build:js ../scripts/popup-edit-collection.min.js -->
+    <script src="../scripts/popup-edit-collection.js"></script>
     <!-- endbuild -->
   </body>
 </html>

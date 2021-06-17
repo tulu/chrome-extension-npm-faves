@@ -40,8 +40,23 @@
       </div>
     </div>
     <div id="npmfNotification"></div>
-    <div id="favesContainer"></div>
-    <a id="linkOptions" class="menu-item" href="">
+    <!-- All faved packages -->
+    <a class="menu-item" href="./popup-collection.html">
+      <span class="material-icons-outlined"> favorite </span>All faves
+      <span id="allFavesCount" class="badge"></span>
+      <span class="material-icons-outlined">arrow_right</span>
+    </a>
+    <!-- Collections list -->
+    <div id="collectionsList"></div>
+
+    <!-- Add collection -->
+    <a class="menu-item separator-top" href="./popup-edit-collection.html">
+      <span class="material-icons-outlined"> library_add </span>Create
+      collection
+      <span class="material-icons-outlined">arrow_right</span>
+    </a>
+
+    <a id="linkOptions" class="menu-item separator-top" href="">
       <span class="material-icons-outlined"> settings </span>Settings
       <span class="material-icons-outlined">open_in_new</span>
     </a>

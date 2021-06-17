@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>npm faves :: Options</title>
+    <title>npm faves :: Index</title>
     <link rel="icon" type="image/png" href="../images/npm-faves-logo-16.png" />
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -9,6 +9,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&family=Source+Sans+Pro:wght@200;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined"
       rel="stylesheet"
     />
     <!-- build:css ../styles/options.min.css -->
@@ -25,12 +29,19 @@
         <h1>npm faves</h1>
       </div>
     </header>
-    <div class="nav-bar">
-      <div class="nav-bar-content">
-        <h2 id="foundTitle"></h2>
+    <main>
+      <aside>
+        <a id="allFavesLink" href="./options.html">
+          <span class="material-icons-outlined"> favorite </span>All faves
+          <span id="allFavesCount" class="badge"></span>
+        </a>
+        <div id="collectionsList"></div>
+      </aside>
+      <div style="padding: 24px; width: 100%">
+        <div id="favesContainer" class="fave-list"></div>
       </div>
-    </div>
-    <div id="favesContainer" class="fave-list"></div>
+    </main>
+
     <div class="footer">
       npm faves is an
       <a

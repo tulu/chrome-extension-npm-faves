@@ -4,12 +4,14 @@
  * Responsibilities:
  *  - Show readme file:
  *    -  onInstalled event from the extension.
- *  - Update the badge of the extension with the number of faves:
- *    -  onInstalled event from the extension.
- *    -  onChanged event from the storage.
+ *  - Handle the toolbar button based on the tab navigation.
+ *    - onInstalled
+ *    - storage.onChanged
+ *    - tabs.onActivated
+ *    - tabs.onUpdated
  *  - Reload npmjs.com tabs:
  *    -  onInstalled event from the extension.
- *  - Add / Remove fave
+ *  - Add / Remove fave:
  *    -  onMessage event sent from the content script.
  */
 
@@ -218,10 +220,19 @@ function changeToolbarButtonStyle(
 async function getCurrentTab() {
   let tab = null;
   try {
-    const queryOptions = { active: true, currentWindow: true };
+    const window = await chrome.windows.getCurrent();
+    const queryOptions = { active: true, windowId: window.id };
     [tab] = await chrome.tabs.query(queryOptions);
   } catch (error) {
-    console.log(error);
+    // There is a fancy error in chrome 91:
+    // “Tabs cannot be edited right now (user may be dragging a tab)”
+    // By adding a timeout and calling the api again it works...
+    await timeout(100);
+    tab = getCurrentTab();
   }
   return tab;
+}
+
+function timeout(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }

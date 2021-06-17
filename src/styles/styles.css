@@ -13,6 +13,23 @@ body {
   border: none !important;
 }
 
+.separator-top {
+  border-color: rgba(0, 0, 0, 0.1);
+  border-top-style: solid;
+  border-top-width: 1px;
+}
+
+.separator-bottom {
+  border-color: rgba(0, 0, 0, 0.1);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
+
+.badge {
+  font-size: 0.8em;
+  margin-left: 0.3em;
+}
+
 .menu-item {
   display: flex;
   width: 100%;
@@ -22,8 +39,6 @@ body {
   font-size: 1rem;
   align-items: center;
   padding: 0px 5px;
-  border-bottom: 1px solid #cacaca;
-  border-top: 1px solid #cacaca;
 }
 
 .menu-item-gray {
@@ -43,6 +58,79 @@ body {
   margin-left: auto;
   margin-right: 15px;
   font-size: 15px;
+}
+
+.title-container {
+  font-size: 1.25rem;
+  color: rgba(0, 0, 0, 0.9);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 10px;
+  border-bottom: 1px solid #ea2039;
+  display: flex;
+}
+
+.title-container .material-icons-outlined {
+  margin-right: 5px;
+  color: #676767;
+  padding-top: 1px;
+}
+
+#collectionActions {
+  margin-left: auto;
+  padding-top: 2px;
+}
+
+#collectionActions .material-icons-outlined {
+  font-size: 20px;
+  color: #9a9a9a;
+}
+
+#collectionActions .material-icons-outlined:hover {
+  color: #676767;
+}
+
+/* ==[ Forms ]== */
+
+.field-container {
+  padding: 0 1rem;
+}
+
+.field-container .information {
+  font-size: 1rem;
+  text-align: center;
+}
+
+.field-container label {
+  line-height: 30px;
+  white-space: nowrap;
+  font-size: 1rem;
+  margin: 0.25rem 0;
+  font-weight: 600;
+  display: block;
+}
+
+.field-container input[type="text"] {
+  box-sizing: border-box;
+  height: 38px;
+  padding: 1rem 0.5rem;
+  width: 100%;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-family: "Source Sans Pro", "Lucida Grande", sans-serif;
+  overflow: visible;
+}
+
+.field-container select {
+  box-sizing: border-box;
+  height: 38px;
+  padding: 0 0.5rem;
+  width: 100%;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-family: "Source Sans Pro", "Lucida Grande", sans-serif;
 }
 
 /* ==[ Search bar ]== */
@@ -300,4 +388,24 @@ a.package-value {
   100% {
     transform: scale(0.9);
   }
+}
+
+#packagesContainer ul {
+  list-style: none;
+  padding: 0;
+  font-size: 1.1rem;
+}
+
+#packagesContainer ul li {
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+}
+
+#packagesContainer ul li input {
+  margin: 3px 10px 0 0;
+  cursor: pointer;
+}
+#packagesContainer ul li label {
+  cursor: pointer;
 }

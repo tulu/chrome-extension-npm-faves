@@ -3,42 +3,56 @@
  *
  * Responsibilities:
  *  - Show the details of the package.
- *  - Remove selected package from faves.
+ *  - Redirects to remove package warning.
  */
 
 (async () => {
   sendView();
+  addBackNavigation();
   await showPackageInformation();
   addEventToCopyInstallation();
-  addEventsToRemoveLinks();
 })();
 
 /**
- * Sends the pageview event
+ * Sends the pageview event.
  */
 function sendView() {
   npmFaves.tracking.a.sendView(
-    npmFaves.helpers.excludeExtensionFromUrl(window.location.href)
+    npmFaves.helpers.excludeExtensionFromUrl(window.location.href, false)
   );
+}
+
+/**
+ * Adds the back navigation link.
+ */
+function addBackNavigation() {
+  let collectionId = npmFaves.helpers.getQueryStringValue(
+    window.location.href,
+    "collectionId"
+  );
+  collectionId = collectionId != "null" ? `id=${collectionId}` : "";
+  const backButton = document.getElementById("backButton");
+  backButton.href = `./popup-collection.html?${collectionId}`;
 }
 
 /**
  * Gets the package information from the storage and shows it in the view.
  * @param {string} packageName The name of the package.
- * @todo Show not found message in UI.
  */
 async function showPackageInformation() {
   try {
     const packageName = npmFaves.helpers.getQueryStringValue(
       window.location.href,
-      "package-name"
+      "packageName"
     );
     let fave = await npmFaves.storage.getFave(packageName);
     if (fave) {
       const packageView = document.getElementById("packageView");
       packageView.innerHTML = getPackageView(fave);
     } else {
-      console.log(`Package ${packageName} not found!`);
+      const message = `${packageName} not found`;
+      const messageType = "ERROR";
+      location.href = `./popup-collection.html?notiMessage=${message}&notiType=${messageType}&${collectionId}`;
     }
   } catch (error) {
     console.log(error);
@@ -130,6 +144,14 @@ function getPackageView(fave) {
       </a>`;
     });
   }
+  // Delete url definition
+  let deleteUrl = `./popup-delete-package.html?packageName=${fave.name}`;
+  let collectionId = npmFaves.helpers.getQueryStringValue(
+    window.location.href,
+    "collectionId"
+  );
+  collectionId = collectionId != "null" ? `&collectionId=${collectionId}` : "";
+  deleteUrl += collectionId;
 
   // Return the full html view
   return `<div class="package-name">${fave.name}</div>
@@ -165,7 +187,7 @@ ${repositoryLinkHtml}
   <div class="package-collaborators">${maintainersHtml}</div>
 </div>
 <div class="npmf_button npmf_cancel-button">
-    <a package-name="${fave.name}" class="pack-unfave">
+    <a package-name="${fave.name}" class="pack-unfave" href="${deleteUrl}">
         <span class="material-icons-outlined"> delete </span>
         Remove from faves
     </a>
@@ -212,53 +234,7 @@ function handleCopySnippetClick() {
   // Send copy to clipboard event to Google Analytics
   const packageName = npmFaves.helpers.getQueryStringValue(
     window.location.href,
-    "package-name"
+    "packageName"
   );
   npmFaves.tracking.a.sendFaveSnippetCopied(packageName);
-}
-
-/**
- * Adds the click event listeners to the unfave links for each package.
- */
-function addEventsToRemoveLinks() {
-  let unfaveLinks = document.querySelectorAll("a.pack-unfave");
-  unfaveLinks.forEach((link) => {
-    link.addEventListener("click", handleUnfaveLinkClick);
-  });
-}
-
-/**
- * Unfave link click event handler to remove package from faves, update the
- * list and notify the content script to update the link on the webpage if
- * active.
- */
-async function handleUnfaveLinkClick() {
-  try {
-    // Get the package name from link
-    let packageName = this.getAttribute("package-name");
-    // Remove the fave from storage
-    await npmFaves.storage.removeFave(packageName);
-    // Send remove event to Google Analytics
-    npmFaves.tracking.a.sendFaveRemoved(packageName);
-    // Notify to the content script
-    notifyEvent({ action: "remove", packageName: packageName });
-    // Returns to main view with a message to show
-    const message = `${packageName} removed from faves :(`;
-    const messageType = "SUCCESS";
-    location.href = `./popup-main.html?noti-message=${message}&noti-type=${messageType}`;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-/**
- * Notifies the unfave event.
- * @param {object} message The message to send with the action to perform.
- * @param {string} message.action The action to perform (add | remove).
- * @param {string} message.packageName The name of the package.
- */
-function notifyEvent(message) {
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, message);
-  });
 }

@@ -4,10 +4,25 @@
  * * Responsibilities:
  *  - Send page views
  *  - Send events
+ *    - Add fave
+ *    - Remove fave
+ *    - Snippet copied
+ *    - Add collection
+ *    - Remove collection
+ *    - Add package to collection
+ *    - Remove package from collection
+ *    - Edit collection
  *
  * Events structure:
- * Category         Action              Label
- * "fave_manage"    "add" / "remove"    package name
+ * Category               Action                Label
+ * "fave_manage"          "add"                 package name
+ * "fave_manage"          "remove"              package name
+ * "fave_manage"          "copy_to_clipboard"   package name
+ * "collection_manage"    "add"                 collection name
+ * "collection_manage"    "remove"              collection name
+ * "collection_manage"    "edit"                collection name
+ * "collection_manage"    "add_package"         package name
+ * "collection_manage"    "remove_package"      package name
  */
 
 /**
@@ -76,6 +91,56 @@ var npmFaves = npmFaves || {};
   };
 
   /**
+   * Sends an event when a collection is added.
+   * @param {string} collectionName The name of the collection.
+   */
+  this.tracking.ga.sendCollectionAdded = function (collectionName) {
+    initGa();
+    _gaq.push(["_trackEvent", "collection_manage", "add", collectionName]);
+  };
+
+  /**
+   * Sends an event when a collection is removed.
+   * @param {string} collectionName The name of the collection.
+   */
+  this.tracking.ga.sendCollectionRemoved = function (collectionName) {
+    initGa();
+    _gaq.push(["_trackEvent", "collection_manage", "remove", collectionName]);
+  };
+
+  /**
+   * Sends an event when a collection is edited.
+   * @param {string} collectionName The name of the collection.
+   */
+  this.tracking.ga.sendCollectionEdited = function (collectionName) {
+    initGa();
+    _gaq.push(["_trackEvent", "collection_manage", "edit", collectionName]);
+  };
+
+  /**
+   * Sends an event when a package is added to a collection.
+   * @param {string} packageName The name of the package.
+   */
+  this.tracking.ga.sendPackageAddedToCollection = function (packageName) {
+    initGa();
+    _gaq.push(["_trackEvent", "collection_manage", "add_package", packageName]);
+  };
+
+  /**
+   * Sends an event when a package is removed from a collection.
+   * @param {string} packageName The name of the package.
+   */
+  this.tracking.ga.sendPackageRemovedFromCollection = function (packageName) {
+    initGa();
+    _gaq.push([
+      "_trackEvent",
+      "collection_manage",
+      "remove_package",
+      packageName,
+    ]);
+  };
+
+  /**
    * Functions to use the "new" Google Analytics.
    * The script to add must be: "/scripts/lib/analytics.js".
    */
@@ -134,5 +199,50 @@ var npmFaves = npmFaves || {};
   this.tracking.a.sendFaveSnippetCopied = function (packageName) {
     initA();
     ga("send", "event", "fave_manage", "copy_to_clipboard", packageName);
+  };
+
+  /**
+   * Sends an event when a collection is added.
+   * @param {string} collectionName The name of the collection.
+   */
+  this.tracking.a.sendCollectionAdded = function (collectionName) {
+    initA();
+    ga("send", "event", "collection_manage", "add", collectionName);
+  };
+
+  /**
+   * Sends an event when a collection is removed.
+   * @param {string} collectionName The name of the collection.
+   */
+  this.tracking.a.sendCollectionRemoved = function (collectionName) {
+    initA();
+    ga("send", "event", "collection_manage", "remove", collectionName);
+  };
+
+  /**
+   * Sends an event when a collection is edited.
+   * @param {string} collectionName The name of the collection.
+   */
+  this.tracking.a.sendCollectionEdited = function (collectionName) {
+    initA();
+    ga("send", "event", "collection_manage", "edit", collectionName);
+  };
+
+  /**
+   * Sends an event when a package is added to a collection.
+   * @param {string} packageName The name of the package.
+   */
+  this.tracking.a.sendPackageAddedToCollection = function (packageName) {
+    initA();
+    ga("send", "event", "collection_manage", "add_package", packageName);
+  };
+
+  /**
+   * Sends an event when a package is removed from a collection.
+   * @param {string} packageName The name of the package.
+   */
+  this.tracking.a.sendPackageRemovedFromCollection = function (packageName) {
+    initA();
+    ga("send", "event", "collection_manage", "remove_package", packageName);
   };
 }.apply(npmFaves));
