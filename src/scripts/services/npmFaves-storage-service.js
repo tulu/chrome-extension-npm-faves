@@ -497,4 +497,51 @@ var npmFaves = npmFaves || {};
     }
     return collectionsWithPackage;
   };
+
+  this.storage.saveDefaultPackageJson = async function (
+    version = "{1.0.0}",
+    author = "{your_name}",
+    githubUser = "{github_username}",
+    license = "{license}"
+  ) {
+    try {
+      let packageJson = `{
+  "name": "{project_name}",
+  "description": "",
+  "version": "${version}",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/${githubUser}/{project_name}.git"
+  },
+  "keywords": [],
+  "author": "${author}",
+  "license": "${license}",
+  "bugs": {
+    "url": "https://github.com/${githubUser}/{project_name}/issues"
+  },
+  "homepage": "https://github.com/${githubUser}/{project_name}"
+}`;
+
+      await asyncSetToSyncStorage({ packJson: packageJson });
+      return packageJson;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  this.storage.getPackageJson = async function (collectionId) {
+    try {
+      let packageJson = await asyncGetFromSyncStorage("packJson");
+      if (!packageJson) {
+        packageJson = await this.saveDefaultPackageJson();
+      }
+      // Add dependencies
+      return packageJson;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }.apply(npmFaves));
