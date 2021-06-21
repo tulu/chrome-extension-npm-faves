@@ -498,6 +498,14 @@ var npmFaves = npmFaves || {};
     return collectionsWithPackage;
   };
 
+  /**
+   * Saves the default information for the package.json file
+   * @param {string} version The default version
+   * @param {string} author The default author name
+   * @param {string} githubUser The default Github username
+   * @param {string} license The default license to use
+   * @returns {string} The package.json string
+   */
   this.storage.saveDefaultPackageJson = async function (
     version = "{1.0.0}",
     author = "{your_name}",
@@ -510,7 +518,7 @@ var npmFaves = npmFaves || {};
   "description": "",
   "version": "${version}",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    
   },
   "repository": {
     "type": "git",
@@ -532,14 +540,29 @@ var npmFaves = npmFaves || {};
     }
   };
 
+  /**
+   * Gets the package.json string with the default information and the 
+   * dependencies for the collection.
+   * @param {integer} collectionId The id of the collection
+   * @returns {string} The package.json string
+   */
   this.storage.getPackageJson = async function (collectionId) {
     try {
+      // Get the default template
       let packageJson = await asyncGetFromSyncStorage("packJson");
+
+      // If not exists creates a new one
       if (!packageJson) {
         packageJson = await this.saveDefaultPackageJson();
       }
       // Add dependencies
-      return packageJson;
+      const collectionFaves = await this.getCollectionFaves(collectionId);
+      packageJson = JSON.parse(packageJson);
+      packageJson.dependencies = {};
+      collectionFaves.forEach((fave) => {
+        packageJson.dependencies[fave.name] = fave.version;
+      });
+      return JSON.stringify(packageJson, null, "\t");
     } catch (error) {
       console.log(error);
     }
