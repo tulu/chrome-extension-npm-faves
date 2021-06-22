@@ -386,9 +386,16 @@ var npmFaves = npmFaves || {};
    * Adds a package to a collection.
    * @param {integer} collectionId The id of the collection.
    * @param {string} packageName The name of the package.
+   * @param {string} addType The type of dependency (dep | dev)
    */
-  this.storage.addToCollection = async function (collectionId, packageName) {
+  this.storage.addToCollection = async function (
+    collectionId,
+    packageName,
+    addType
+  ) {
     try {
+      // Clean addType JIC
+      addType = ["dep", "dev"].includes(addType) ? addType : "dep";
       // Get all the collections
       let collections = await this.getCollections();
       // Find the position in the list to update
@@ -403,6 +410,7 @@ var npmFaves = npmFaves || {};
         collections[collectionPosition].packages.push({
           addedAt: Date.now(),
           name: packageName,
+          dependencyType: addType,
         });
         // Sort packages by name
         collections[collectionPosition].packages.sort((a, b) =>
@@ -541,7 +549,7 @@ var npmFaves = npmFaves || {};
   };
 
   /**
-   * Gets the package.json string with the default information and the 
+   * Gets the package.json string with the default information and the
    * dependencies for the collection.
    * @param {integer} collectionId The id of the collection
    * @returns {string} The package.json string
@@ -559,8 +567,14 @@ var npmFaves = npmFaves || {};
       const collectionFaves = await this.getCollectionFaves(collectionId);
       packageJson = JSON.parse(packageJson);
       packageJson.dependencies = {};
+      packageJson.devDependencies = {};
       collectionFaves.forEach((fave) => {
-        packageJson.dependencies[fave.name] = fave.version;
+        if (fave.dependencyType == "dep") {
+          packageJson.dependencies[fave.name] = fave.version;
+        }
+        if (fave.dependencyType == "dev") {
+          packageJson.devDependencies[fave.name] = fave.version;
+        }
       });
       return JSON.stringify(packageJson, null, "\t");
     } catch (error) {

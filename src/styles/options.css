@@ -154,6 +154,7 @@ h3 {
   font-family: "Fira Mono", "Andale Mono", "Consolas", monospace;
   width: 100%;
   text-align: right;
+  font-size: .8em;
 }
 
 .fave-table th {

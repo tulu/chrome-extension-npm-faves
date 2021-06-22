@@ -86,14 +86,17 @@ async function showFavesList(collectionId) {
 
     const favesContainer = document.getElementById("favesContainer");
     let addedAtColHeader = "";
+    let dependencyTypeHeader = "";
+
     if (collection) {
       addedAtColHeader = "<th>In Collection</th>";
+      dependencyTypeHeader = "<th>Dependency Type</th>";
     }
     if (faves.length > 0) {
       let list = `<h3>${collectionName}</h3>
       <table class="fave-table"><thead><tr>
       <th>Name</th><th>Version</th><th>Published</th><th>Added</th>
-      <th>Updated</th>${addedAtColHeader}</tr></thead><tbody>`;
+      <th>Updated</th>${dependencyTypeHeader}${addedAtColHeader}</tr></thead><tbody>`;
 
       faves.forEach((favePackage) => {
         list += getFavePackageRow(favePackage);
@@ -118,11 +121,19 @@ async function showFavesList(collectionId) {
 function getFavePackageRow(fave) {
   let updatedAt = "-";
   let addedAt = "";
+  let dependencyType = "";
   if (fave.updatedAt) {
     updatedAt = new Date(fave.updatedAt).toLocaleDateString();
   }
   if (fave.addedAt) {
     addedAt = `<td>${new Date(fave.addedAt).toLocaleDateString()}</td>`;
+  }
+  if (fave.dependencyType) {
+    dependencyType = "dependency";
+    if (fave.dependencyType == "dev") {
+      dependencyType = "devDependency";
+    }
+    dependencyType = `<td>${dependencyType}</td>`;
   }
   return `<tr>
     <td>
@@ -132,6 +143,7 @@ function getFavePackageRow(fave) {
     <td>${timeago.format(fave.date)}</td>
     <td>${new Date(fave.createdAt).toLocaleDateString()}</td>
     <td>${updatedAt}</td>
+    ${dependencyType}
     ${addedAt}
   </tr>`;
 }
