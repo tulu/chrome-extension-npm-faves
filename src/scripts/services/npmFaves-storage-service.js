@@ -394,6 +394,8 @@ var npmFaves = npmFaves || {};
     addType
   ) {
     try {
+      // JIC remove if exists
+      await this.removeFromCollection(collectionId, packageName);
       // Clean addType JIC
       addType = ["dep", "dev"].includes(addType) ? addType : "dep";
       // Get all the collections

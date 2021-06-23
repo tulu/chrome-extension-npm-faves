@@ -35,11 +35,12 @@ async function loadCollection() {
         setUiElements(collection);
         // Get all faves
         const faves = await npmFaves.storage.getFaves();
+        // List of packages names in collection
+        let inCollection = collection.packages.map((pack) => pack.name);
+
         // Faves not in collection
         let packagesToShow = faves
-          .filter((fave) =>
-            collection.packages.some((pack) => fave.name != pack.name)
-          )
+          .filter((fave) => !inCollection.includes(fave.name))
           .map((fave) => ({
             name: fave.name,
             addedAt: null,
