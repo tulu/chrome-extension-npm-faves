@@ -1,7 +1,7 @@
 let baseManifest = {
   name: "npm faves",
   description: "Manage your favorite node packages",
-  version: "1.0.1",
+  version: "1.5.0",
   manifest_version: 3,
   background: {
     service_worker: "./service-worker.js",

@@ -201,7 +201,7 @@ ${repositoryLinkHtml}
  * @returns URL with a random avatar of the user
  */
 function getUserAvatar(maintainer) {
-  let tinygraphs = `http://tinygraphs.com/labs/isogrids/hexa16/${maintainer.trim()}?theme=berrypie&numcolors=2&size=42&fmt=svg`;
+  //let tinygraphs = `http://tinygraphs.com/labs/isogrids/hexa16/${maintainer.trim()}?theme=berrypie&numcolors=2&size=42&fmt=svg`;
   let dicebear = `https://avatars.dicebear.com/api/gridy/${maintainer.trim()}.svg`;
   return dicebear;
 }
