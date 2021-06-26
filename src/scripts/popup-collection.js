@@ -8,6 +8,7 @@
  *    - Edit collection
  *    - Manage collection packages
  *    - Delete collection
+ *    - Download package.json file
  */
 
 (async () => {
@@ -115,9 +116,11 @@ function setActions(collectionId) {
     const actionEditEl = document.getElementById("actionEdit");
     const actionManageEl = document.getElementById("actionManage");
     const actionDeleteEl = document.getElementById("actionDelete");
+    const actionDownloadEl = document.getElementById("actionDownload");
     actionEditEl.href = `./popup-edit-collection.html?id=${collectionId}`;
     actionManageEl.href = `./popup-manage-collection.html?id=${collectionId}`;
     actionDeleteEl.href = `./popup-delete-collection.html?id=${collectionId}`;
+    actionDownloadEl.addEventListener("click", handleDownloadPackage);
   }
 }
 
@@ -172,4 +175,44 @@ function getPackageListElement(fave) {
           </div>
         </div>
       </div>`;
+}
+
+/**
+ * Handles the download package.json action
+ */
+async function handleDownloadPackage() {
+  try {
+    let collectionId = npmFaves.helpers.getQueryStringValue(
+      window.location.href,
+      "id"
+    );
+    collectionId = collectionId == "null" ? null : collectionId;
+    if (collectionId) {
+      const packagejson = await npmFaves.storage.getPackageJson(collectionId);
+      downloadFile("package.json", packagejson);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+/**
+ * Downloads a file with a name and text inside.
+ * @param {string} filename The name of the file to download.
+ * @param {string} text The text to add to the file.
+ */
+function downloadFile(filename, text) {
+  var element = document.createElement("a");
+  element.setAttribute(
+    "href",
+    "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+  );
+  element.setAttribute("download", filename);
+
+  element.style.display = "none";
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
 }

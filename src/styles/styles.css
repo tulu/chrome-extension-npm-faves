@@ -409,3 +409,10 @@ a.package-value {
 #packagesContainer ul li label {
   cursor: pointer;
 }
+
+select.dependency-type{
+  width: 125px;
+  padding: .2em;
+  height: auto;
+  margin-right: 1em;
+}

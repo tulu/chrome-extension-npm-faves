@@ -141,6 +141,14 @@ var npmFaves = npmFaves || {};
   };
 
   /**
+   * Sends an event when a package.json defaults is saved.
+   */
+  this.tracking.ga.sendPackageJsonSaved = function () {
+    initGa();
+    _gaq.push(["_trackEvent", "package_json_manage", "save_package_json"]);
+  };
+
+  /**
    * Functions to use the "new" Google Analytics.
    * The script to add must be: "/scripts/lib/analytics.js".
    */
@@ -244,5 +252,13 @@ var npmFaves = npmFaves || {};
   this.tracking.a.sendPackageRemovedFromCollection = function (packageName) {
     initA();
     ga("send", "event", "collection_manage", "remove_package", packageName);
+  };
+
+  /**
+   * Sends an event when a package.json defaults is saved.
+   */
+  this.tracking.a.sendPackageJsonSaved = function () {
+    initA();
+    ga("send", "event", "package_json_manage", "save_package_json");
   };
 }.apply(npmFaves));

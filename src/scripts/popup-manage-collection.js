@@ -1,9 +1,9 @@
 /**
- * Script that adds functionality to the extension's popup manage collection 
+ * Script that adds functionality to the extension's popup manage collection
  * packages.
  *
  * Responsibilities:
- *  - Show list of all packages and a checkbox to add and remove from the 
+ *  - Show list of all packages and a checkbox to add and remove from the
  *    collection.
  *  - Add and remove package from collection.
  */
@@ -35,10 +35,26 @@ async function loadCollection() {
         setUiElements(collection);
         // Get all faves
         const faves = await npmFaves.storage.getFaves();
-        const packagesToShow = faves.map((fave) => ({
-          name: fave.name,
-          added: collection.packages.some((pack) => pack.name === fave.name),
-        }));
+        // List of packages names in collection
+        let inCollection = collection.packages.map((pack) => pack.name);
+
+        // Faves not in collection
+        let packagesToShow = faves
+          .filter((fave) => !inCollection.includes(fave.name))
+          .map((fave) => ({
+            name: fave.name,
+            addedAt: null,
+            dependencyType: null,
+          }));
+        // Add packages in collection
+        packagesToShow = packagesToShow.concat(
+          collection.packages.map((pack) => ({
+            name: pack.name,
+            addedAt: pack.addedAt,
+            dependencyType: pack.dependencyType,
+          }))
+        );
+
         // Get packages HTML list
         let packagesListHtml = getPackagesListHtml(packagesToShow);
         document.getElementById("packagesContainer").innerHTML =
@@ -81,7 +97,7 @@ function returnWithError(message) {
 }
 
 /**
- * Returns an html list representation with all the packages and their 
+ * Returns an html list representation with all the packages and their
  * checkboxes.
  * @param {object[]} packagesToShow The list of packages to show.
  * @returns {string} Html with the list of packages to show.
@@ -91,11 +107,12 @@ function getPackagesListHtml(packagesToShow) {
 
   packagesToShow.forEach((pack) => {
     html += `<li>
-    <input type="checkbox" id="${pack.name}" name="${pack.name}" value="${
-      pack.name
-    }" ${pack.added ? "checked" : ""}>
-<label for="${pack.name}"> ${pack.name}</label>
-        
+      <select class="dependency-type" name="depType" id="depType">
+        ${getSelectOption("none", "-", pack)}
+        ${getSelectOption("dep", "dependencies", pack)}
+        ${getSelectOption("dev", "devDependencies", pack)}
+      </select>
+      <label for="${pack.name}"> ${pack.name}</label>
     </li>`;
   });
   html += "</ul>";
@@ -103,12 +120,27 @@ function getPackagesListHtml(packagesToShow) {
 }
 
 /**
+ * Generates the html option of the select for the package
+ * @param {string} value The value of the option
+ * @param {string} text The text to display
+ * @param {object} pack The package
+ * @returns The html of the option
+ */
+function getSelectOption(value, text, pack) {
+  let selected = "";
+  if (pack.dependencyType && value == pack.dependencyType) {
+    selected = `selected="selected"`;
+  }
+  return `<option id="${pack.name}" ${selected} value="${value}">${text}</option>`;
+}
+
+/**
  * Adds the click event listener to the checkboxes.
  */
 function addPackagesEvent() {
-  let packageItems = document.querySelectorAll("input[type=checkbox]");
-  packageItems.forEach((check) => {
-    check.addEventListener("click", handlePackageManagement);
+  let packageSelects = document.querySelectorAll("select");
+  packageSelects.forEach((select) => {
+    select.addEventListener("change", handlePackageManagement);
   });
 }
 
@@ -121,14 +153,15 @@ async function handlePackageManagement() {
       window.location.href,
       "id"
     );
-    const packageName = this.value;
-    const toAdd = this.checked;
+    const packageName = this.options[this.selectedIndex].id;
+    const addType = ["dep", "dev"].includes(this.value) ? this.value : null;
 
     if (collectionId) {
-      if (toAdd) {
+      if (addType) {
         await npmFaves.storage.addToCollection(
           parseInt(collectionId),
-          packageName
+          packageName,
+          addType
         );
         // Send package added event
         npmFaves.tracking.a.sendPackageAddedToCollection(packageName);

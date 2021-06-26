@@ -386,9 +386,18 @@ var npmFaves = npmFaves || {};
    * Adds a package to a collection.
    * @param {integer} collectionId The id of the collection.
    * @param {string} packageName The name of the package.
+   * @param {string} addType The type of dependency (dep | dev)
    */
-  this.storage.addToCollection = async function (collectionId, packageName) {
+  this.storage.addToCollection = async function (
+    collectionId,
+    packageName,
+    addType
+  ) {
     try {
+      // JIC remove if exists
+      await this.removeFromCollection(collectionId, packageName);
+      // Clean addType JIC
+      addType = ["dep", "dev"].includes(addType) ? addType : "dep";
       // Get all the collections
       let collections = await this.getCollections();
       // Find the position in the list to update
@@ -403,6 +412,7 @@ var npmFaves = npmFaves || {};
         collections[collectionPosition].packages.push({
           addedAt: Date.now(),
           name: packageName,
+          dependencyType: addType,
         });
         // Sort packages by name
         collections[collectionPosition].packages.sort((a, b) =>
@@ -496,5 +506,84 @@ var npmFaves = npmFaves || {};
       console.log(error);
     }
     return collectionsWithPackage;
+  };
+
+  /**
+   * Saves the default information for the package.json file
+   * @param {string} version The default version
+   * @param {string} author The default author name
+   * @param {string} githubUser The default Github username
+   * @param {string} license The default license to use
+   * @returns {string} The package.json string
+   */
+  this.storage.saveDefaultPackageJson = async function (
+    version = "1.0.0",
+    author = "your_name",
+    githubUser = "github_username",
+    license = "license"
+  ) {
+    try {
+      let packageJson = `{
+  "name": "{project_name}",
+  "description": "",
+  "version": "${version}",
+  "scripts": {
+    
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/${githubUser}/{project_name}.git"
+  },
+  "keywords": [],
+  "author": "${author}",
+  "license": "${license}",
+  "bugs": {
+    "url": "https://github.com/${githubUser}/{project_name}/issues"
+  },
+  "homepage": "https://github.com/${githubUser}/{project_name}"
+}`;
+
+      await asyncSetToSyncStorage({ packJson: packageJson });
+      return packageJson;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  /**
+   * Gets the package.json string with the default information and the
+   * dependencies for the collection.
+   * @param {integer} [collectionId] The id of the collection
+   * @returns {string} The package.json string
+   */
+  this.storage.getPackageJson = async function (collectionId) {
+    try {
+      // Get the default template
+      let packageJson = await asyncGetFromSyncStorage("packJson");
+
+      // If not exists creates a new one
+      if (!packageJson) {
+        packageJson = await this.saveDefaultPackageJson();
+      }
+      // Add dependencies
+      if (collectionId) {
+        const collectionFaves = await this.getCollectionFaves(collectionId);
+        packageJson = JSON.parse(packageJson);
+        packageJson.dependencies = {};
+        packageJson.devDependencies = {};
+        collectionFaves.forEach((fave) => {
+          if (fave.dependencyType == "dep") {
+            packageJson.dependencies[fave.name] = fave.version;
+          }
+          if (fave.dependencyType == "dev") {
+            packageJson.devDependencies[fave.name] = fave.version;
+          }
+        });
+        packageJson = JSON.stringify(packageJson, null, "\t");
+      }
+      return packageJson;
+    } catch (error) {
+      console.log(error);
+    }
   };
 }.apply(npmFaves));

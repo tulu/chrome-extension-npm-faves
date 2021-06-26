@@ -20,6 +20,11 @@ header {
   z-index: 2;
 }
 
+hr {
+  border: 1px solid #a0a0a026;
+  width: 86%;
+}
+
 main {
   display: flex;
   width: 960px;
@@ -140,20 +145,20 @@ h2 {
 }
 
 h3 {
-  border-bottom: 1px dotted #ccc;
+  border-bottom: 1px solid #ea2039;
   color: #111;
   font-size: 1.25rem;
   margin-top: 0.5rem;
   margin-bottom: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 1rem;
-  border-color: rgba(0, 0, 0, 0.1);
 }
 
 .fave-table {
   font-family: "Fira Mono", "Andale Mono", "Consolas", monospace;
   width: 100%;
   text-align: right;
+  font-size: 0.8em;
 }
 
 .fave-table th {
@@ -236,4 +241,45 @@ h3 {
 
 .footer img {
   margin-left: 5px;
+}
+
+/* ==[ Forms ]== */
+
+.field-container {
+  padding: 0 1rem;
+}
+
+.field-container .information {
+  font-size: 1rem;
+  text-align: center;
+}
+
+.field-container label {
+  line-height: 30px;
+  white-space: nowrap;
+  font-size: 1rem;
+  margin: 0.25rem 0;
+  font-weight: 600;
+  display: block;
+}
+
+.field-container input[type="text"] {
+  box-sizing: border-box;
+  height: 38px;
+  padding: 1rem 0.5rem;
+  width: 100%;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-family: "Source Sans Pro", "Lucida Grande", sans-serif;
+  overflow: visible;
+}
+
+.field-container select {
+  box-sizing: border-box;
+  height: 38px;
+  padding: 0 0.5rem;
+  width: 100%;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-family: "Source Sans Pro", "Lucida Grande", sans-serif;
 }
