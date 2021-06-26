@@ -16,7 +16,6 @@
   <a href="#key-features">Key Features</a> •
   <a href="#how-to-use">How To Use</a> •
   <a href="#why">Why?</a> •
-  <a href="#roadmap">Roadmap</a> •
   <a href="#credits">Credits</a> •
   <a href="#license">License</a>
 </p>
@@ -39,6 +38,10 @@
 - Remove package from faves from the package information view in the pop up
 - Copy to clipboard install snippet from the package information view in the pop up
 - View all faved packages with more detailed information (like the date when it was added to faves) in the options page
+- Create packages collections
+- Manage collection packages
+- Download package.json file by collection
+- Manage package.json default information
 
 ## How To Use
 
@@ -132,16 +135,6 @@ $ npm stars [<user>]
 ```
 
 That's it! Now you know how to do it through npm CLI!
-
-## Roadmap
-
-The first release is pretty basic but the idea is to take more advantage of the faved packages. The next releases will include:
-
-- **Create collections** of faved packages for different proposes. For example:
-  - "Web": Packages you use when creating web projects
-  - "CLI": Packages you use when creating CLI projects
-  - "To try": Packages you would like to try someday
-- **Download `package.json` file** after you created a collection
 
 ## Known issues and limitations
 
