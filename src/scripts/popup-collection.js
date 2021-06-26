@@ -8,6 +8,7 @@
  *    - Edit collection
  *    - Manage collection packages
  *    - Delete collection
+ *    - Download package.json file
  */
 
 (async () => {
@@ -176,6 +177,9 @@ function getPackageListElement(fave) {
       </div>`;
 }
 
+/**
+ * Handles the download package.json action
+ */
 async function handleDownloadPackage() {
   try {
     let collectionId = npmFaves.helpers.getQueryStringValue(
@@ -192,6 +196,11 @@ async function handleDownloadPackage() {
   }
 }
 
+/**
+ * Downloads a file with a name and text inside.
+ * @param {string} filename The name of the file to download.
+ * @param {string} text The text to add to the file.
+ */
 function downloadFile(filename, text) {
   var element = document.createElement("a");
   element.setAttribute(

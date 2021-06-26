@@ -60,7 +60,6 @@
   border-radius: 0.3rem;
   box-shadow: 0 1px 1px 0 rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 19%);
   text-align: center;
-
   animation: fadeOut 2s forwards;
   animation-delay: 3s;
 }

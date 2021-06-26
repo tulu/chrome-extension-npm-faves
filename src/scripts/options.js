@@ -21,6 +21,10 @@ function sendView() {
   );
 }
 
+/**
+ * Returns the id of the collection taken from the url.
+ * @returns {string} The id of the collection.
+ */
 function getCollectionId() {
   let collectionId = npmFaves.helpers.getQueryStringValue(
     window.location.href,
@@ -30,12 +34,16 @@ function getCollectionId() {
   return collectionId;
 }
 
+/**
+ * Shows the list of collections and sets the active collection style.
+ * @param {integer} collectionId The current collection id.
+ */
 async function showCollections(collectionId) {
   try {
     const collections = await npmFaves.storage.getCollections();
     const collectionsContainer = document.getElementById("collectionsList");
     if (collections.length > 0) {
-      let list = `<div class="collectionListTitle"><span class="material-icons-outlined">  collections_bookmark </span>Collections</div>`;
+      let list = ``;
       collections.forEach((collection) => {
         let active = collection.id == collectionId;
         list += getCollectionListElement(collection, active);
@@ -49,6 +57,12 @@ async function showCollections(collectionId) {
   }
 }
 
+/**
+ * Returns the HTML element for the collection in the menu.
+ * @param {object} collection The collection to create the menu element.
+ * @param {boolean} active Indicates if the collection is the active one.
+ * @returns {string} HTML representation of the menu option
+ */
 function getCollectionListElement(collection, active) {
   let type = npmFaves.helpers.getCollectionIcon(collection.type);
   let activeClass = active ? "menu-item-active" : "";
@@ -60,7 +74,6 @@ function getCollectionListElement(collection, active) {
 
 /**
  * Loads faved packages from the storage and shows the list.
- * Also renders an option to remove from faves.
  */
 async function showFavesList(collectionId) {
   try {

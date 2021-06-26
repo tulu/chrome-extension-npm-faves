@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>npm faves :: Options</title>
+    <title>npm faves :: Package.json Settings</title>
     <link rel="icon" type="image/png" href="../images/npm-faves-logo-16.png" />
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -35,19 +35,46 @@
     </header>
     <main>
       <aside>
-        <div class="collectionListTitle"><span class="material-icons-outlined">  collections_bookmark </span>Collections</div>
+        <div class="collectionListTitle">
+          <span class="material-icons-outlined"> collections_bookmark </span
+          >Collections
+        </div>
         <a id="allFavesLink" href="./options.html">
           <span class="material-icons-outlined"> favorite </span>All faves
           <span id="allFavesCount" class="badge"></span>
         </a>
         <div id="collectionsList"></div>
         <hr />
-        <a href="./options-package-settings.html">
+        <a href="./options-package-settings.html" class="menu-item-active">
           <span class="material-icons-outlined"> settings </span>Package.json
         </a>
       </aside>
       <div style="padding: 24px; width: 100%">
-        <div id="favesContainer" class="fave-list"></div>
+        <div style="width: 730px; position: absolute">
+          <div id="npmfNotification"></div>
+        </div>
+        <h3>Package.json default configuration</h3>
+        <div class="field-container">
+          <label>Version</label>
+          <input id="txtVersion" type="text" />
+        </div>
+        <div class="field-container">
+          <label>Author</label>
+          <input id="txtAuthor" type="text" />
+        </div>
+        <div class="field-container">
+          <label>Github user</label>
+          <input id="txtGithubUser" type="text" />
+        </div>
+        <div class="field-container">
+          <label>License</label>
+          <input id="txtLicense" type="text" />
+        </div>
+        <div class="field-container">
+          <div class="npmf_button npmf_regular-button">
+            <a id="savePackageJson"> Save </a>
+          </div>
+        </div>
       </div>
     </main>
 
@@ -72,8 +99,8 @@
     <script src="../scripts/utils/npmFaves-ui-notification.js"></script>
     <script src="../scripts/utils/npmFaves-helpers.js"></script>
     <!-- endbuild -->
-    <!-- build:js ../scripts/options.min.js -->
-    <script src="../scripts/options.js"></script>
+    <!-- build:js ../scripts/options-package-settings.min.js -->
+    <script src="../scripts/options-package-settings.js"></script>
     <!-- endbuild -->
   </body>
 </html>

@@ -187,7 +187,7 @@ ${repositoryLinkHtml}
   <div class="package-collaborators">${maintainersHtml}</div>
 </div>
 <div class="npmf_button npmf_cancel-button">
-    <a package-name="${fave.name}" class="pack-unfave" href="${deleteUrl}">
+    <a package-name="${fave.name}" href="${deleteUrl}">
         <span class="material-icons-outlined"> delete </span>
         Remove from faves
     </a>

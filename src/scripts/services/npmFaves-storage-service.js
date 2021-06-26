@@ -517,10 +517,10 @@ var npmFaves = npmFaves || {};
    * @returns {string} The package.json string
    */
   this.storage.saveDefaultPackageJson = async function (
-    version = "{1.0.0}",
-    author = "{your_name}",
-    githubUser = "{github_username}",
-    license = "{license}"
+    version = "1.0.0",
+    author = "your_name",
+    githubUser = "github_username",
+    license = "license"
   ) {
     try {
       let packageJson = `{
@@ -553,7 +553,7 @@ var npmFaves = npmFaves || {};
   /**
    * Gets the package.json string with the default information and the
    * dependencies for the collection.
-   * @param {integer} collectionId The id of the collection
+   * @param {integer} [collectionId] The id of the collection
    * @returns {string} The package.json string
    */
   this.storage.getPackageJson = async function (collectionId) {
@@ -566,19 +566,22 @@ var npmFaves = npmFaves || {};
         packageJson = await this.saveDefaultPackageJson();
       }
       // Add dependencies
-      const collectionFaves = await this.getCollectionFaves(collectionId);
-      packageJson = JSON.parse(packageJson);
-      packageJson.dependencies = {};
-      packageJson.devDependencies = {};
-      collectionFaves.forEach((fave) => {
-        if (fave.dependencyType == "dep") {
-          packageJson.dependencies[fave.name] = fave.version;
-        }
-        if (fave.dependencyType == "dev") {
-          packageJson.devDependencies[fave.name] = fave.version;
-        }
-      });
-      return JSON.stringify(packageJson, null, "\t");
+      if (collectionId) {
+        const collectionFaves = await this.getCollectionFaves(collectionId);
+        packageJson = JSON.parse(packageJson);
+        packageJson.dependencies = {};
+        packageJson.devDependencies = {};
+        collectionFaves.forEach((fave) => {
+          if (fave.dependencyType == "dep") {
+            packageJson.dependencies[fave.name] = fave.version;
+          }
+          if (fave.dependencyType == "dev") {
+            packageJson.devDependencies[fave.name] = fave.version;
+          }
+        });
+        packageJson = JSON.stringify(packageJson, null, "\t");
+      }
+      return packageJson;
     } catch (error) {
       console.log(error);
     }

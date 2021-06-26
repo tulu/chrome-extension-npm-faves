@@ -127,7 +127,7 @@ function getFaveButtonElement(toAddToFaves) {
   }
 
   let buttonHtml = `<div id="npmFavesLink" class="npmf_button ${faveButtonClass}">
-    <a class="pack-unfave" fave-action="${faveButtonAction}">
+    <a fave-action="${faveButtonAction}">
       <span class="material-icons-outlined">${faveButtonIcon}</span>
       ${faveButtonText}
     </a>
