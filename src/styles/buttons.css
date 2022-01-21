@@ -6,6 +6,11 @@
 
 /* ==[ Buttons ]== */
 
+#npmFavesLink{
+  flex-direction: row-reverse;
+  margin-left: auto;
+}
+
 .npmf_button {
   font-size: 1rem;
   display: flex;
