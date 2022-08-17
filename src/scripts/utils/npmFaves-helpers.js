@@ -38,7 +38,7 @@ var npmFaves = npmFaves || {};
   this.helpers.getUrlPartAfterToken = function (url, token) {
     let splitted = url.split(token);
     if (splitted.length == 2) {
-      return splitted[1].split("?")[0];
+      return splitted[1].split("?")[0].split("#")[0];
     }
     return null;
   };
