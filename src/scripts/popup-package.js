@@ -75,18 +75,16 @@ function getPackageView(fave) {
   // Size and files
   let sizeAndFiles = "";
   if (fave.unpackedSize && fave.fileCount) {
-    sizeAndFiles = `<div class="package-properties" style="display: flex">
-      <div style="width: 50%">
-        <div class="package-attribute">Unpacked Size</div>
+    sizeAndFiles = `<div style="width: 25%">
+        <div class="package-attribute">Unpacked</div>
         <div class="package-value">
           ${prettyBytes.convert(fave.unpackedSize)}
         </div>
       </div>
-      <div style="width: 50%">
-        <div class="package-attribute">Total Files</div>
+      <div style="width: 25%">
+        <div class="package-attribute">Files</div>
         <div class="package-value">${fave.fileCount}</div>
-      </div>
-    </div>`;
+      </div>`;
   }
 
   //npm link
@@ -165,16 +163,16 @@ ${descriptionHtml}
   </div>
 </div>
 <div class="package-properties" style="display: flex">
-  <div style="width: 50%">
+  <div style="width: 25%">
     <div class="package-attribute">Version</div>
     <div class="package-value">${fave.version}</div>
   </div>
-  <div style="width: 50%">
+  <div style="width: 25%">
     <div class="package-attribute">License</div>
     <div class="package-value">${fave.license ? fave.license : "None"}</div>
   </div>
+  ${sizeAndFiles}
 </div>
-${sizeAndFiles}
 ${npmLinkHtml}
 ${homepageLinkHtml}
 ${repositoryLinkHtml}
