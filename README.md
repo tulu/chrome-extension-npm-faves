@@ -8,7 +8,7 @@
 <p align="center">
     <img src="https://img.shields.io/chrome-web-store/v/lgcedkogdjoickahfdegicgmbkloaaem?label=Version" />
     <img src="https://img.shields.io/chrome-web-store/users/lgcedkogdjoickahfdegicgmbkloaaem?label=Downloads" />
-    <img src="https://www.code-inspector.com/project/23258/score/svg" />
+    <img src="https://api.codiga.io/project/23258/score/svg" />
     <img src="https://img.shields.io/github/license/tulu/chrome-extension-npm-faves?label=License" />
 </p>
 
