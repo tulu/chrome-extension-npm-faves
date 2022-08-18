@@ -1,6 +1,6 @@
 {
   "name": "chrome-extension-npm-faves",
-  "version": "1.0.2",
+  "version": "1.5.2",
   "description": "Manage your favorite node packages directly from Google Chrome",
   "scripts": {
     "build-dev": "./node_modules/.bin/gulp --env=development",

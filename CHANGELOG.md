@@ -3,6 +3,15 @@
 Changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
+## [v1.5.2] - 2022-08-17
+
+### Added
+- New field to add personal notes to a faved package in pop up
+- Updated button location on [https://www.npmjs.com](https://www.npmjs.com) thanks to @mohammad0-0ahmad
+
+### Bugs
+- Fixed URL parser to get package name when `#` is present
+
 ## [v1.5.0] - 2021-06-26
 
 ### Added
@@ -38,3 +47,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 [v1.0.0]: https://github.com/tulu/chrome-extension-npm-faves/releases/tag/v1.0.0
 [v1.0.1]: https://github.com/tulu/chrome-extension-npm-faves/releases/tag/v1.0.1
 [v1.5.0]: https://github.com/tulu/chrome-extension-npm-faves/releases/tag/v1.5.0
+[v1.5.2]: https://github.com/tulu/chrome-extension-npm-faves/releases/tag/v1.5.2
