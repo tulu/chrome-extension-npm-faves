@@ -99,12 +99,16 @@ var npmFaves = npmFaves || {};
   const syncFave = async function (fave) {
     try {
       if (fave) {
+        // Save personal notes in aux variable
+        let personalNotes = fave.personalNotes;
         // Checks if there's a new version
         const newVersion = await npmFaves.registry.getPackageVersion(fave.name);
         // It there is then its updated
         if (newVersion && newVersion != fave.version) {
           // Gets the new information
           fave = await npmFaves.registry.getPackageInformation(fave.name);
+          // Add personal notes again
+          fave.personalNotes = personalNotes;
           // Get all faves
           const faves = await npmFaves.storage.getFaves();
           // Finds the position in the list to update
@@ -165,6 +169,45 @@ var npmFaves = npmFaves || {};
         fave = await npmFaves.registry.getPackageInformation(packageName);
         // Add created date
         fave.createdAt = Date.now();
+        // Add personal notes
+        fave.personalNotes = "";
+        // Add to list
+        faves.push(fave);
+        // Sort packages alphabetically
+        faves.sort((a, b) => (a.name > b.name ? 1 : -1));
+        // Save the faves again
+        await asyncSetToSyncStorage({ faves: faves });
+        // Send add event to Google Analytics
+        // Ideally would be here but if the function is called from the
+        // service worker there is no window object to execute the
+        // Google Analytics script
+        // npmFaves.tracking.a.sendFaveAdded(packageName);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    // If it was already added then it returns an updated version of the
+    // package if there is a new version.
+    return fave;
+  };
+
+  /**
+   * Adds notes to a fave package from the list.
+   * @param {string} packageName The name of the package.
+   * @param {string} personalNotes The name personal notes.
+   */
+  this.storage.updateFaveNotes = async function (packageName, personalNotes) {
+    let fave = null;
+    try {
+      // Get existing fave
+      fave = await this.getFave(packageName);
+      if (fave) {
+        // Get all the faved packages
+        let faves = await this.getFaves();
+        // Add personal notes
+        fave.personalNotes = personalNotes;
+        // Remove the package based on the name
+        faves = faves.filter((item) => item.name != packageName);
         // Add to list
         faves.push(fave);
         // Sort packages alphabetically

@@ -327,6 +327,33 @@ a.package-value {
   display: block;
 }
 
+.personal-notes {
+  border: 1px solid #2000c640;
+  background-color: hsl(210deg 100% 93% / 46%);
+  color: rgb(0 0 0);
+  cursor: pointer;
+  font-size: .9rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+  -webkit-font-smoothing: antialiased;
+  overflow: scroll;
+  max-height: 35px;
+}
+
+.personal-notes-edit {
+  resize: none;
+  border: 1px solid #2000c640;
+  background-color: hsl(210deg 100% 93% / 46%);
+  color: rgb(0 0 0);
+  font-size: .9rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+  -webkit-font-smoothing: antialiased;
+  overflow: scroll;
+  max-height: 35px;
+  width: 96%;
+  font-family: "Source Sans Pro", "Lucida Grande", sans-serif;
+}
 /* ==[ Heart loader ]== */
 /* Taken from: https://loading.io/css/ */
 
