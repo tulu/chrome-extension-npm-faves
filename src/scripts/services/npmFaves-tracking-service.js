@@ -91,6 +91,15 @@ var npmFaves = npmFaves || {};
   };
 
   /**
+   * Sends an event when personal notes area added to a package
+   * @param {string} packageName The name of the package.
+   */
+  this.tracking.ga.sendFaveNotesSaved = function (packageName) {
+    initGa();
+    _gaq.push(["_trackEvent", "fave_manage", "notes_added", packageName]);
+  };
+
+  /**
    * Sends an event when a collection is added.
    * @param {string} collectionName The name of the collection.
    */
@@ -207,6 +216,15 @@ var npmFaves = npmFaves || {};
   this.tracking.a.sendFaveSnippetCopied = function (packageName) {
     initA();
     ga("send", "event", "fave_manage", "copy_to_clipboard", packageName);
+  };
+
+  /**
+   * Sends an event when personal notes area added to a package
+   * @param {string} packageName The name of the package.
+   */
+  this.tracking.a.sendFaveNotesSaved = function (packageName) {
+    initA();
+    ga("send", "event", "fave_manage", "notes_added", packageName);
   };
 
   /**

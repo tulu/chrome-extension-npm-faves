@@ -11,6 +11,7 @@
   addBackNavigation();
   await showPackageInformation();
   addEventToCopyInstallation();
+  addEventToNotes();
 })();
 
 /**
@@ -72,6 +73,16 @@ function getPackageView(fave) {
   if (fave.description) {
     descriptionHtml = `<div class="package-description">${fave.description}</div>`;
   }
+  // Personal notes
+  let containerNotes = fave.personalNotes
+    ? fave.personalNotes
+    : "Add personal notes";
+  let editorNotes = fave.personalNotes ? fave.personalNotes : "";
+  let containerStyle = fave.personalNotes ? "" : "style='text-align:center;'";
+  personalNotes = `<div class="package-properties no-border">
+    <div id="notesDiv" ${containerStyle} class="personal-notes">${containerNotes}</div>
+    <textarea class="personal-notes-edit" id="txtPersonalNotes" style="display:none;">${editorNotes}</textarea>
+    </div>`;
   // Size and files
   let sizeAndFiles = "";
   if (fave.unpackedSize && fave.fileCount) {
@@ -154,6 +165,7 @@ function getPackageView(fave) {
   // Return the full html view
   return `<div class="package-name">${fave.name}</div>
 ${descriptionHtml}
+${personalNotes}
 <div class="package-properties no-border">
   <div class="package-attribute">Install</div>
   <div class="package-installation">
@@ -235,4 +247,139 @@ function handleCopySnippetClick() {
     "packageName"
   );
   npmFaves.tracking.a.sendFaveSnippetCopied(packageName);
+}
+
+/**
+ * Adds the click and blur event listeners to manage the personal notes.
+ */
+function addEventToNotes() {
+  // Container with notes readonly
+  const notesDiv = document.querySelector("#notesDiv");
+  // Textarea with writable notes
+  const txtPersonalNotes = document.querySelector("#txtPersonalNotes");
+  if (notesDiv) {
+    // Add click event to container
+    notesDiv.addEventListener("click", handleNotesClick);
+  }
+  if (txtPersonalNotes) {
+    // Add blur event to textarea
+    txtPersonalNotes.addEventListener("blur", handleNotesBlur);
+  }
+}
+
+/**
+ * Event handler to show the notes textarea and hide the notes container
+ */
+function handleNotesClick() {
+  // Container with notes readonly
+  const notesDiv = document.querySelector("#notesDiv");
+  // Textarea with writable notes
+  const txtPersonalNotes = document.querySelector("#txtPersonalNotes");
+
+  if (txtPersonalNotes && notesDiv) {
+    // Show textarea
+    txtPersonalNotes.style.display = "block";
+    txtPersonalNotes.focus();
+    txtPersonalNotes.selectionStart = txtPersonalNotes.value.length;
+    // Hide container
+    notesDiv.style.display = "none";
+  }
+}
+
+/**
+ * Event handler to manage the notes
+ */
+async function handleNotesBlur() {
+  // Container with notes readonly
+  const notesDiv = document.querySelector("#notesDiv");
+  // Textarea with writable notes
+  const txtPersonalNotes = document.querySelector("#txtPersonalNotes");
+
+  if (txtPersonalNotes && notesDiv) {
+    // Text is empty and previous value is default = notes remain empty
+    if (
+      txtPersonalNotes.value.trim().length == 0 &&
+      notesDiv.innerHTML.trim() == "Add personal notes"
+    ) {
+      // Clean up textarea
+      txtPersonalNotes.value = "";
+    }
+    // Text is empty and previous is not default = notes deleted
+    else if (
+      txtPersonalNotes.value.trim().length == 0 &&
+      notesDiv.innerHTML != "Add personal notes"
+    ) {
+      // Clean up textarea
+      txtPersonalNotes.value = "";
+      // Set default value
+      notesDiv.innerHTML = "Add personal notes";
+      notesDiv.style.textAlign = "center";
+      // Delete fave notes
+      await saveFaveNotes("");
+    }
+    // Text has value and is the same as the previous but not default = remain the same
+    else if (
+      txtPersonalNotes.value.trim().length > 0 &&
+      notesDiv.innerHTML == txtPersonalNotes.value.trim() &&
+      notesDiv.innerHTML.trim() != "Add personal notes"
+    ) {
+      // Clean up textarea and container
+      txtPersonalNotes.value = txtPersonalNotes.value.trim();
+      notesDiv.innerHTML = notesDiv.innerHTML.trim();
+      notesDiv.style.textAlign = "left";
+    }
+    // Text has value and is different from the previous and different from default = notes added or modified
+    else if (
+      txtPersonalNotes.value.trim().length > 0 &&
+      txtPersonalNotes.value.trim() != "Add personal notes" &&
+      notesDiv.innerHTML != txtPersonalNotes.value.trim()
+    ) {
+      // Clean up textarea
+      txtPersonalNotes.value = txtPersonalNotes.value.trim();
+      // Set the new value
+      notesDiv.innerHTML = txtPersonalNotes.value.trim();
+      notesDiv.style.textAlign = "left";
+      // Add fave note
+      await saveFaveNotes(txtPersonalNotes.value);
+    } else {
+      // Notes are default and is not valid
+      // Clean textarea and do nothing
+      if (notesDiv.innerHTML == "Add personal notes") {
+        txtPersonalNotes.value = "";
+        notesDiv.style.textAlign = "center";
+      } else {
+        txtPersonalNotes.value = notesDiv.innerHTML;
+        notesDiv.style.textAlign = "left";
+      }
+    }
+    // Show container
+    notesDiv.style.display = "block";
+    // Hide textareaa
+    txtPersonalNotes.style.display = "none";
+  }
+}
+
+/**
+ * Deletes the faved package.
+ */
+async function saveFaveNotes(personalNotes) {
+  try {
+    // Get the package name from url
+    const packageName = npmFaves.helpers.getQueryStringValue(
+      window.location.href,
+      "packageName"
+    );
+    // Update the fave notes from storage
+    await npmFaves.storage.updateFaveNotes(packageName, personalNotes);
+    // Send saved notes event to Google Analytics
+    npmFaves.tracking.a.sendFaveNotesSaved(packageName);
+    // Show notification
+    npmFaves.ui.createNotification(
+      npmFaves.ui.notificationTypes.SUCCESS,
+      "Notes saved!",
+      true
+    );
+  } catch (error) {
+    console.log(error);
+  }
 }
