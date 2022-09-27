@@ -34,7 +34,7 @@ chrome.runtime.onInstalled.addListener(async function (reason) {
  * Listens for onChanged event from the storage to update the badge.
  */
 chrome.storage.onChanged.addListener(async function (changes, areaName) {
-  if (changes && changes.faves) {
+  if (changes) {
     await updateToolbarButton();
   }
 });

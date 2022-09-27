@@ -70,6 +70,79 @@ var npmFaves = npmFaves || {};
   };
 
   /**
+   * Promise wrapper for chrome.storage.sync.get for lists.
+   * Takes into account chrome.storage.sync.QUOTA_BYTES_PER_ITEM
+   * limit by joining the lists into one list
+   * @param {string} key The key to look up.
+   * @returns {object} The value corresponding to the key.
+   */
+  const asyncGetListFromSyncStorage = async function (key) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let result = {};
+        result[key] = [];
+        let index = 0;
+        let storedItem = await asyncGetFromSyncStorage(key + "_" + index);
+        while (storedItem) {
+          result[key] = result[key].concat(storedItem);
+          index++;
+          storedItem = await asyncGetFromSyncStorage(key + "_" + index);
+        }
+        resolve(result[key]);
+      } catch (ex) {
+        reject(ex);
+      }
+    });
+  };
+
+  /**
+   * Promise wrapper for chrome.storage.sync.set for lists.
+   * Takes into account chrome.storage.sync.QUOTA_BYTES_PER_ITEM
+   * limit by splitting the list into different lists
+   * @param {object} obj Object to store {key:[]}.
+   */
+  const asyncSetListToSyncStorage = async function (obj) {
+    return new Promise((resolve, reject) => {
+      try {
+        // Get object name
+        let key = Object.keys(obj).length == 1 ? Object.keys(obj)[0] : null;
+        if (key) {
+          let index = 0;
+          let items = obj[key];
+          let listToStore = {};
+          listToStore[key + "_" + index] = [];
+
+          items.forEach(async (item) => {
+            // If current list plus new item size is less than quota add to list
+            if (
+              JSON.stringify(listToStore).length + JSON.stringify(item).length <
+              chrome.storage.sync.QUOTA_BYTES_PER_ITEM - 1000
+            ) {
+              listToStore[key + "_" + index].push(item);
+            }
+            // List exceeded quota, save and create new list
+            else {
+              chrome.storage.sync.set(listToStore, function () {});
+              index++;
+              listToStore = {};
+              listToStore[key + "_" + index] = [];
+              listToStore[key + "_" + index].push(item);
+            }
+          });
+          // Save las list
+          chrome.storage.sync.set(listToStore, function () {
+            resolve();
+          });
+        } else {
+          reject("No key found to store object");
+        }
+      } catch (ex) {
+        reject(ex);
+      }
+    });
+  };
+
+  /**
    * Gets the next id for the collection based on the max current Id.
    */
   const getNextCollectionId = async function () {
@@ -127,7 +200,7 @@ var npmFaves = npmFaves || {};
             // Sort packages alphabetically
             faves.sort((a, b) => (a.name > b.name ? 1 : -1));
             // Save the faves again
-            await asyncSetToSyncStorage({ faves: faves });
+            await asyncSetListToSyncStorage({ faves: faves });
           }
         }
       }
@@ -144,7 +217,7 @@ var npmFaves = npmFaves || {};
   this.storage.getFaves = async function () {
     let faves = [];
     try {
-      faves = await asyncGetFromSyncStorage("faves");
+      faves = await asyncGetListFromSyncStorage("faves");
     } catch (error) {
       console.log(error);
     }
@@ -176,7 +249,7 @@ var npmFaves = npmFaves || {};
         // Sort packages alphabetically
         faves.sort((a, b) => (a.name > b.name ? 1 : -1));
         // Save the faves again
-        await asyncSetToSyncStorage({ faves: faves });
+        await asyncSetListToSyncStorage({ faves: faves });
         // Send add event to Google Analytics
         // Ideally would be here but if the function is called from the
         // service worker there is no window object to execute the
@@ -213,7 +286,7 @@ var npmFaves = npmFaves || {};
         // Sort packages alphabetically
         faves.sort((a, b) => (a.name > b.name ? 1 : -1));
         // Save the faves again
-        await asyncSetToSyncStorage({ faves: faves });
+        await asyncSetListToSyncStorage({ faves: faves });
         // Send add event to Google Analytics
         // Ideally would be here but if the function is called from the
         // service worker there is no window object to execute the
@@ -241,7 +314,7 @@ var npmFaves = npmFaves || {};
       // Sort packages alphabetically
       faves.sort((a, b) => (a.name > b.name ? 1 : -1));
       // Save the faves again
-      await asyncSetToSyncStorage({ faves: faves });
+      await asyncSetListToSyncStorage({ faves: faves });
       // Send remove event to Google Analytics
       // Ideally would be here but if the function is called from the
       // service worker there is no window object to execute the
@@ -296,7 +369,7 @@ var npmFaves = npmFaves || {};
   this.storage.getCollections = async function () {
     let collections = [];
     try {
-      collections = await asyncGetFromSyncStorage("collections");
+      collections = await asyncGetListFromSyncStorage("collections");
     } catch (error) {
       console.log(error);
     }
@@ -349,7 +422,7 @@ var npmFaves = npmFaves || {};
       // Sort packages alphabetically
       collections.sort((a, b) => (a.name > b.name ? 1 : -1));
       // Save the faves again
-      await asyncSetToSyncStorage({ collections: collections });
+      await asyncSetListToSyncStorage({ collections: collections });
     } catch (error) {
       console.log(error);
     }
@@ -419,7 +492,7 @@ var npmFaves = npmFaves || {};
       // Sort collections alphabetically
       collections.sort((a, b) => (a.name > b.name ? 1 : -1));
       // Save the faves again
-      await asyncSetToSyncStorage({ collections: collections });
+      await asyncSetListToSyncStorage({ collections: collections });
     } catch (error) {
       console.log(error);
     }
@@ -462,7 +535,7 @@ var npmFaves = npmFaves || {};
           a.name > b.name ? 1 : -1
         );
         // Save the collections
-        await asyncSetToSyncStorage({ collections: collections });
+        await asyncSetListToSyncStorage({ collections: collections });
       }
     } catch (error) {
       console.log(error);
@@ -498,7 +571,7 @@ var npmFaves = npmFaves || {};
           a.name > b.name ? 1 : -1
         );
         // Save the collections
-        await asyncSetToSyncStorage({ collections: collections });
+        await asyncSetListToSyncStorage({ collections: collections });
       }
     } catch (error) {
       console.log(error);
