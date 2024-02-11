@@ -7,7 +7,7 @@
  */
 
 (async () => {
-  sendView();
+  await sendView();
   await showCollections(null);
   await loadPackageJson();
   addSaveEvent();
@@ -16,8 +16,8 @@
 /**
  * Sends the pageview event
  */
-function sendView() {
-  npmFaves.tracking.a.sendView(
+async function sendView() {
+  await npmFaves.analytics.sendView(
     npmFaves.helpers.excludeExtensionFromUrl(window.location.href)
   );
 }
@@ -115,7 +115,7 @@ async function savePackageJson() {
         txtLicense.value
       );
       // Send tracking event
-      npmFaves.tracking.a.sendPackageJsonSaved();
+      await npmFaves.analytics.sendPackageJsonSaved();
       await loadPackageJson();
       showNotification("SUCCESS", "Default package.json information saved");
     } else {

@@ -144,39 +144,45 @@ async function updateToolbarButton() {
     ];
     // Get the current tab
     const tab = await getCurrentTab();
-    const index = validUrls.findIndex((url) => {
-      return tab.url.startsWith(url);
-    }, tab);
-    if (index == 0) {
-      // The active tab is npmjs.com
-      // Check the package in the url
-      let packageName = npmFaves.helpers.getUrlPartAfterToken(
-        tab.url,
-        "package/"
-      );
-      if (packageName) {
-        // Check if package is faved
-        const fave = await npmFaves.storage.getFave(packageName, false);
-        if (fave) {
-          // The package is already faved
-          // Show a colored icon with a green badge and a "tick" sign
-          changeToolbarButtonStyle(true, "✓", "#6aa84fff");
+    if (tab) {
+      const index = validUrls.findIndex((url) => {
+        return tab.url.startsWith(url);
+      }, tab);
+      if (index == 0) {
+        // The active tab is npmjs.com
+        // Check the package in the url
+        let packageName = npmFaves.helpers.getUrlPartAfterToken(
+          tab.url,
+          "package/"
+        );
+        if (packageName) {
+          // Check if package is faved
+          const fave = await npmFaves.storage.getFave(packageName, false);
+          if (fave) {
+            // The package is already faved
+            // Show a colored icon with a green badge and a "tick" sign
+            changeToolbarButtonStyle(true, "✓", "#6aa84fff");
+          } else {
+            // The package is NOT faved yet
+            // Show a colored icon with a blue badge and a "plus" sign
+            changeToolbarButtonStyle(true, "+", "#3c78d8ff");
+          }
         } else {
-          // The package is NOT faved yet
-          // Show a colored icon with a blue badge and a "plus" sign
-          changeToolbarButtonStyle(true, "+", "#3c78d8ff");
+          // The url is npmjs.com but not a package page
+          // Show a colored icon with the number of faved packages in the badge
+          let faves = await npmFaves.storage.getFaves();
+          let favesCount = faves.length > 0 ? faves.length.toString() : "";
+          changeToolbarButtonStyle(true, favesCount, "#cb3837ff");
         }
+      } else if (index == 1 || index == 2) {
+        // The active tab is the extension or the chrome extensions management
+        // Show a colored icon with no badge
+        changeToolbarButtonStyle(true);
       } else {
-        // The url is npmjs.com but not a package page
-        // Show a colored icon with the number of faved packages in the badge
-        let faves = await npmFaves.storage.getFaves();
-        let favesCount = faves.length > 0 ? faves.length.toString() : "";
-        changeToolbarButtonStyle(true, favesCount, "#cb3837ff");
+        // The active tab is not valid for the extension
+        // Show a "disabled" icon with no badge
+        changeToolbarButtonStyle(false);
       }
-    } else if (index == 1 || index == 2) {
-      // The active tab is the extension or the chrome extensions management
-      // Show a colored icon with no badge
-      changeToolbarButtonStyle(true);
     } else {
       // The active tab is not valid for the extension
       // Show a "disabled" icon with no badge

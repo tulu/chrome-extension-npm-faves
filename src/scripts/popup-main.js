@@ -6,11 +6,11 @@
  *  - Access the collection information.
  *  - Access the create collection option.
  *  - Access the options page
- *  - Add search package in npmjs.com site functionality 
+ *  - Add search package in npmjs.com site functionality
  */
 
 (async () => {
-  sendView();
+  await sendView();
   addSearchBarEvent();
   checkNotification();
   addMenuEvents();
@@ -21,8 +21,8 @@
 /**
  * Sends the pageview event
  */
-function sendView() {
-  npmFaves.tracking.a.sendView(
+async function sendView() {
+  await npmFaves.analytics.sendView(
     npmFaves.helpers.excludeExtensionFromUrl(window.location.href, false)
   );
 }
@@ -107,7 +107,7 @@ async function showCollectionsList() {
  */
 function getCollectionListElement(collection) {
   let type = npmFaves.helpers.getCollectionIcon(collection.type);
-  return `<a class="menu-item" href="./popup-collection.html?id=${collection.id}">
+  return `<a class="menu-item collection" href="./popup-collection.html?id=${collection.id}">
     <span class="material-icons-outlined"> ${type} </span>
     ${collection.name}<span class="badge">(${collection.packages.length})</span>
     <span class="material-icons-outlined">arrow_right</span>

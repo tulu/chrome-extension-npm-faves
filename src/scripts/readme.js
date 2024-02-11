@@ -1,19 +1,21 @@
 /**
  * Script that adds functionality to the readme page.
- * 
+ *
  * ¯\_(ツ)_/¯
- * 
+ *
  * Responsibilities:
  *  - Send page view to Google Analytics
  */
 
-sendView();
+(async () => {
+  await sendView();
+})();
 
 /**
  * Sends the pageview event
  */
- function sendView() {
-    npmFaves.tracking.a.sendView(
-      npmFaves.helpers.excludeExtensionFromUrl(window.location.href)
-    );
-  }
+async function sendView() {
+  await npmFaves.analytics.sendView(
+    npmFaves.helpers.excludeExtensionFromUrl(window.location.href)
+  );
+}

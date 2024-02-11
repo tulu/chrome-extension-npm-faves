@@ -1,14 +1,24 @@
 {
-    "cSpell.words": [
-        "Roadmap",
-        "endbuild",
-        "endregion",
-        "faved",
-        "namespacing",
-        "npmfaves",
-        "npmjs",
-        "npmsio",
-        "timeago",
-        "unfave"
-    ]
+  "cSpell.words": [
+    "datetime",
+    "devs",
+    "dicebear",
+    "endbuild",
+    "endregion",
+    "faved",
+    "namespacing",
+    "noti",
+    "npmf",
+    "npmfaves",
+    "npmjs",
+    "npmsio",
+    "packagejson",
+    "pageview",
+    "Roadmap",
+    "tablist",
+    "textareaa",
+    "timeago",
+    "tinygraphs",
+    "unfave"
+  ]
 }

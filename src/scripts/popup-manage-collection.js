@@ -9,15 +9,15 @@
  */
 
 (async () => {
-  sendView();
-  loadCollection();
+  await sendView();
+  await loadCollection();
 })();
 
 /**
  * Sends the pageview event
  */
-function sendView() {
-  npmFaves.tracking.a.sendView(
+async function sendView() {
+  await npmFaves.analytics.sendView(
     npmFaves.helpers.excludeExtensionFromUrl(window.location.href, false)
   );
 }
@@ -164,14 +164,14 @@ async function handlePackageManagement() {
           addType
         );
         // Send package added event
-        npmFaves.tracking.a.sendPackageAddedToCollection(packageName);
+        await npmFaves.analytics.sendPackageAddedToCollection(packageName);
       } else {
         await npmFaves.storage.removeFromCollection(
           parseInt(collectionId),
           packageName
         );
         // Send package added event
-        npmFaves.tracking.a.sendPackageRemovedFromCollection(packageName);
+        await npmFaves.analytics.sendPackageRemovedFromCollection(packageName);
       }
     }
   } catch (error) {

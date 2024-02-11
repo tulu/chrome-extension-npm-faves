@@ -1,5 +1,5 @@
 /**
- * Script to manage the behaviour on the https://www.npmjs.com/ website
+ * Script to manage the behavior on the https://www.npmjs.com/ website
  * defined on the manifest.json file.
  * -> "matches": ["https://www.npmjs.com/package/*"]
  *
@@ -188,9 +188,9 @@ async function handleFaveLinkClick() {
         // function is called from the service worker and there is no window
         // in that context to execute the Google Analytics script
         if (response.action == "add") {
-          npmFaves.tracking.a.sendFaveAdded(packageName);
+          npmFaves.analytics.sendFaveAdded(packageName);
         } else if (response.action == "remove") {
-          npmFaves.tracking.a.sendFaveRemoved(packageName);
+          npmFaves.analytics.sendFaveRemoved(packageName);
         }
       }
 
