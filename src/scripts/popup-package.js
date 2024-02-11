@@ -217,7 +217,8 @@ ${repositoryLinkHtml}
  */
 function getUserAvatar(maintainer) {
   //let tinygraphs = `http://tinygraphs.com/labs/isogrids/hexa16/${maintainer.trim()}?theme=berrypie&numcolors=2&size=42&fmt=svg`;
-  let dicebear = `https://avatars.dicebear.com/api/gridy/${maintainer.trim()}.svg`;
+  //let dicebear = `https://avatars.dicebear.com/api/gridy/${maintainer.trim()}.svg`;
+  let dicebear = `https://api.dicebear.com/7.x/avataaars-neutral/svg?seed=${maintainer.trim()}`;
   return dicebear;
 }
 
