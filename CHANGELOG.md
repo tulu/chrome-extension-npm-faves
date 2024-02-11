@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Bugs
 
 - Fixed notification event from pop up to content script when the content script is not listening for events
+- Updated avatars generation endpoint
 - Minor bug fixes
 
 ## [v1.5.2] - 2022-08-17
