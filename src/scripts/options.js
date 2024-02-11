@@ -6,7 +6,7 @@
  */
 
 (async () => {
-  sendView();
+  await sendView();
   const collectionId = getCollectionId();
   await showCollections(collectionId);
   await showFavesList(collectionId);
@@ -15,8 +15,8 @@
 /**
  * Sends the pageview event
  */
-function sendView() {
-  npmFaves.tracking.a.sendView(
+async function sendView() {
+  await npmFaves.analytics.sendView(
     npmFaves.helpers.excludeExtensionFromUrl(window.location.href)
   );
 }

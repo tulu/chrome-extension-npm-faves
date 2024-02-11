@@ -7,7 +7,7 @@
  */
 
 (async () => {
-  sendView();
+  await sendView();
   addBackNavigation();
   await showPackageInformation();
   addEventToCopyInstallation();
@@ -17,8 +17,8 @@
 /**
  * Sends the pageview event.
  */
-function sendView() {
-  npmFaves.tracking.a.sendView(
+async function sendView() {
+  await npmFaves.analytics.sendView(
     npmFaves.helpers.excludeExtensionFromUrl(window.location.href, false)
   );
 }
@@ -51,6 +51,11 @@ async function showPackageInformation() {
       const packageView = document.getElementById("packageView");
       packageView.innerHTML = getPackageView(fave);
     } else {
+      let collectionId = npmFaves.helpers.getQueryStringValue(
+        window.location.href,
+        "collectionId"
+      );
+      collectionId = collectionId != "null" ? `id=${collectionId}` : "";
       const message = `${packageName} not found`;
       const messageType = "ERROR";
       location.href = `./popup-collection.html?notiMessage=${message}&notiType=${messageType}&${collectionId}`;
@@ -229,7 +234,7 @@ function addEventToCopyInstallation() {
 /**
  * Snippet event handler to copy the text to the clipboard.
  */
-function handleCopySnippetClick() {
+async function handleCopySnippetClick() {
   var r = document.createRange();
   r.selectNode(document.getElementById("installSnippet"));
   window.getSelection().removeAllRanges();
@@ -246,7 +251,7 @@ function handleCopySnippetClick() {
     window.location.href,
     "packageName"
   );
-  npmFaves.tracking.a.sendFaveSnippetCopied(packageName);
+  await npmFaves.analytics.sendFaveSnippetCopied(packageName);
 }
 
 /**
@@ -372,7 +377,7 @@ async function saveFaveNotes(personalNotes) {
     // Update the fave notes from storage
     await npmFaves.storage.updateFaveNotes(packageName, personalNotes);
     // Send saved notes event to Google Analytics
-    npmFaves.tracking.a.sendFaveNotesSaved(packageName);
+    await npmFaves.analytics.sendFaveNotesSaved(packageName);
     // Show notification
     npmFaves.ui.createNotification(
       npmFaves.ui.notificationTypes.SUCCESS,

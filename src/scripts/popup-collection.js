@@ -12,7 +12,7 @@
  */
 
 (async () => {
-  sendView();
+  await sendView();
   checkNotification();
   await showCollectionInformation();
 })();
@@ -20,8 +20,8 @@
 /**
  * Sends the pageview event
  */
-function sendView() {
-  npmFaves.tracking.a.sendView(
+async function sendView() {
+  await npmFaves.analytics.sendView(
     npmFaves.helpers.excludeExtensionFromUrl(window.location.href, false)
   );
 }
@@ -71,7 +71,7 @@ async function showCollectionInformation() {
       setActions(null);
     } else {
       // Check for collection
-      collection = await npmFaves.storage.getCollectionById(collectionId);
+      const collection = await npmFaves.storage.getCollectionById(collectionId);
       if (collection) {
         titleEl.innerHTML = collection.name;
         typeEl.innerHTML = npmFaves.helpers.getCollectionIcon(collection.type);
@@ -189,6 +189,8 @@ async function handleDownloadPackage() {
     collectionId = collectionId == "null" ? null : collectionId;
     if (collectionId) {
       const packagejson = await npmFaves.storage.getPackageJson(collectionId);
+      const collection = await npmFaves.storage.getCollectionById(collectionId);
+      await npmFaves.analytics.sendPackageJsonDownloaded(collection.name);
       downloadFile("package.json", packagejson);
     }
   } catch (error) {

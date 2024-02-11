@@ -8,7 +8,7 @@
 
 try {
   importScripts(
-    "/scripts/services/npmFaves-tracking-service.js",
+    "/scripts/services/npmFaves-analytics-service.js",
     "/scripts/services/npmFaves-storage-service.js",
     "/scripts/services/npmFaves-registry-service.js",
     "/scripts/utils/npmFaves-ui-notification.js",

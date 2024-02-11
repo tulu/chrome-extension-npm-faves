@@ -7,16 +7,16 @@
  */
 
 (async () => {
-  sendView();
-  loadCollection();
+  await sendView();
+  await loadCollection();
   addDeleteEvent();
 })();
 
 /**
  * Sends the pageview event
  */
-function sendView() {
-  npmFaves.tracking.a.sendView(
+async function sendView() {
+  await npmFaves.analytics.sendView(
     npmFaves.helpers.excludeExtensionFromUrl(window.location.href, false)
   );
 }
@@ -70,7 +70,7 @@ async function deleteCollection() {
         // Deletes the collection
         await npmFaves.storage.deleteCollection(collection.id);
         // Send delete event
-        npmFaves.tracking.a.sendCollectionRemoved(collection.name);
+        await npmFaves.analytics.sendCollectionRemoved(collection.name);
         // Returns to main view with a message to show
         const message = `Collection ${collection.name} was deleted :(`;
         const messageType = "SUCCESS";

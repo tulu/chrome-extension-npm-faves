@@ -7,7 +7,7 @@
  */
 
 (async () => {
-  sendView();
+  await sendView();
   loadPackage();
   addDeleteEvent();
   await showCollections();
@@ -16,8 +16,8 @@
 /**
  * Sends the pageview event
  */
-function sendView() {
-  npmFaves.tracking.a.sendView(
+async function sendView() {
+  await npmFaves.analytics.sendView(
     npmFaves.helpers.excludeExtensionFromUrl(window.location.href, false)
   );
 }
@@ -78,7 +78,7 @@ async function deleteFave() {
     // Remove the fave from storage
     await npmFaves.storage.removeFave(packageName);
     // Send remove event to Google Analytics
-    npmFaves.tracking.a.sendFaveRemoved(packageName);
+    await npmFaves.analytics.sendFaveRemoved(packageName);
     // Notify to the content script
     notifyEvent({ action: "remove", packageName: packageName });
     // Returns to main view with a message to show
@@ -102,10 +102,11 @@ async function deleteFave() {
  * @param {string} message.action The action to perform (add | remove).
  * @param {string} message.packageName The name of the package.
  */
-function notifyEvent(message) {
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+async function notifyEvent(message) {
+  let tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (tabs[0] && tabs[0].url.startsWith("https://www.npmjs.com/package")) {
     chrome.tabs.sendMessage(tabs[0].id, message);
-  });
+  }
 }
 
 /**
